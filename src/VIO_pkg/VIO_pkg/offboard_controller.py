@@ -21,6 +21,8 @@ from px4_msgs.msg import (
     VehicleStatus,
     VehicleOdometry,
 )
+from geometry_msgs.msg import Point
+from std_msgs.msg import Bool
 
 
 class OffboardController(Node):
@@ -30,10 +32,9 @@ class OffboardController(Node):
     """
 
     # ---------- 설정 파라미터 ----------
-    TARGET_ALTITUDE_M = 5.0    # 목표 고도 [m] (양수)
-    HOVER_DURATION_S  = 10.0   # 호버링 유지 시간 [s]
-    REACHED_THRESHOLD = 0.3    # 목표 도달 판정 오차 [m]
-    CONTROL_FREQ_HZ   = 10     # 제어 루프 주파수 [Hz]
+    TAKEOFF_ALTITUDE_M = 5.0   # 이륙 시 기본 상승 고도 [m] (양수)
+    REACHED_THRESHOLD  = 0.3   # (미션매니저가 주로 사용하지만 로깅용)
+    CONTROL_FREQ_HZ    = 10    # 제어 루프 주파수 [Hz]
 
     def __init__(self):
         super().__init__('offboard_controller')
@@ -62,20 +63,30 @@ class OffboardController(Node):
             VehicleOdometry, '/fmu/out/vehicle_odometry',
             self._cb_odometry, qos)
 
+        # 미션 구독 (QoS 10)
+        self.create_subscription(
+            Point, '/mission/target_waypoint',
+            self._cb_target_waypoint, 10)
+        self.create_subscription(
+            Bool, '/mission/completed',
+            self._cb_mission_completed, 10)
+
         # ── 상태 변수 ────────────────────────────────────────────────────────
         self.vehicle_status  = VehicleStatus()
         self.current_alt_m   = 0.0   # 현재 고도 [m] (양수: 상승)
         self.init_alt_m      = None  # 이륙 기준 고도
         self.offboard_counter = 0    # Offboard 진입 전 setpoint 사전 스트림 카운터
         self.state           = 'INIT'
-        self.hover_start     = None
+
+        self.mission_target  = None
+        self.mission_completed = False
 
         # ── 타이머 ───────────────────────────────────────────────────────────
         period = 1.0 / self.CONTROL_FREQ_HZ
         self.timer = self.create_timer(period, self._control_loop)
 
         self.get_logger().info('OffboardController 초기화 완료')
-        self.get_logger().info(f'목표 고도: {self.TARGET_ALTITUDE_M}m  |  호버링: {self.HOVER_DURATION_S}s')
+        self.get_logger().info(f'초기 이륙 고도: {self.TAKEOFF_ALTITUDE_M}m')
 
     # ====================================================================
     # Subscriber 콜백
@@ -93,6 +104,13 @@ class OffboardController(Node):
         if self.init_alt_m is None:
             self.init_alt_m = -z_ned  # 최초 수신 시 기준 고도 저장
         self.current_alt_m = -z_ned - self.init_alt_m  # 이륙 기준 상대 고도
+
+    def _cb_target_waypoint(self, msg: Point):
+        self.mission_target = msg
+
+    def _cb_mission_completed(self, msg: Bool):
+        if msg.data:
+            self.mission_completed = True
 
     # ====================================================================
     # Publisher 헬퍼
@@ -164,7 +182,7 @@ class OffboardController(Node):
     # ====================================================================
 
     def _control_loop(self):
-        target_z_ned = -self.TARGET_ALTITUDE_M  # 목표 고도를 NED Z로 변환
+        target_z_ned = -self.TAKEOFF_ALTITUDE_M  # 목표 고도를 NED Z로 변환
 
         # ── INIT: Offboard 진입 전 setpoint 사전 스트림 (~1초) ──────────────
         if self.state == 'INIT':
@@ -188,20 +206,27 @@ class OffboardController(Node):
             self._pub_offboard_mode()
             self._pub_setpoint(z_ned=target_z_ned)
             alt = self.current_alt_m
-            self.get_logger().info(f'고도: {alt:.2f}m / {self.TARGET_ALTITUDE_M}m', throttle_duration_sec=1.0)
-            if alt >= self.TARGET_ALTITUDE_M - self.REACHED_THRESHOLD:
-                self.hover_start = self.get_clock().now()
-                self._log_state('HOVER')
+            self.get_logger().info(f'고도: {alt:.2f}m / {self.TAKEOFF_ALTITUDE_M}m', throttle_duration_sec=1.0)
+            if alt >= self.TAKEOFF_ALTITUDE_M - self.REACHED_THRESHOLD:
+                self._log_state('MISSION')
 
-        # ── HOVER: 지정 시간 유지 ───────────────────────────────────────────
-        elif self.state == 'HOVER':
+        # ── MISSION: 미션 매니저의 목표 위치 추종 ───────────────────────────
+        elif self.state == 'MISSION':
             self._pub_offboard_mode()
-            self._pub_setpoint(z_ned=target_z_ned)
-            elapsed = (self.get_clock().now() - self.hover_start).nanoseconds / 1e9
-            remaining = self.HOVER_DURATION_S - elapsed
-            self.get_logger().info(f'호버링 중... {remaining:.1f}s 남음', throttle_duration_sec=1.0)
-            if elapsed >= self.HOVER_DURATION_S:
+            
+            if self.mission_completed:
                 self._log_state('LAND')
+                return
+                
+            if self.mission_target is not None:
+                self._pub_setpoint(
+                    x=self.mission_target.x,
+                    y=self.mission_target.y,
+                    z_ned=self.mission_target.z
+                )
+            else:
+                # 타겟이 없으면 제자리 호버링 유지
+                self._pub_setpoint(z_ned=target_z_ned)
 
         # ── LAND: 착륙 명령 ─────────────────────────────────────────────────
         elif self.state == 'LAND':

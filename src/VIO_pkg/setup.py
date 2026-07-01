@@ -20,6 +20,9 @@ setup(
     entry_points={
         'console_scripts': [
             'offboard_controller = VIO_pkg.offboard_controller:main',
+            'mission_manager = VIO_pkg.mission_manager:main',
+            'vio_bridge = VIO_pkg.vio_bridge:main',
+            'auto_mission_node = VIO_pkg.auto_mission_node:main',
         ],
     },
 )
