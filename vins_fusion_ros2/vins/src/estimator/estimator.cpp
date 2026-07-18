@@ -10,6 +10,36 @@
 
 #include <vins/estimator/estimator.h>
 
+#include <cstdint>
+#include <cstring>
+
+namespace {
+constexpr double kMaxAccelBiasNorm = 2.5;
+constexpr double kMaxGyroBiasNorm = 1.0;
+
+uint64_t featureFingerprint(const FeatureFrame &features) {
+  uint64_t hash = 1469598103934665603ULL;
+  const auto mix = [&hash](const void *data, size_t size) {
+    const auto *bytes = static_cast<const uint8_t *>(data);
+    for (size_t i = 0; i < size; ++i) {
+      hash ^= bytes[i];
+      hash *= 1099511628211ULL;
+    }
+  };
+  for (const auto &feature : features) {
+    mix(&feature.first, sizeof(feature.first));
+    for (const auto &observation : feature.second) {
+      mix(&observation.first, sizeof(observation.first));
+      for (int i = 0; i < observation.second.size(); ++i) {
+        const double value = observation.second(i);
+        mix(&value, sizeof(value));
+      }
+    }
+  }
+  return hash;
+}
+}  // namespace
+
 Estimator::Estimator() {}
 
 Estimator::~Estimator() {
@@ -24,6 +54,20 @@ Estimator::~Estimator() {
 }
 
 void Estimator::resetState() {
+  std::lock_guard<std::mutex> lock(processingMutex);
+  resetStateLocked();
+}
+
+void Estimator::restart() {
+  std::lock_guard<std::mutex> lock(processingMutex);
+  resetStateLocked();
+  initializeCamerasFromOptions();
+}
+
+void Estimator::resetStateLocked() {
+  // IMU propagation runs directly from the subscription callback.  Serialize
+  // it with reset so it cannot dereference a half-cleared latest state.
+  std::lock_guard<std::mutex> propagate_lock(propagateMutex);
   {
     std::lock_guard<std::mutex> imu_lock(imu_mutex);
     clearBuffer(imuBuffer);
@@ -32,18 +76,21 @@ void Estimator::resetState() {
     std::lock_guard<std::mutex> feature_lock(featureBufferMutex);
     clearBuffer(featureBuffer);
   }
-
-  std::lock_guard<std::mutex> lock(processingMutex);
+  {
+    std::lock_guard<std::mutex> range_lock(rangeMutex);
+    clearBuffer(rangeBuffer);
+  }
   previousTimestamp = -1;
   currentTimestamp = 0;
   openExEstimation = 0;
-  inputImageCount = 0;
+  inputImageCount.store(0);
   isFirstPoseInitialized = false;
 
   for (int i = 0; i < WINDOW_SIZE + 1; i++) {
     estimator_state[i].clear();
     std::vector<IMUData>().swap(deltaTimeImuBuffer[i]);
     pre_integrations[i] = nullptr;
+    rangeMeasurements[i] = RangeData();
   }
 
   for (int i = 0; i < options->getNumCameras(); i++) {
@@ -63,13 +110,34 @@ void Estimator::resetState() {
   last_marginalization_parameter_blocks.clear();
 
   featureManager.clearState();
+  {
+    std::lock_guard<std::mutex> tracker_lock(featureTrackerMutex);
+    featureTracker.reset();
+  }
+  safe_vio_odom.clear();
+  safe_imu_pre_odom.clear();
+  safe_key_poses.clear();
+  safe_main_cloud.clear();
+  safe_margin_cloud.clear();
+  safe_point_cloud.clear();
+  safe_keyframe_pose.clear();
   failure_occur = 0;
+  nonLinearUpdateCount = 0;
+  rangeFactorActivationLogged = false;
+  rangeGroundInitialized = false;
+  rangeGroundZ = 0.0;
   VINS_INFO << "reset state successfully";
 }
 
 void Estimator::initialize(std::shared_ptr<VINSOptions> options_) {
-  std::lock_guard<std::mutex> lock(processingMutex);
   options = options_;
+
+  // resetState() initializes several scalar flags and pre-integration
+  // pointers.  Starting the processing thread without it leaves those values
+  // indeterminate and can cause intermittent SIGSEGV/SIGABRT on first data.
+  resetState();
+
+  std::lock_guard<std::mutex> lock(processingMutex);
   initializeCamerasFromOptions();
   isRunning.store(true);
   processThread = std::thread(&Estimator::processMeasurements, this);
@@ -97,29 +165,54 @@ void Estimator::initializeCamerasFromOptions() {
 }
 
 void Estimator::inputImage(const ImageData &image) {
-  inputImageCount++;
+  const int input_image_count = inputImageCount.fetch_add(1) + 1;
   FeatureFrame featureFrame;
   TicToc featureTrackerTime;
 
-  if (image.image1.empty()) {
-    featureFrame = featureTracker.trackImage(image.timestamp, image.image0);
-  } else {
-    featureFrame =
-        featureTracker.trackImage(image.timestamp, image.image0, image.image1);
-  }
-  if (options->shouldShowTrack()) {
-    track_image.image0 = featureTracker.getTrackImage();
-    track_image.timestamp = image.timestamp;
-    safe_track_image.set(track_image);
+  {
+    std::lock_guard<std::mutex> tracker_lock(featureTrackerMutex);
+    if (image.image1.empty()) {
+      featureFrame = featureTracker.trackImage(image.timestamp, image.image0);
+    } else {
+      featureFrame =
+          featureTracker.trackImage(image.timestamp, image.image0, image.image1);
+    }
+    if (options->shouldShowTrack()) {
+      track_image.image0 = featureTracker.getTrackImage();
+      track_image.timestamp = image.timestamp;
+      safe_track_image.set(track_image);
+    }
   }
 
-  if (inputImageCount % 2 == 0 || featureBuffer.empty()) {
-    {
-      std::lock_guard<std::mutex> lock(featureBufferMutex);
+  const bool should_enqueue = input_image_count % 2 == inputDownsamplePhase;
+  size_t queue_depth_after_push = 0;
+  {
+    std::lock_guard<std::mutex> lock(featureBufferMutex);
+    // The relay produces about 20 Hz while this project configures the
+    // estimator for 10 Hz.  Downsample by callback sequence only: the former
+    // "even frame or queue empty" rule depended on processing-thread timing,
+    // while enqueueing every frame caused live backlog.  This fixed rule is
+    // deterministic for a given input/reset boundary and independent of queue
+    // scheduling.
+    if (should_enqueue) {
       featureBuffer.push(make_pair(image.timestamp, featureFrame));
     }
-    featureCondition.notify_one();
+    queue_depth_after_push = featureBuffer.size();
   }
+  VINS_INFO << "Camera estimator trace: sequence=" << image.sequence
+            << ", input_count=" << input_image_count << ", timestamp="
+            << std::fixed << std::setprecision(9) << image.timestamp
+            << ", features=" << featureFrame.size()
+            << ", feature_fingerprint=0x" << std::hex
+            << featureFingerprint(featureFrame) << std::dec
+            << ", enqueued=" << should_enqueue
+            << ", downsample_phase=" << inputDownsamplePhase
+            << ", queue_depth_after_push=" << queue_depth_after_push;
+  if (should_enqueue) featureCondition.notify_one();
+}
+
+void Estimator::setInputDownsamplePhase(int phase) {
+  inputDownsamplePhase = phase == 0 ? 0 : 1;
 }
 
 void Estimator::inputIMU(const IMUData &imu) {
@@ -132,6 +225,15 @@ void Estimator::inputIMU(const IMUData &imu) {
   if (solver_flag == SolverState::NON_LINEAR) {
     fastPredictIMU(imu);
   }
+}
+
+void Estimator::inputRange(const RangeData &range) {
+  if (!options->hasRange() || !range.valid || !std::isfinite(range.range)) return;
+  std::lock_guard<std::mutex> lock(rangeMutex);
+  if (!rangeBuffer.empty() && range.timestamp <= rangeBuffer.back().timestamp)
+    return;
+  rangeBuffer.push(range);
+  while (rangeBuffer.size() > 1000) rangeBuffer.pop();
 }
 
 void Estimator::inputFeature(double timestamp,
@@ -178,6 +280,8 @@ void Estimator::processMeasurements() {
   while (isRunning.load()) {
     TimestampedFeatureFrame feature;
     vector<IMUData> imu_datas;
+    size_t queue_depth_after_pop = 0;
+    double queue_span_s = 0.0;
     {
       std::unique_lock<std::mutex> lock(featureBufferMutex);
       featureCondition.wait(
@@ -185,8 +289,16 @@ void Estimator::processMeasurements() {
       if (!isRunning.load() || featureBuffer.empty()) break;
       feature = featureBuffer.front();
       featureBuffer.pop();
+      queue_depth_after_pop = featureBuffer.size();
+      if (!featureBuffer.empty()) {
+        queue_span_s = featureBuffer.back().first - feature.first;
+      }
       lock.unlock();
     }
+    VINS_INFO << "Feature queue trace: timestamp=" << std::fixed
+              << std::setprecision(9) << feature.first
+              << ", queue_depth_after_pop=" << queue_depth_after_pop
+              << ", queue_span_s=" << queue_span_s;
     currentTimestamp = feature.first + options->time_delay;
     if (options->hasImu()) {
       std::unique_lock<std::mutex> lock(imu_mutex);
@@ -199,6 +311,10 @@ void Estimator::processMeasurements() {
       }
     }
 
+    // Reset must not interleave with pre-integration or image processing.
+    // Previously only processImage held this mutex, so a reset service could
+    // clear pre_integrations while processIMU was still using them.
+    std::lock_guard<std::mutex> processing_lock(processingMutex);
     if (options->hasImu()) {
       getIMUInterval(previousTimestamp, currentTimestamp, imu_datas);
       if (!isFirstPoseInitialized) initFirstIMUPose(imu_datas);
@@ -213,13 +329,17 @@ void Estimator::processMeasurements() {
         processIMU(imu_datas[i], dt);
       }
     }
-    {
-      std::lock_guard<std::mutex> lock(processingMutex);
-      processImage(feature.second, feature.first);
-      printStatistics(currentTimestamp);
-      collectPointCloudAll(feature.first);
-      previousTimestamp = currentTimestamp;
+    processImage(feature.second, feature.first);
+    // An internal fail-safe reset can happen inside processImage().  In that
+    // case resetStateLocked() deliberately clears the estimator epoch.  Do
+    // not overwrite it with the pre-reset timestamp; the next frame must be
+    // treated as the first frame of a new IMU integration epoch.
+    if (previousTimestamp < 0.0 && currentTimestamp == 0.0) {
+      continue;
     }
+    printStatistics(currentTimestamp);
+    collectPointCloudAll(feature.first);
+    previousTimestamp = currentTimestamp;
   }
 }
 void Estimator::updateCameraPose(int index) {
@@ -403,6 +523,25 @@ void Estimator::insertImageFrame(const FeatureFrame &features,
   ImageFrame imageframe(features, timestamp);
   imageframe.pre_integration = std::move(tmp_pre_integration);
   all_image_frame.insert(make_pair(timestamp, imageframe));
+  rangeMeasurements[frameCount] = RangeData();
+  if (options->hasRange()) {
+    std::lock_guard<std::mutex> lock(rangeMutex);
+    while (rangeBuffer.size() > 1 &&
+           rangeBuffer.front().timestamp < timestamp - options->range_max_age)
+      rangeBuffer.pop();
+    RangeData closest;
+    double closest_dt = options->range_max_age;
+    std::queue<RangeData> copy = rangeBuffer;
+    while (!copy.empty()) {
+      const double dt = std::abs(copy.front().timestamp - timestamp);
+      if (dt <= closest_dt) {
+        closest = copy.front();
+        closest_dt = dt;
+      }
+      copy.pop();
+    }
+    if (closest.valid) rangeMeasurements[frameCount] = closest;
+  }
   tmp_pre_integration = std::make_shared<IntegrationBase>(
       previousImuData, estimator_state[frameCount].accel_bias,
       estimator_state[frameCount].gyro_bias, options->imu);
@@ -449,19 +588,105 @@ void Estimator::processNonLinearSolver(Timestamp timestamp) {
 
   // optimization
   TicToc t_solve;
-  optimize();
+  const StateData state_before_optimization = estimator_state[WINDOW_SIZE];
+  if (!optimize()) {
+    VINS_ERROR << "Nonlinear optimization failed; resetting estimator.";
+    failure_occur = 1;
+    resetStateLocked();
+    initializeCamerasFromOptions();
+    return;
+  }
+  const StateData &state_after_optimization = estimator_state[WINDOW_SIZE];
+  const double optimization_position_delta =
+      (state_after_optimization.position - state_before_optimization.position)
+          .norm();
+  const int active_feature_count = featureManager.getFeatureCount();
+  if (nonLinearUpdateCount % 10 == 0 || active_feature_count < 100 ||
+      optimization_position_delta > 0.2) {
+    VINS_INFO << "Nonlinear state trace: update=" << nonLinearUpdateCount
+              << ", timestamp=" << timestamp
+              << ", features=" << active_feature_count
+              << ", last_tracks=" << featureManager.last_track_num
+              << ", long_tracks=" << featureManager.long_track_num
+              << ", new_features=" << featureManager.new_feature_num
+              << ", parallax_px=" << featureManager.last_average_parallax
+              << ", marginalization="
+              << (isNewMarginalization() ? "second_new" : "old")
+              << ", position_delta=" << optimization_position_delta
+              << ", position=" << state_after_optimization.position.transpose()
+              << ", accel_bias="
+              << state_after_optimization.accel_bias.transpose()
+              << ", gyro_bias="
+              << state_after_optimization.gyro_bias.transpose();
+  }
+  // A low feature count alone is normal during yaw, and a moderate initial
+  // correction alone is normal during probation.  Persistent corruption runs
+  // instead showed both weak active geometry and a large optimizer mutation:
+  // healthy clean runs stayed <=0.026 m while the failed run reached 0.285 m.
+  // Reject the combined condition before safe_vio_odom is updated.
+  constexpr int kMinActiveFeaturesForLargeCorrection = 100;
+  // Three-frame tracks occasionally need a 0.10--0.11 m correction while
+  // turning, and resetting at that boundary caused otherwise recoverable
+  // runs to cascade into repeated reinitialization. Keep this aligned with
+  // the independent 0.15 m estimator/output guards; the observed corrupt
+  // low-geometry mutations were 0.222--0.285 m and remain rejected here.
+  constexpr double kMaxLowGeometryOptimizationCorrection = 0.15;
+  if (active_feature_count < kMinActiveFeaturesForLargeCorrection &&
+      optimization_position_delta >
+          kMaxLowGeometryOptimizationCorrection) {
+    VINS_ERROR << "Nonlinear geometry health rejected update: timestamp="
+               << timestamp << ", features=" << active_feature_count
+               << ", position_delta=" << optimization_position_delta
+               << ", accel_bias="
+               << state_after_optimization.accel_bias.transpose();
+    failure_occur = 1;
+    resetStateLocked();
+    initializeCamerasFromOptions();
+    return;
+  }
+  if (nonLinearUpdateCount <= 3) {
+    VINS_INFO << "Early nonlinear update: index=" << nonLinearUpdateCount
+              << ", timestamp=" << timestamp
+              << ", features=" << featureManager.getFeatureCount()
+              << ", position_delta="
+              << optimization_position_delta
+              << ", accel_bias_before="
+              << state_before_optimization.accel_bias.transpose()
+              << ", accel_bias_after="
+              << state_after_optimization.accel_bias.transpose()
+              << ", gyro_bias_before="
+              << state_before_optimization.gyro_bias.transpose()
+              << ", gyro_bias_after="
+              << state_after_optimization.gyro_bias.transpose();
+  }
   set<int> removeIndex;
   outliersRejection(removeIndex);
   featureManager.removeOutlier(removeIndex);
   if (failureDetection()) {
     failure_occur = 1;
-    resetState();
+    resetStateLocked();
     initializeCamerasFromOptions();
     return;
   }
 
   slideWindow();
   featureManager.removeFailures();
+  last_state = estimator_state[WINDOW_SIZE];
+  last_state0 = estimator_state[0];
+  updateLatestStates();
+
+  constexpr int kInitializationProbationUpdates = 3;
+  if (nonLinearUpdateCount < kInitializationProbationUpdates) {
+    VINS_INFO << "Initialization probation: update=" << nonLinearUpdateCount
+              << "/" << kInitializationProbationUpdates
+              << ", odometry publication withheld.";
+    return;
+  }
+  if (nonLinearUpdateCount == kInitializationProbationUpdates) {
+    VINS_INFO << "Initialization probation passed; odometry publication "
+                 "enabled.";
+  }
+
   // prepare output of VINS
   {
     key_poses.timestamp = timestamp;
@@ -471,10 +696,6 @@ void Estimator::processNonLinearSolver(Timestamp timestamp) {
 
     safe_key_poses.set(key_poses);
   }
-
-  last_state = estimator_state[WINDOW_SIZE];
-  last_state0 = estimator_state[0];
-  updateLatestStates();
 
   vio_odom.timestamp = timestamp;
   vio_odom.position = estimator_state[WINDOW_SIZE].position;
@@ -488,15 +709,82 @@ void Estimator::processMonoWithImuInitialization(Timestamp timestamp) {
 
   bool result = false;
   if (!options->isInitializingExtrinsic() &&
-      (timestamp - initialTimestamp) > 0.1) {
+      (timestamp - initialTimestamp) > 0.5) {
     result = initialStructure();
     initialTimestamp = timestamp;
   }
   if (result) {
-    optimize();
+    StateData states_before_initial_optimization[WINDOW_SIZE + 1];
+    for (int i = 0; i <= WINDOW_SIZE; ++i) {
+      states_before_initial_optimization[i] = estimator_state[i];
+    }
+    const VectorXd depths_before_initial_optimization =
+        featureManager.getDepthVector();
+    Matrix3d camera_rotation_before_initial_optimization[2];
+    Vector3d camera_translation_before_initial_optimization[2];
+    for (int i = 0; i < options->getNumCameras(); ++i) {
+      camera_rotation_before_initial_optimization[i] = cameraRotation[i];
+      camera_translation_before_initial_optimization[i] = cameraTranslation[i];
+    }
+    const double time_delay_before_initial_optimization = options->time_delay;
+
+    // The initialization window contains non-keyframe slots that are filled
+    // by the first nonlinear solve.  Validating every slot before that solve
+    // rejects otherwise valid visual/IMU alignments.  optimize() validates
+    // the fully populated state immediately after Ceres updates it.
+    if (!optimize()) {
+      VINS_ERROR << "Initialization produced an unusable state; resetting.";
+      resetStateLocked();
+      initializeCamerasFromOptions();
+      return;
+    }
+    // Do not expose a candidate that already violates the same bias limits
+    // used by the nonlinear failure detector.  Waiting for the next image
+    // would publish a corrupt pose briefly and then reset.  Restore the
+    // pre-solve window and slide it instead of resetting the live input epoch;
+    // this keeps the next healthy initialization window available.
+    if (!validateInitializationHealth()) {
+      for (int i = 0; i <= WINDOW_SIZE; ++i) {
+        estimator_state[i] = states_before_initial_optimization[i];
+      }
+      featureManager.setDepth(depths_before_initial_optimization);
+      for (int i = 0; i < options->getNumCameras(); ++i) {
+        cameraRotation[i] = camera_rotation_before_initial_optimization[i];
+        cameraTranslation[i] =
+            camera_translation_before_initial_optimization[i];
+        updateCameraPose(i);
+      }
+      options->time_delay = time_delay_before_initial_optimization;
+      last_marginalization_info = nullptr;
+      last_marginalization_parameter_blocks.clear();
+      VINS_INFO << "Initialization candidate rollback complete; retrying on "
+                   "the next window.";
+      slideWindow();
+      return;
+    }
     updateLatestStates();
+    // failureDetection compares against last_state on the very next frame.
+    // Seed it from the initialized solution instead of the default zero pose.
+    last_state = estimator_state[WINDOW_SIZE];
+    last_state0 = estimator_state[0];
     solver_flag = SolverState::NON_LINEAR;
     slideWindow();
+    const StateData &initialized = estimator_state[WINDOW_SIZE];
+    VINS_INFO << "Initialization state: features="
+              << featureManager.getFeatureCount()
+              << ", solver_initial_cost=" << lastOptimizationInitialCost
+              << ", solver_final_cost=" << lastOptimizationFinalCost
+              << ", solver_residual_blocks="
+              << lastOptimizationResidualBlocks
+              << ", solver_residuals=" << lastOptimizationResiduals
+              << ", solver_cost_per_block="
+              << (lastOptimizationResidualBlocks > 0
+                      ? lastOptimizationFinalCost /
+                            lastOptimizationResidualBlocks
+                      : 0.0)
+              << ", velocity=" << initialized.velocity.transpose()
+              << ", accel_bias=" << initialized.accel_bias.transpose()
+              << ", gyro_bias=" << initialized.gyro_bias.transpose();
     VINS_INFO << "Initialization complete. Switching to NON_LINEAR mode.";
   } else {
     slideWindow();
@@ -526,6 +814,8 @@ void Estimator::processStereoWithImuInitialization() {
   }
   optimize();
   updateLatestStates();
+  last_state = estimator_state[WINDOW_SIZE];
+  last_state0 = estimator_state[0];
   solver_flag = SolverState::NON_LINEAR;
   slideWindow();
   VINS_INFO << "Initialization complete. Switching to NON_LINEAR mode.";
@@ -542,6 +832,8 @@ void Estimator::processStereoWithoutImuInitialization() {
 
   optimize();
   updateLatestStates();
+  last_state = estimator_state[WINDOW_SIZE];
+  last_state0 = estimator_state[0];
   solver_flag = SolverState::NON_LINEAR;
   slideWindow();
   VINS_INFO << "Initialization complete. Switching to NON_LINEAR mode.";
@@ -573,7 +865,103 @@ bool Estimator::checkIMUExcitation() {
   }
 
   variance = std::sqrt(variance / (all_image_frame.size() - 1));
-  return variance >= 0.25;
+  // The upstream 0.25 m/s^2 threshold assumes hand-held, jerky motion.  A
+  // multicopter excitation is lower, but accepting the ~0.01 m/s^2 hover
+  // vibration produced severely under-observed scale estimates.  Require a
+  // deliberate post-hover initialization manoeuvre well above the ~0.002
+  // m/s^2 Gazebo noise floor.
+  // Reject the low-dynamic start of a position-controlled hover.  It has
+  // enough pixel parallax to pass the visual test but not enough inertial
+  // information to determine a trustworthy mono metric scale.
+  constexpr double kMinExcitation = 0.15;
+  VINS_INFO << "IMU excitation=" << variance
+            << " m/s^2 (required " << kMinExcitation << ")";
+  return std::isfinite(variance) && variance >= kMinExcitation;
+}
+
+void Estimator::logInitializationDiagnostics(Timestamp timestamp) const {
+  size_t track_observations = 0;
+  size_t tracks_at_least_four_frames = 0;
+  size_t max_track_frames = 0;
+  for (const auto &feature : featureManager.feature) {
+    const size_t track_frames = feature.feature_per_frame.size();
+    track_observations += track_frames;
+    max_track_frames = std::max(max_track_frames, track_frames);
+    if (track_frames >= 4) ++tracks_at_least_four_frames;
+  }
+
+  size_t imu_samples = 0;
+  double imu_duration = 0.0;
+  double min_imu_dt = std::numeric_limits<double>::infinity();
+  double max_imu_dt = 0.0;
+  Vector3d mean_accel = Vector3d::Zero();
+  Vector3d mean_gyro = Vector3d::Zero();
+  for (int frame = 1; frame <= WINDOW_SIZE; ++frame) {
+    for (const auto &imu : deltaTimeImuBuffer[frame]) {
+      const double dt = imu.timestamp;
+      if (!std::isfinite(dt) || dt <= 0.0) continue;
+      ++imu_samples;
+      imu_duration += dt;
+      min_imu_dt = std::min(min_imu_dt, dt);
+      max_imu_dt = std::max(max_imu_dt, dt);
+      mean_accel += dt * imu.linear_acceleration;
+      mean_gyro += dt * imu.angular_velocity;
+    }
+  }
+  if (imu_duration > 0.0) {
+    mean_accel /= imu_duration;
+    mean_gyro /= imu_duration;
+  }
+
+  double accel_variance = 0.0;
+  double gyro_variance = 0.0;
+  for (int frame = 1; frame <= WINDOW_SIZE; ++frame) {
+    for (const auto &imu : deltaTimeImuBuffer[frame]) {
+      const double dt = imu.timestamp;
+      if (!std::isfinite(dt) || dt <= 0.0) continue;
+      accel_variance +=
+          dt * (imu.linear_acceleration - mean_accel).squaredNorm();
+      gyro_variance +=
+          dt * (imu.angular_velocity - mean_gyro).squaredNorm();
+    }
+  }
+  const double accel_rms = imu_duration > 0.0
+                               ? std::sqrt(accel_variance / imu_duration)
+                               : 0.0;
+  const double gyro_rms = imu_duration > 0.0
+                              ? std::sqrt(gyro_variance / imu_duration)
+                              : 0.0;
+  const double camera_duration =
+      estimator_state[WINDOW_SIZE].timestamp - estimator_state[0].timestamp;
+  const double mean_track_frames = featureManager.feature.empty()
+                                       ? 0.0
+                                       : static_cast<double>(track_observations) /
+                                             featureManager.feature.size();
+
+  VINS_INFO << "Initialization diagnostics: timestamp=" << timestamp
+            << ", window_start=" << estimator_state[0].timestamp
+            << ", window_end=" << estimator_state[WINDOW_SIZE].timestamp
+            << ", camera_duration=" << camera_duration
+            << ", imu_duration=" << imu_duration
+            << ", integration_duration_error="
+            << (imu_duration - camera_duration)
+            << ", imu_samples=" << imu_samples
+            << ", imu_dt_min="
+            << (std::isfinite(min_imu_dt) ? min_imu_dt : 0.0)
+            << ", imu_dt_max=" << max_imu_dt
+            << ", accel_mean=" << mean_accel.transpose()
+            << ", accel_rms=" << accel_rms
+            << ", gyro_mean=" << mean_gyro.transpose()
+            << ", gyro_rms=" << gyro_rms
+            << ", features=" << featureManager.feature.size()
+            << ", mean_track_frames=" << mean_track_frames
+            << ", max_track_frames=" << max_track_frames
+            << ", tracks_ge_4=" << tracks_at_least_four_frames
+            << ", last_track_num=" << featureManager.last_track_num
+            << ", long_track_num=" << featureManager.long_track_num
+            << ", new_feature_num=" << featureManager.new_feature_num
+            << ", last_parallax_px="
+            << featureManager.last_average_parallax;
 }
 
 std::vector<SFMFeature> Estimator::buildSFMFeatures() {
@@ -668,7 +1056,9 @@ bool Estimator::solvePoseWithPnP(const std::vector<Quaterniond> &rotations,
 bool Estimator::initialStructure() {
   if (!checkIMUExcitation()) {
     VINS_WARN << "IMU excitation insufficient";
+    return false;
   }
+  logInitializationDiagnostics(estimator_state[WINDOW_SIZE].timestamp);
 
   auto sfm_features = buildSFMFeatures();
 
@@ -721,6 +1111,19 @@ bool Estimator::visualInitialAlign() {
   }
 
   double s = (x.tail<1>())(0);
+  VINS_INFO << "Visual/IMU alignment candidate: scale=" << s
+            << ", gravity=" << gravity.transpose()
+            << ", gravity_norm=" << gravity.norm();
+  // SfM translation has an arbitrary unit, so its positive scale can be much
+  // smaller than one.  Metric correctness is checked with range constraints
+  // and the preflight path-scale validator, not an arbitrary scale floor.
+  if (!x.allFinite() || !std::isfinite(s) || s <= 1e-3 || s > 100.0 ||
+      !gravity.allFinite() || gravity.norm() < 8.0 || gravity.norm() > 11.0) {
+    VINS_WARN << "Rejected invalid visual/IMU alignment: scale=" << s
+              << ", gravity_norm=" << gravity.norm();
+    return false;
+  }
+
   for (int i = 0; i <= WINDOW_SIZE; i++) {
     pre_integrations[i]->repropagate(Vector3d::Zero(),
                                      estimator_state[i].gyro_bias);
@@ -737,7 +1140,8 @@ bool Estimator::visualInitialAlign() {
        frame_i++) {
     if (frame_i->second.is_key_frame) {
       kv++;
-      estimator_state[kv].velocity = frame_i->second.R * x.segment<3>(kv * 3);
+      estimator_state[kv].velocity =
+          frame_i->second.R * x.segment<3>(kv * 3);
     }
   }
 
@@ -760,8 +1164,15 @@ bool Estimator::visualInitialAlign() {
 
 bool Estimator::computeRelativePose(Matrix3d &relative_R, Vector3d &relative_T,
                                     int &referenceFrame) {
+  constexpr double kSITLFocalLength = 277.191356;
+  // Preserve VINS' normalized parallax threshold (30 / 460) while reporting
+  // it in pixels for this camera.
+  constexpr double kMinParallaxPx = 30.0 * kSITLFocalLength / 460.0;
+  size_t max_correspondences = 0;
+  double max_parallax_px = 0.0;
   for (int i = 0; i < WINDOW_SIZE; i++) {
     auto correspondences = featureManager.getCorresponding(i, WINDOW_SIZE);
+    max_correspondences = std::max(max_correspondences, correspondences.size());
     if (correspondences.size() > 20) {
       double totalParallax = 0;
       for (const auto &corr : correspondences) {
@@ -771,14 +1182,24 @@ bool Estimator::computeRelativePose(Matrix3d &relative_R, Vector3d &relative_T,
       }
 
       double avgParallax = totalParallax / correspondences.size();
-      if (avgParallax * 460 > 30 &&
+      max_parallax_px =
+          std::max(max_parallax_px, avgParallax * kSITLFocalLength);
+      if (avgParallax * kSITLFocalLength > kMinParallaxPx &&
           m_estimator.solveRelativeRT(correspondences, relative_R,
                                       relative_T)) {
+        VINS_INFO << "Relative pose accepted: reference=" << i
+                  << ", correspondences=" << correspondences.size()
+                  << ", parallax=" << avgParallax * kSITLFocalLength
+                  << " px, translation=" << relative_T.transpose();
         referenceFrame = i;
         return true;
       }
     }
   }
+  VINS_WARN << "Initialization candidates: max correspondences="
+            << max_correspondences << ", max parallax=" << max_parallax_px
+            << " px (requires >20 correspondences and >"
+            << kMinParallaxPx << " px)";
   return false;
 }
 
@@ -873,31 +1294,112 @@ void Estimator::updateEstimates() {
 }
 
 bool Estimator::failureDetection() {
-  return false;
-  if (featureManager.last_track_num < 2) {
-  }
-  if (estimator_state[WINDOW_SIZE].accel_bias.norm() > 2.5) {
+  if (!validateEstimatorState("failure detection")) return true;
+  // A single low-feature frame can occur during a yaw turn.  State finiteness,
+  // bias, jump and rotation checks below are the actual reset criteria.
+  if (estimator_state[WINDOW_SIZE].accel_bias.norm() > kMaxAccelBiasNorm) {
+    VINS_ERROR << "Accelerometer bias limit exceeded: "
+               << estimator_state[WINDOW_SIZE].accel_bias.norm();
     return true;
   }
-  if (estimator_state[WINDOW_SIZE].gyro_bias.norm() > 1.0) {
+  if (estimator_state[WINDOW_SIZE].gyro_bias.norm() > kMaxGyroBiasNorm) {
+    VINS_ERROR << "Gyroscope bias limit exceeded: "
+               << estimator_state[WINDOW_SIZE].gyro_bias.norm();
     return true;
   }
   Vector3d tmp_P = estimator_state[WINDOW_SIZE].position;
-  if ((tmp_P - last_state.position).norm() > 5) {
-    // return true;
+  // The controlled Gazebo excitation is limited to 0.55 m/s and VINS emits
+  // optimized poses at roughly 10 Hz, so commanded physical motion is about
+  // 0.055 m per update.  Healthy clean runs stay below 0.09 m and observed
+  // Three-frame geometry regression kept healthy output steps <=0.115 m,
+  // while the remaining slow-corruption run exposed 0.242 m before the old
+  // 0.25 m guard tripped. Keep ~2.7x commanded-motion margin and isolate that
+  // tail at the estimator boundary.
+  constexpr double kMaxPositionStep = 0.15;
+  if ((tmp_P - last_state.position).norm() > kMaxPositionStep) {
+    VINS_ERROR << "Position jump detected: "
+               << (tmp_P - last_state.position).norm()
+               << ", timestamp=" << estimator_state[WINDOW_SIZE].timestamp
+               << ", previous_position=" << last_state.position.transpose()
+               << ", current_position=" << tmp_P.transpose()
+               << ", accel_bias="
+               << estimator_state[WINDOW_SIZE].accel_bias.transpose()
+               << ", gyro_bias="
+               << estimator_state[WINDOW_SIZE].gyro_bias.transpose()
+               << ", features=" << featureManager.getFeatureCount()
+               << ", solver_initial_cost=" << lastOptimizationInitialCost
+               << ", solver_final_cost=" << lastOptimizationFinalCost
+               << ", solver_time_s=" << lastOptimizationTimeSeconds
+               << ", solver_successful_steps="
+               << lastOptimizationSuccessfulSteps
+               << ", solver_unsuccessful_steps="
+               << lastOptimizationUnsuccessfulSteps
+               << ", solver_termination="
+               << ceres::TerminationTypeToString(lastOptimizationTermination);
+    return true;
   }
-  if (abs(tmp_P.z() - last_state.position.z()) > 1) {
-    // return true;
+  if (abs(tmp_P.z() - last_state.position.z()) > kMaxPositionStep) {
+    VINS_ERROR << "Vertical jump detected: "
+               << abs(tmp_P.z() - last_state.position.z());
+    return true;
   }
   Matrix3d tmp_R = estimator_state[WINDOW_SIZE].rotation;
   Matrix3d delta_R = tmp_R.transpose() * last_state.rotation;
   Quaterniond delta_Q(delta_R);
-  double delta_angle;
-  delta_angle = acos(delta_Q.w()) * 2.0 / 3.14 * 180.0;
+  double delta_angle =
+      acos(std::max(-1.0, std::min(1.0, std::abs(delta_Q.w())))) * 2.0 /
+      M_PI * 180.0;
   if (delta_angle > 50) {
-    // return true;
+    VINS_ERROR << "Attitude jump detected: " << delta_angle << " deg";
+    return true;
   }
   return false;
+}
+
+bool Estimator::validateInitializationHealth() const {
+  const StateData &candidate = estimator_state[WINDOW_SIZE];
+  const double accel_bias_norm = candidate.accel_bias.norm();
+  const double gyro_bias_norm = candidate.gyro_bias.norm();
+  if (accel_bias_norm > kMaxAccelBiasNorm) {
+    VINS_WARN << "Rejected unhealthy initialization candidate: reason="
+                 "accel_bias, accel_bias_norm="
+              << accel_bias_norm << ", limit=" << kMaxAccelBiasNorm
+              << ", timestamp=" << candidate.timestamp;
+    return false;
+  }
+  if (gyro_bias_norm > kMaxGyroBiasNorm) {
+    VINS_WARN << "Rejected unhealthy initialization candidate: reason="
+                 "gyro_bias, gyro_bias_norm="
+              << gyro_bias_norm << ", limit=" << kMaxGyroBiasNorm
+              << ", timestamp=" << candidate.timestamp;
+    return false;
+  }
+  return true;
+}
+
+bool Estimator::validateEstimatorState(const char *context) const {
+  if (!gravity.allFinite() || gravity.norm() < 8.0 || gravity.norm() > 11.0) {
+    VINS_ERROR << context << ": invalid gravity " << gravity.transpose();
+    return false;
+  }
+  for (int i = 0; i <= frameCount; ++i) {
+    const StateData &s = estimator_state[i];
+    const Quaterniond q(s.rotation);
+    if (!s.position.allFinite() || !s.velocity.allFinite() ||
+        !s.accel_bias.allFinite() || !s.gyro_bias.allFinite() ||
+        !s.rotation.allFinite() || !std::isfinite(q.norm()) ||
+        std::abs(q.norm() - 1.0) > 1e-3 || s.position.norm() > 10000.0 ||
+        s.velocity.norm() > 20.0 || s.position.norm() > 100.0) {
+      VINS_ERROR << context << ": invalid state at window index " << i
+                 << ", p=" << s.position.transpose()
+                 << ", v=" << s.velocity.transpose()
+                 << ", ba=" << s.accel_bias.transpose()
+                 << ", bg=" << s.gyro_bias.transpose()
+                 << ", qnorm=" << q.norm();
+      return false;
+    }
+  }
+  return true;
 }
 
 void Estimator::AddPoseParameterBlocks(ceres::Problem &problem) {
@@ -955,7 +1457,7 @@ void Estimator::AddIMUFactors(ceres::Problem &problem) {
 void Estimator::AddFeatureFactors(ceres::Problem &problem) {
   int feature_index = -1;
   for (auto &it : featureManager.feature) {
-    if (it.feature_per_frame.size() < 4) continue;
+    if (it.feature_per_frame.size() < kMinFeatureTrackFrames) continue;
     ++feature_index;
 
     int imu_i = it.start_frame, imu_j = imu_i - 1;
@@ -996,7 +1498,65 @@ void Estimator::AddFeatureFactors(ceres::Problem &problem) {
     }
   }
 }
-void Estimator::solveOptimization() {
+void Estimator::AddRangeFactors(ceres::Problem &problem) {
+  // Visual/IMU alignment must establish gravity, velocity and scale without
+  // auxiliary residuals.  Applying range residuals in that first Ceres solve
+  // couples an unobservable SfM pose to the ground plane and can drive the
+  // accelerometer bias away before the state is fully initialized.
+  if (!options->hasRange() || solver_flag != SolverState::NON_LINEAR ||
+      nonLinearUpdateCount < WINDOW_SIZE ||
+      frameCount < 1) return;
+  int reference = -1;
+  for (int i = 0; i <= frameCount; ++i) {
+    if (rangeMeasurements[i].valid) {
+      reference = i;
+      break;
+    }
+  }
+  if (reference < 0) return;
+
+  if (!rangeGroundInitialized) {
+    const double *pose = poseArray[reference];
+    const Quaterniond q(pose[6], pose[3], pose[4], pose[5]);
+    const Vector3d down(0.0, 0.0, -1.0);
+    rangeGroundZ =
+        pose[2] + (q * options->range_translation).z() +
+        rangeMeasurements[reference].range * (q * down).z();
+    if (!std::isfinite(rangeGroundZ)) return;
+    rangeGroundInitialized = true;
+    VINS_INFO << "Downward range ground initialized: z=" << rangeGroundZ
+              << ", range=" << rangeMeasurements[reference].range;
+  }
+
+  const double sigma = std::max(0.005, options->range_noise);
+  int factor_count = 0;
+  for (int j = 0; j <= frameCount; ++j) {
+    if (!rangeMeasurements[j].valid) continue;
+    const double *pose = poseArray[j];
+    const Quaterniond q(pose[6], pose[3], pose[4], pose[5]);
+    const Vector3d down(0.0, 0.0, -1.0);
+    const double vertical_offset =
+        (q * options->range_translation).z() +
+        rangeMeasurements[j].range * (q * down).z();
+    const double target_z = rangeGroundZ - vertical_offset;
+    if (!std::isfinite(target_z)) continue;
+    problem.AddResidualBlock(
+        RangeFactor::Create(target_z, sigma),
+        // RangeFactor normalises metres by sigma.  Huber delta=2 therefore
+        // starts down-weighting a vertical residual above 2*sigma (0.20 m
+        // for the configured 0.10 m model noise).
+        new ceres::HuberLoss(2.0), poseArray[j]);
+    ++factor_count;
+  }
+  if (factor_count > 0 && !rangeFactorActivationLogged) {
+    VINS_INFO << "Downward range factors active: " << factor_count
+              << ", sigma=" << sigma
+              << ", ground_z=" << rangeGroundZ;
+    rangeFactorActivationLogged = true;
+  }
+}
+
+bool Estimator::solveOptimization() {
   ceres::Problem problem;
 
   AddPoseParameterBlocks(problem);
@@ -1005,11 +1565,16 @@ void Estimator::solveOptimization() {
   AddMarginalizationFactor(problem);
   AddIMUFactors(problem);
   AddFeatureFactors(problem);
+  AddRangeFactors(problem);
 
   ceres::Solver::Options ceres_options;
   ceres_options.linear_solver_type =
       options->USE_GPU_CERES ? ceres::DENSE_QR : ceres::DENSE_SCHUR;
-  ceres_options.trust_region_strategy_type = ceres::DOGLEG;
+  // In the repeated monocular SITL trajectory, Dogleg occasionally accepted
+  // a single 0.17--0.43 m state mutation after tens of healthy seconds. LM's
+  // damped steps are slower but substantially safer near weak geometry and
+  // remain within the existing 80 ms solver budget.
+  ceres_options.trust_region_strategy_type = ceres::LEVENBERG_MARQUARDT;
   ceres_options.max_num_iterations = options->max_num_iterations();
   ceres_options.max_solver_time_in_seconds =
       (!isNewMarginalization()) ? options->max_solver_time() * 0.8
@@ -1017,6 +1582,20 @@ void Estimator::solveOptimization() {
 
   ceres::Solver::Summary summary;
   ceres::Solve(ceres_options, &problem, &summary);
+  lastOptimizationInitialCost = summary.initial_cost;
+  lastOptimizationFinalCost = summary.final_cost;
+  lastOptimizationTimeSeconds = summary.total_time_in_seconds;
+  lastOptimizationSuccessfulSteps = summary.num_successful_steps;
+  lastOptimizationUnsuccessfulSteps = summary.num_unsuccessful_steps;
+  lastOptimizationResidualBlocks = problem.NumResidualBlocks();
+  lastOptimizationResiduals = problem.NumResiduals();
+  lastOptimizationTermination = summary.termination_type;
+  if (!summary.IsSolutionUsable() || !std::isfinite(summary.final_cost) ||
+      summary.num_successful_steps == 0) {
+    VINS_ERROR << "Ceres rejected solution: " << summary.BriefReport();
+    return false;
+  }
+  return true;
 }
 
 void Estimator::processOldMarginalization() {
@@ -1109,7 +1688,7 @@ void Estimator::addFeatureResidualBlocks(
 
   for (auto &it_per_id : featureManager.feature) {
     it_per_id.used_num = it_per_id.feature_per_frame.size();
-    if (it_per_id.used_num < 4) continue;
+    if (it_per_id.used_num < kMinFeatureTrackFrames) continue;
 
     ++feature_index;
 
@@ -1195,16 +1774,19 @@ std::unordered_map<long, double *> Estimator::createAddrShift(bool is_old) {
   return addr_shift;
 }
 
-void Estimator::optimize() {
+bool Estimator::optimize() {
   prepareParameters();
-  solveOptimization();
+  if (!solveOptimization()) return false;
   updateEstimates();
-  if (frameCount < WINDOW_SIZE) return;
+  if (!validateEstimatorState("post optimization")) return false;
+  if (solver_flag == SolverState::NON_LINEAR) ++nonLinearUpdateCount;
+  if (frameCount < WINDOW_SIZE) return true;
   if (isNewMarginalization()) {
     processNewMarginalization();
   } else {
     processOldMarginalization();
   }
+  return true;
 }
 
 void Estimator::slideWindow() {
@@ -1222,6 +1804,7 @@ void Estimator::slideWindowNew() {
     return;
   }
   estimator_state[frameCount - 1] = estimator_state[frameCount];
+  rangeMeasurements[frameCount - 1] = rangeMeasurements[frameCount];
   if (options->hasImu()) {
     for (unsigned int i = 0; i < deltaTimeImuBuffer[frameCount].size(); i++) {
       const auto &imu = deltaTimeImuBuffer[frameCount][i];
@@ -1246,12 +1829,14 @@ void Estimator::slideWindowOld() {
   for (int i = 0; i < WINDOW_SIZE; i++) {
     estimator_state[i].timestamp = estimator_state[i + 1].timestamp;
     estimator_state[i].swap(estimator_state[i + 1]);
+    rangeMeasurements[i] = rangeMeasurements[i + 1];
     if (options->hasImu()) {
       std::swap(pre_integrations[i], pre_integrations[i + 1]);
       deltaTimeImuBuffer[i].swap(deltaTimeImuBuffer[i + 1]);
     }
   }
   estimator_state[WINDOW_SIZE] = estimator_state[WINDOW_SIZE - 1];
+  rangeMeasurements[WINDOW_SIZE] = rangeMeasurements[WINDOW_SIZE - 1];
   if (options->hasImu()) {
     pre_integrations[WINDOW_SIZE] = nullptr;
     pre_integrations[WINDOW_SIZE] = std::make_shared<IntegrationBase>(
@@ -1410,7 +1995,7 @@ void Estimator::outliersRejection(set<int> &removeIndex) {
     double err = 0;
     int errCnt = 0;
     it_per_id.used_num = it_per_id.feature_per_frame.size();
-    if (it_per_id.used_num < 4) continue;
+    if (it_per_id.used_num < kMinFeatureTrackFrames) continue;
     feature_index++;
     int imu_i = it_per_id.start_frame, imu_j = imu_i - 1;
     Vector3d pts_i = it_per_id.feature_per_frame[0].point;
@@ -1452,12 +2037,16 @@ void Estimator::outliersRejection(set<int> &removeIndex) {
       }
     }
     double ave_err = err / errCnt;
-    if (ave_err * FOCAL_LENGTH > 3) removeIndex.insert(it_per_id.feature_id);
+    if (ave_err * FOCAL_LENGTH > options->outlier_rejection_threshold_px)
+      removeIndex.insert(it_per_id.feature_id);
   }
 }
 
 void Estimator::fastPredictIMU(const IMUData &data) {
   std::lock_guard<std::mutex> lock(propagateMutex);
+  // inputIMU may have observed NON_LINEAR immediately before another thread
+  // reset the estimator.  Re-check after acquiring the shared reset lock.
+  if (solver_flag != SolverState::NON_LINEAR) return;
   double dt = data.timestamp - latestImuData.timestamp;
   if (dt > 1.0) {
     VINS_ERROR << "Abnormal IMU timestamp jump detected: " << dt;

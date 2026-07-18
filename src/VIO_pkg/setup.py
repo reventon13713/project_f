@@ -1,3 +1,5 @@
+from glob import glob
+from os.path import isfile
 from setuptools import find_packages, setup
 
 package_name = 'VIO_pkg'
@@ -10,6 +12,10 @@ setup(
         ('share/ament_index/resource_index/packages',
             ['resource/' + package_name]),
         ('share/' + package_name, ['package.xml']),
+        ('share/' + package_name + '/config',
+            [path for path in glob('config/*') if isfile(path)]),
+        ('share/' + package_name + '/launch',
+            [path for path in glob('launch/*') if isfile(path)]),
     ],
     install_requires=['setuptools'],
     zip_safe=True,
@@ -23,6 +29,15 @@ setup(
             'mission_manager = VIO_pkg.mission_manager:main',
             'vio_bridge = VIO_pkg.vio_bridge:main',
             'auto_mission_node = VIO_pkg.auto_mission_node:main',
+            'euroc_player = VIO_pkg.euroc_player:main',
+            'vio_camera_relay = VIO_pkg.vio_camera_relay:main',
+            'vio_feature_overlay = VIO_pkg.vio_feature_overlay:main',
+            'vio_preflight_test = VIO_pkg.vio_preflight_test:main',
+            'vio_px4_fault_test = VIO_pkg.vio_px4_fault_test:main',
+            'vio_bag_metrics = VIO_pkg.vio_bag_metrics:main',
+            'vio_init_window_metrics = VIO_pkg.vio_init_window_metrics:main',
+            'vio_frame_trace_compare = VIO_pkg.vio_frame_trace_compare:main',
+            'vio_reset_replayer = VIO_pkg.vio_reset_replayer:main',
         ],
     },
 )

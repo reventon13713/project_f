@@ -46,6 +46,19 @@ FeatureTracker::FeatureTracker() {
   hasPrediction = false;
 }
 
+void FeatureTracker::reset() {
+  prev_img.release(); cur_img.release(); imTrack.release(); mask.release();
+  n_pts.clear(); predict_pts.clear(); predict_pts_debug.clear();
+  prev_pts.clear(); cur_pts.clear(); cur_right_pts.clear();
+  prev_un_pts.clear(); cur_un_pts.clear(); cur_un_right_pts.clear();
+  pts_velocity.clear(); right_pts_velocity.clear();
+  ids.clear(); ids_right.clear(); track_cnt.clear();
+  cur_un_pts_map.clear(); prev_un_pts_map.clear();
+  cur_un_right_pts_map.clear(); prev_un_right_pts_map.clear();
+  prevLeftPtsMap.clear();
+  prev_time = 0.0; cur_time = 0.0; n_id = 0; hasPrediction = false;
+}
+
 void FeatureTracker::setOptions(std::shared_ptr<VINSOptions> options_) {
   options = options_;
 }
@@ -484,6 +497,7 @@ void FeatureTracker::rejectWithF() {
 }
 
 void FeatureTracker::readIntrinsicParameter(const vector<string> &calib_file) {
+  m_camera.clear();
   for (size_t i = 0; i < calib_file.size(); i++) {
     camodocal::CameraPtr camera =
         CameraFactory::instance()->generateCameraFromYamlFile(calib_file[i]);

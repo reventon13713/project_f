@@ -1,3 +1,11 @@
 build/
 install/
 log/
+
+# Experiment outputs (rosbags, metrics, and runtime logs)
+/artifacts/
+
+# Python bytecode and test caches
+__pycache__/
+*.py[cod]
+.pytest_cache/

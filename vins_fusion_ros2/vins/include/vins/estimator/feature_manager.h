@@ -73,6 +73,11 @@ class FeaturePerId {
   bool isSolveFailed() const { return solve_flag == SOLVED_FAIL; }
 };
 
+// Three observations provide two reprojection constraints for one inverse
+// depth. Admitting them reduces geometry gaps without the near-threshold pose
+// steps observed when two-frame tracks were used in optimization.
+constexpr int kMinFeatureTrackFrames = 3;
+
 class FeatureManager {
  public:
   FeatureManager();

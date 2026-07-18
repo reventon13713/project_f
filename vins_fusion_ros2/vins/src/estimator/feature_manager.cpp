@@ -28,7 +28,7 @@ int FeatureManager::getFeatureCount() {
   int cnt = 0;
   for (auto &it : feature) {
     it.used_num = it.feature_per_frame.size();
-    if (it.used_num >= 4) {
+    if (it.used_num >= kMinFeatureTrackFrames) {
       cnt++;
     }
   }
@@ -66,7 +66,8 @@ bool FeatureManager::addFeatureCheckParallax(
     } else if (it->feature_id == feature_id) {
       it->feature_per_frame.push_back(f_per_fra);
       last_track_num++;
-      if (it->feature_per_frame.size() >= 4) long_track_num++;
+      if (it->feature_per_frame.size() >= kMinFeatureTrackFrames)
+        long_track_num++;
     }
   }
   if (frame_count < 2 || last_track_num < 20 || long_track_num < 40 ||
@@ -113,7 +114,7 @@ void FeatureManager::setDepth(const VectorXd &x) {
   int feature_index = -1;
   for (auto &it_per_id : feature) {
     it_per_id.used_num = it_per_id.feature_per_frame.size();
-    if (it_per_id.used_num < 4) continue;
+    if (it_per_id.used_num < kMinFeatureTrackFrames) continue;
 
     it_per_id.estimated_depth = 1.0 / x(++feature_index);
     if (it_per_id.estimated_depth < 0) {
@@ -140,7 +141,7 @@ VectorXd FeatureManager::getDepthVector() {
   int feature_index = -1;
   for (auto &it_per_id : feature) {
     it_per_id.used_num = it_per_id.feature_per_frame.size();
-    if (it_per_id.used_num < 4) continue;
+    if (it_per_id.used_num < kMinFeatureTrackFrames) continue;
 #if 1
     dep_vec(++feature_index) = 1. / it_per_id.estimated_depth;
 #else
@@ -312,7 +313,7 @@ void FeatureManager::triangulate(int frameCnt, StateData states[],
       continue;
     }
     it_per_id.used_num = it_per_id.feature_per_frame.size();
-    if (it_per_id.used_num < 4) continue;
+    if (it_per_id.used_num < kMinFeatureTrackFrames) continue;
 
     int imu_i = it_per_id.start_frame, imu_j = imu_i - 1;
 

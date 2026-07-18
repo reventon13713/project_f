@@ -5,6 +5,7 @@
 
 #include <Eigen/Dense>
 #include <Eigen/Geometry>
+#include <cstdint>
 #include <mutex>
 #include <opencv2/opencv.hpp>
 
@@ -70,12 +71,19 @@ struct IMUData : SensorDataBase {
   Eigen::Quaterniond orientation = Eigen::Quaterniond::Identity();
 };
 
+struct RangeData : SensorDataBase {
+  double range = 0.0;
+  bool valid = false;
+};
+
 struct ImageData : SensorDataBase {
   EIGEN_MAKE_ALIGNED_OPERATOR_NEW
+  uint64_t sequence = 0;
   cv::Mat image0 = cv::Mat();
   cv::Mat image1 = cv::Mat();
   ImageData(const ImageData &other) {
     timestamp = other.timestamp;
+    sequence = other.sequence;
     image0 = other.image0.clone();
     image1 = other.image1.clone();
   }
@@ -83,6 +91,7 @@ struct ImageData : SensorDataBase {
   ImageData &operator=(const ImageData &other) {
     if (this != &other) {
       timestamp = other.timestamp;
+      sequence = other.sequence;
       image0 = other.image0.clone();
       image1 = other.image1.clone();
     }
@@ -91,6 +100,7 @@ struct ImageData : SensorDataBase {
 
   ImageData(ImageData &&other) noexcept {
     timestamp = other.timestamp;
+    sequence = other.sequence;
     image0 = std::move(other.image0);
     image1 = std::move(other.image1);
   }
@@ -98,6 +108,7 @@ struct ImageData : SensorDataBase {
   ImageData &operator=(ImageData &&other) noexcept {
     if (this != &other) {
       timestamp = other.timestamp;
+      sequence = other.sequence;
       image0 = std::move(other.image0);
       image1 = std::move(other.image1);
     }

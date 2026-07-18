@@ -19,6 +19,8 @@ find_package(tf2_ros REQUIRED)
 find_package(cv_bridge REQUIRED)
 find_package(image_transport REQUIRED)
 find_package(message_filters REQUIRED)
+find_package(sensor_msgs REQUIRED)
+find_package(std_srvs REQUIRED)
 
 
 include_directories(
@@ -27,7 +29,7 @@ include_directories(
 
 add_subdirectory(vins)
 add_executable(vins_fusion_ros2_node src/vins_estimator.cpp src/vins_estimator_node.cpp src/visualization.cpp)
-ament_target_dependencies(vins_fusion_ros2_node rclcpp rcpputils message_filters std_msgs visualization_msgs geometry_msgs nav_msgs tf2 tf2_ros cv_bridge image_transport)
+ament_target_dependencies(vins_fusion_ros2_node rclcpp rcpputils message_filters std_msgs std_srvs sensor_msgs visualization_msgs geometry_msgs nav_msgs tf2 tf2_ros cv_bridge image_transport)
 target_link_libraries(vins_fusion_ros2_node vins_lib) 
 
 # Install launch files

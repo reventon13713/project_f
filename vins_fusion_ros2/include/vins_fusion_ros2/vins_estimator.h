@@ -11,6 +11,11 @@
 #include <sensor_msgs/msg/image.hpp>
 #include <sensor_msgs/msg/imu.hpp>
 #include <sensor_msgs/msg/point_cloud.hpp>
+#include <sensor_msgs/msg/range.hpp>
+#include <std_msgs/msg/string.hpp>
+#include <std_srvs/srv/trigger.hpp>
+
+#include <cstdint>
 
 using sensor_msgs::msg::Image;
 using namespace message_filters;
@@ -48,6 +53,8 @@ class VinsEstimator : public rclcpp::Node {
   rclcpp::CallbackGroup::SharedPtr imu_callback_group_;
   rclcpp::CallbackGroup::SharedPtr image_callback_group_;
   rclcpp::CallbackGroup::SharedPtr feature_callback_group_;
+  rclcpp::CallbackGroup::SharedPtr range_callback_group_;
+  rclcpp::Service<std_srvs::srv::Trigger>::SharedPtr reset_service_;
   rclcpp::TimerBase::SharedPtr publish_timer_;
   std::shared_ptr<tf2_ros::TransformBroadcaster> tf_broadcaster_;
   //
@@ -65,6 +72,8 @@ class VinsEstimator : public rclcpp::Node {
 
   nav_msgs::msg::Path path;
   std::shared_ptr<VINSOptions> options;
+  uint64_t image_callback_sequence_ = 0;
+  int replay_skip_initial_images_remaining_ = 0;
 };
 
 #endif  // VINS_ESTIMATOR_H

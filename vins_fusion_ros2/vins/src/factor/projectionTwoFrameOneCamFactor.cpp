@@ -11,6 +11,7 @@
  *******************************************************/
 
 #include <vins/factor/projectionTwoFrameOneCamFactor.h>
+#include <vins/logger/logger.h>
 
 Eigen::Matrix2d ProjectionTwoFrameOneCamFactor::sqrt_info;
 double ProjectionTwoFrameOneCamFactor::sum_t;
@@ -59,6 +60,18 @@ bool ProjectionTwoFrameOneCamFactor::Evaluate(double const *const *parameters,
 
   double td = parameters[4][0];
 
+  if (!pts_i.allFinite() || !pts_j.allFinite() ||
+      !velocity_i.allFinite() || !velocity_j.allFinite() ||
+      !std::isfinite(td_i) || !std::isfinite(td_j) ||
+      !std::isfinite(td) || !std::isfinite(inv_dep_i)) {
+    VINS_ERROR << "Non-finite projection factor input: pts_i="
+               << pts_i.transpose() << ", pts_j=" << pts_j.transpose()
+               << ", velocity_i=" << velocity_i.transpose()
+               << ", velocity_j=" << velocity_j.transpose()
+               << ", td_i=" << td_i << ", td_j=" << td_j
+               << ", td=" << td << ", inv_depth=" << inv_dep_i;
+  }
+
   Eigen::Vector3d pts_i_td, pts_j_td;
   pts_i_td = pts_i - (td - td_i) * velocity_i;
   pts_j_td = pts_j - (td - td_j) * velocity_j;
@@ -69,6 +82,14 @@ bool ProjectionTwoFrameOneCamFactor::Evaluate(double const *const *parameters,
   Eigen::Vector3d pts_camera_j = qic.inverse() * (pts_imu_j - tic);
   Eigen::Map<Eigen::Vector2d> residual(residuals);
 
+  if (!pts_i_td.allFinite() || !pts_j_td.allFinite() ||
+      !pts_camera_j.allFinite() || !std::isfinite(pts_camera_j.z())) {
+    VINS_ERROR << "Non-finite projection geometry: pts_i_td="
+               << pts_i_td.transpose() << ", pts_j_td="
+               << pts_j_td.transpose() << ", pts_camera_j="
+               << pts_camera_j.transpose();
+  }
+
 #ifdef UNIT_SPHERE_ERROR
   residual = tangent_base * (pts_camera_j.normalized() - pts_j_td.normalized());
 #else
@@ -77,6 +98,13 @@ bool ProjectionTwoFrameOneCamFactor::Evaluate(double const *const *parameters,
 #endif
 
   residual = sqrt_info * residual;
+  if (!residual.allFinite()) {
+    VINS_ERROR << "Non-finite projection residual: residual="
+               << residual.transpose() << ", pts_j_td="
+               << pts_j_td.transpose() << ", pts_camera_j="
+               << pts_camera_j.transpose() << ", depth_j="
+               << pts_camera_j.z() << ", sqrt_info=" << sqrt_info;
+  }
 
   if (jacobians) {
     Eigen::Matrix3d Ri = Qi.toRotationMatrix();

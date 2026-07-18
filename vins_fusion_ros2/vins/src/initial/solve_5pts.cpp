@@ -11,6 +11,7 @@
  *******************************************************/
 
 #include <vins/initial/solve_5pts.h>
+#include <vins/logger/logger.h>
 
 namespace cv {
 void decomposeEssentialMat(InputArray _E, OutputArray _R1, OutputArray _R2,
@@ -199,18 +200,41 @@ bool MotionEstimator::solveRelativeRT(
     const vector<pair<Vector3d, Vector3d>> &corres, Matrix3d &Rotation,
     Vector3d &Translation) {
   if (corres.size() >= 15) {
+    const uint64_t rng_state_before = cv::theRNG().state;
+    uint64_t correspondence_fingerprint = 1469598103934665603ULL;
+    for (const auto &corr : corres) {
+      for (int side = 0; side < 2; ++side) {
+        const Vector3d &point = side == 0 ? corr.first : corr.second;
+        for (int axis = 0; axis < 3; ++axis) {
+          const auto *bytes = reinterpret_cast<const uint8_t *>(&point(axis));
+          for (size_t i = 0; i < sizeof(double); ++i) {
+            correspondence_fingerprint ^= bytes[i];
+            correspondence_fingerprint *= 1099511628211ULL;
+          }
+        }
+      }
+    }
     vector<cv::Point2f> ll, rr;
     for (int i = 0; i < int(corres.size()); i++) {
       ll.push_back(cv::Point2f(corres[i].first(0), corres[i].first(1)));
       rr.push_back(cv::Point2f(corres[i].second(0), corres[i].second(1)));
     }
     cv::Mat mask;
-    cv::Mat E =
-        cv::findFundamentalMat(ll, rr, cv::FM_RANSAC, 0.3 / 460, 0.99, mask);
+    // Normalized points come from the 277.19 px Gazebo pinhole camera.  A
+    // one-pixel inlier threshold is appropriate here; the inherited EuRoC
+    // 0.3/460 threshold rejected good synthetic tracks and produced unstable
+    // essential-matrix translations from tiny survivor sets.
+    cv::Mat E = cv::findFundamentalMat(ll, rr, cv::FM_RANSAC,
+                                       1.0 / 277.191356, 0.99, mask);
     cv::Mat cameraMatrix =
         (cv::Mat_<double>(3, 3) << 1, 0, 0, 0, 1, 0, 0, 0, 1);
     cv::Mat rot, trans;
     int inlier_cnt = cv::recoverPose(E, ll, rr, cameraMatrix, rot, trans, mask);
+    VINS_INFO << "Relative pose RANSAC trace: correspondences="
+              << corres.size() << ", fingerprint=0x" << std::hex
+              << correspondence_fingerprint << ", rng_before=0x"
+              << rng_state_before << ", rng_after=0x" << cv::theRNG().state
+              << std::dec << ", inliers=" << inlier_cnt;
     // cout << "inlier_cnt " << inlier_cnt << endl;
 
     Eigen::Matrix3d R;

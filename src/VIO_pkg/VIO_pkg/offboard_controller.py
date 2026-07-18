@@ -2,7 +2,7 @@
 """
 offboard_controller.py
 Phase 1: PX4 Offboard 기본 비행 제어
-  상태 머신: INIT → ARMING → TAKEOFF → HOVER → LAND → DONE
+  상태 머신: INIT → ARMING → TAKEOFF → MISSION → LAND → DONE
 
 실행 방법 (컨테이너 터미널 3개 필요):
   [T1] MicroXRCE-DDS Agent:  MicroXRCEAgent udp4 -p 8888
@@ -80,6 +80,8 @@ class OffboardController(Node):
 
         self.mission_target  = None
         self.mission_completed = False
+        self.land_command_sent = False
+        self.takeoff_started_s = None
 
         # ── 타이머 ───────────────────────────────────────────────────────────
         period = 1.0 / self.CONTROL_FREQ_HZ
@@ -198,7 +200,8 @@ class OffboardController(Node):
             self._pub_setpoint(z_ned=target_z_ned)
             self._engage_offboard()
             self._arm()
-            if self.vehicle_status.arming_state == VehicleStatus.ARMING_STATE_ARMED:
+            if (self.vehicle_status.arming_state == VehicleStatus.ARMING_STATE_ARMED and
+                    self.vehicle_status.nav_state == VehicleStatus.NAVIGATION_STATE_OFFBOARD):
                 self._log_state('TAKEOFF')
 
         # ── TAKEOFF: 목표 고도까지 상승 ────────────────────────────────────
@@ -230,7 +233,9 @@ class OffboardController(Node):
 
         # ── LAND: 착륙 명령 ─────────────────────────────────────────────────
         elif self.state == 'LAND':
-            self._land()
+            if not self.land_command_sent:
+                self._land()
+                self.land_command_sent = True
             if self.vehicle_status.arming_state == VehicleStatus.ARMING_STATE_STANDBY:
                 self._log_state('DONE')
 

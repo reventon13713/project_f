@@ -13,6 +13,10 @@
 #include <vins/initial/initial_sfm.h>
 #include <vins/logger/logger.h>
 
+#include <algorithm>
+#include <cmath>
+#include <limits>
+
 GlobalSFM::GlobalSFM() {}
 
 void GlobalSFM::triangulatePoint(Eigen::Matrix<double, 3, 4> &Pose0,
@@ -52,8 +56,13 @@ bool GlobalSFM::solveFrameByPnP(Matrix3d &R_initial, Vector3d &P_initial, int i,
     }
   }
   if (int(pts_2_vector.size()) < 15) {
-    VINS_WARN << ("unstable features tracking, please slowly move you device!");
-    if (int(pts_2_vector.size()) < 10) return false;
+    VINS_WARN << "SFM PnP has few tracked points: frame=" << i
+              << ", points=" << pts_2_vector.size();
+    if (int(pts_2_vector.size()) < 10) {
+      VINS_WARN << "SFM PnP rejected: frame=" << i
+                << ", reason=insufficient_points";
+      return false;
+    }
   }
   cv::Mat r, rvec, t, D, tmp_r;
   cv::eigen2cv(R_initial, tmp_r);
@@ -63,6 +72,9 @@ bool GlobalSFM::solveFrameByPnP(Matrix3d &R_initial, Vector3d &P_initial, int i,
   bool pnp_succ;
   pnp_succ = cv::solvePnP(pts_3_vector, pts_2_vector, K, D, rvec, t, 1);
   if (!pnp_succ) {
+    VINS_WARN << "SFM PnP rejected: frame=" << i
+              << ", points=" << pts_2_vector.size()
+              << ", reason=solvePnP_failed";
     return false;
   }
   cv::Rodrigues(rvec, r);
@@ -122,6 +134,8 @@ bool GlobalSFM::construct(int frame_num, std::vector<Quaterniond> &q,
   q.resize(frame_num);
   T.resize(frame_num);
   feature_num = sfm_f.size();
+  VINS_INFO << "SFM construct begin: frames=" << frame_num
+            << ", reference=" << l << ", features=" << feature_num;
   q[l].w() = 1;
   q[l].x() = 0;
   q[l].y() = 0;
@@ -157,7 +171,10 @@ bool GlobalSFM::construct(int frame_num, std::vector<Quaterniond> &q,
     if (i > l) {
       Matrix3d R_initial = c_Rotation[i - 1];
       Vector3d P_initial = c_Translation[i - 1];
-      if (!solveFrameByPnP(R_initial, P_initial, i, sfm_f)) return false;
+      if (!solveFrameByPnP(R_initial, P_initial, i, sfm_f)) {
+        VINS_WARN << "SFM construct failed: stage=forward_pnp, frame=" << i;
+        return false;
+      }
       c_Rotation[i] = R_initial;
       c_Translation[i] = P_initial;
       c_Quat[i] = c_Rotation[i];
@@ -177,7 +194,10 @@ bool GlobalSFM::construct(int frame_num, std::vector<Quaterniond> &q,
     // solve pnp
     Matrix3d R_initial = c_Rotation[i + 1];
     Vector3d P_initial = c_Translation[i + 1];
-    if (!solveFrameByPnP(R_initial, P_initial, i, sfm_f)) return false;
+    if (!solveFrameByPnP(R_initial, P_initial, i, sfm_f)) {
+      VINS_WARN << "SFM construct failed: stage=backward_pnp, frame=" << i;
+      return false;
+    }
     c_Rotation[i] = R_initial;
     c_Translation[i] = P_initial;
     c_Quat[i] = c_Rotation[i];
@@ -205,6 +225,46 @@ bool GlobalSFM::construct(int frame_num, std::vector<Quaterniond> &q,
       // "  << j << "  " << point_3d.transpose() << endl;
     }
   }
+
+  size_t triangulated_features = 0;
+  size_t finite_features = 0;
+  size_t observations = 0;
+  size_t nonfinite_observations = 0;
+  size_t nonpositive_depth_observations = 0;
+  double min_positive_depth = std::numeric_limits<double>::infinity();
+  double max_positive_depth = 0.0;
+  for (const auto &feature : sfm_f) {
+    if (!feature.state) continue;
+    triangulated_features++;
+    const Vector3d point(feature.position[0], feature.position[1],
+                         feature.position[2]);
+    if (point.allFinite()) finite_features++;
+    for (const auto &observation : feature.observation) {
+      observations++;
+      const int frame = observation.first;
+      const Vector3d camera_point =
+          Pose[frame].block<3, 3>(0, 0) * point +
+          Pose[frame].block<3, 1>(0, 3);
+      if (!point.allFinite() || !camera_point.allFinite()) {
+        nonfinite_observations++;
+      } else if (camera_point.z() <= 0.0) {
+        nonpositive_depth_observations++;
+      } else {
+        min_positive_depth = std::min(min_positive_depth, camera_point.z());
+        max_positive_depth = std::max(max_positive_depth, camera_point.z());
+      }
+    }
+  }
+  VINS_INFO << "SFM geometry diagnostics: triangulated="
+            << triangulated_features << "/" << feature_num
+            << ", finite=" << finite_features
+            << ", observations=" << observations
+            << ", nonfinite_observations=" << nonfinite_observations
+            << ", nonpositive_depth_observations="
+            << nonpositive_depth_observations
+            << ", positive_depth_min="
+            << (std::isfinite(min_positive_depth) ? min_positive_depth : -1.0)
+            << ", positive_depth_max=" << max_positive_depth;
 
   // full BA
   ceres::Problem problem;
@@ -248,12 +308,65 @@ bool GlobalSFM::construct(int frame_num, std::vector<Quaterniond> &q,
   options.max_solver_time_in_seconds = 0.2;
   ceres::Solver::Summary summary;
   ceres::Solve(options, &problem, &summary);
-  // std::cout << summary.BriefReport() << "\n";
-  if (summary.termination_type == ceres::CONVERGENCE ||
-      summary.final_cost < 5e-03) {
+  VINS_INFO << "SFM BA summary: " << summary.BriefReport()
+            << ", usable=" << summary.IsSolutionUsable()
+            << ", successful_steps=" << summary.num_successful_steps
+            << ", unsuccessful_steps=" << summary.num_unsuccessful_steps
+            << ", initial_cost=" << summary.initial_cost
+            << ", final_cost=" << summary.final_cost;
+  if (summary.IsSolutionUsable() && std::isfinite(summary.final_cost) &&
+      summary.num_successful_steps > 0 && summary.num_unsuccessful_steps <= 2 &&
+      (summary.termination_type == ceres::CONVERGENCE ||
+       summary.final_cost < 5e-03)) {
     // cout << "vision only BA converge" << endl;
   } else {
-    // cout << "vision only BA not converge " << endl;
+    VINS_WARN << "SFM construct failed: stage=bundle_adjustment";
+    return false;
+  }
+
+  size_t post_ba_observations = 0;
+  size_t post_ba_nonfinite_observations = 0;
+  size_t post_ba_nonpositive_depth_observations = 0;
+  for (const auto &feature : sfm_f) {
+    if (!feature.state) continue;
+    const Vector3d point(feature.position[0], feature.position[1],
+                         feature.position[2]);
+    for (const auto &observation : feature.observation) {
+      ++post_ba_observations;
+      const int frame = observation.first;
+      const Quaterniond camera_rotation(
+          c_rotation[frame][0], c_rotation[frame][1], c_rotation[frame][2],
+          c_rotation[frame][3]);
+      const Vector3d camera_translation(
+          c_translation[frame][0], c_translation[frame][1],
+          c_translation[frame][2]);
+      const Vector3d camera_point =
+          camera_rotation.toRotationMatrix() * point + camera_translation;
+      if (!point.allFinite() || !camera_point.allFinite()) {
+        ++post_ba_nonfinite_observations;
+      } else if (camera_point.z() <= 0.0) {
+        ++post_ba_nonpositive_depth_observations;
+      }
+    }
+  }
+  const double post_ba_nonpositive_depth_ratio =
+      post_ba_observations > 0
+          ? static_cast<double>(post_ba_nonpositive_depth_observations) /
+                static_cast<double>(post_ba_observations)
+          : 1.0;
+  VINS_INFO << "SFM post-BA geometry: observations=" << post_ba_observations
+            << ", nonfinite_observations="
+            << post_ba_nonfinite_observations
+            << ", nonpositive_depth_observations="
+            << post_ba_nonpositive_depth_observations
+            << ", nonpositive_depth_ratio="
+            << post_ba_nonpositive_depth_ratio;
+  constexpr double kMaxNonpositiveDepthRatio = 0.05;
+  if (post_ba_observations == 0 || post_ba_nonfinite_observations > 0 ||
+      post_ba_nonpositive_depth_ratio > kMaxNonpositiveDepthRatio) {
+    VINS_WARN << "SFM construct failed: stage=post_ba_cheirality, ratio="
+              << post_ba_nonpositive_depth_ratio
+              << ", limit=" << kMaxNonpositiveDepthRatio;
     return false;
   }
   for (int i = 0; i < frame_num; i++) {

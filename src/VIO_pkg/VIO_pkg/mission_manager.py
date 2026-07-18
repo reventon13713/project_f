@@ -77,6 +77,12 @@ class MissionManager(Node):
     def timer_callback(self):
         if self.current_pos is None:
             return
+
+        # Do not advance the mission setpoint on the ground while the
+        # offboard controller is still performing its takeoff phase.
+        # All mission waypoints use z=-5 m in PX4 NED coordinates.
+        if not self.mission_completed and self.current_pos[2] > -4.5:
+            return
             
         if self.mission_completed:
             msg_comp = Bool()

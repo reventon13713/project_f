@@ -1,6 +1,32 @@
 #include <cv_bridge/cv_bridge.h>
 #include <vins_fusion_ros2/vins_estimator.h>
 
+#include <cstdint>
+
+namespace {
+uint64_t imageFingerprint(const cv::Mat& image) {
+  // FNV-1a is only a diagnostic fingerprint.  Include shape/type so equal
+  // byte streams with different image layouts cannot compare equal here.
+  uint64_t hash = 1469598103934665603ULL;
+  const auto mix = [&hash](uint8_t value) {
+    hash ^= value;
+    hash *= 1099511628211ULL;
+  };
+  for (int shift = 0; shift < 32; shift += 8) {
+    mix(static_cast<uint8_t>((image.rows >> shift) & 0xff));
+    mix(static_cast<uint8_t>((image.cols >> shift) & 0xff));
+    mix(static_cast<uint8_t>((image.type() >> shift) & 0xff));
+  }
+  if (image.empty()) return hash;
+  const size_t row_bytes = image.cols * image.elemSize();
+  for (int row = 0; row < image.rows; ++row) {
+    const uint8_t* data = image.ptr<uint8_t>(row);
+    for (size_t col = 0; col < row_bytes; ++col) mix(data[col]);
+  }
+  return hash;
+}
+}  // namespace
+
 VinsEstimator::VinsEstimator() : rclcpp::Node("vins_estimator") {
   options = std::make_shared<VINSOptions>();
   estimator_ = std::make_shared<Estimator>();
@@ -22,6 +48,11 @@ void VinsEstimator::initializeParamters() {
   camera_frame_id = readParam<std::string>(this, "camera_frame_id", "camera");
   options->readParameters(config_file);
   estimator_->initialize(options);
+  const int input_downsample_phase =
+      this->declare_parameter<int>("input_downsample_phase", 0);
+  estimator_->setInputDownsamplePhase(input_downsample_phase);
+  replay_skip_initial_images_remaining_ = static_cast<int>(std::max<int64_t>(
+      0, this->declare_parameter<int>("replay_skip_initial_images", 0)));
 }
 void VinsEstimator::initializeSubscribers() {
   imu_callback_group_ =
@@ -29,6 +60,8 @@ void VinsEstimator::initializeSubscribers() {
   image_callback_group_ =
       this->create_callback_group(rclcpp::CallbackGroupType::MutuallyExclusive);
   feature_callback_group_ =
+      this->create_callback_group(rclcpp::CallbackGroupType::MutuallyExclusive);
+  range_callback_group_ =
       this->create_callback_group(rclcpp::CallbackGroupType::MutuallyExclusive);
 
   rclcpp::SubscriptionOptions sub_opt_imu;
@@ -39,6 +72,27 @@ void VinsEstimator::initializeSubscribers() {
 
   rclcpp::SubscriptionOptions sub_opt_feature;
   sub_opt_feature.callback_group = feature_callback_group_;
+  rclcpp::SubscriptionOptions sub_opt_range;
+  sub_opt_range.callback_group = range_callback_group_;
+
+  // Offline replay can consume the recorded reset marker in the same
+  // mutually-exclusive callback group as images.  This preserves the reset
+  // boundary relative to camera frames; routing it through a separate helper
+  // node and service was observed to execute three frames late at 2x replay.
+  const bool replay_reset_events =
+      this->declare_parameter<bool>("replay_reset_events", false);
+  if (replay_reset_events) {
+    auto reset_event = this->create_subscription<std_msgs::msg::String>(
+        "/vio/preflight_event", rclcpp::QoS(rclcpp::KeepLast(10)),
+        [this](const std_msgs::msg::String::SharedPtr msg) {
+          if (msg->data != "VINS_RESET_REQUEST") return;
+          estimator_->restart();
+          path.poses.clear();
+          VINS_INFO << "Applied recorded VINS reset event in image callback group.";
+        },
+        sub_opt_image);
+    subs_.push_back(reset_event);
+  }
 
   if (options->hasImu()) {
     auto imu = this->create_subscription<sensor_msgs::msg::Imu>(
@@ -49,6 +103,23 @@ void VinsEstimator::initializeSubscribers() {
         },
         sub_opt_imu);
     subs_.push_back(imu);
+  }
+
+  if (options->hasRange()) {
+    auto range = this->create_subscription<sensor_msgs::msg::Range>(
+        options->range_topic, rclcpp::SensorDataQoS(),
+        [this](const sensor_msgs::msg::Range::SharedPtr msg) {
+          RangeData data;
+          data.timestamp = fromMsg(msg->header.stamp);
+          data.range = msg->range;
+          data.valid = std::isfinite(data.range) &&
+                       data.range >= msg->min_range &&
+                       data.range >= options->range_min_valid &&
+                       data.range <= msg->max_range;
+          estimator_->inputRange(data);
+        },
+        sub_opt_range);
+    subs_.push_back(range);
   }
 
   if (options->isUsingStereo()) {
@@ -70,9 +141,25 @@ void VinsEstimator::initializeSubscribers() {
     auto sub_img0 = this->create_subscription<sensor_msgs::msg::Image>(
         options->imageTopic(), rclcpp::QoS(rclcpp::KeepLast(100)),
         [this](const sensor_msgs::msg::Image::SharedPtr msg) {
+          if (replay_skip_initial_images_remaining_ > 0) {
+            --replay_skip_initial_images_remaining_;
+            VINS_INFO << "Replay diagnostic skipped initial camera image: "
+                      << "timestamp=" << std::fixed << std::setprecision(9)
+                      << fromMsg(msg->header.stamp)
+                      << ", remaining="
+                      << replay_skip_initial_images_remaining_;
+            return;
+          }
           ImageData image;
           image.image0 = fromMsg(*msg);
           image.timestamp = fromMsg(msg->header.stamp);
+          image.sequence = ++image_callback_sequence_;
+          VINS_INFO << "Camera callback trace: sequence=" << image.sequence
+                    << ", timestamp=" << std::fixed << std::setprecision(9)
+                    << image.timestamp << ", fingerprint=0x" << std::hex
+                    << imageFingerprint(image.image0) << std::dec
+                    << ", size=" << image.image0.cols << "x"
+                    << image.image0.rows << ", encoding=" << msg->encoding;
           estimator_->inputImage(image);
         },
         sub_opt_image);
@@ -86,6 +173,16 @@ void VinsEstimator::initializeSubscribers() {
       },
       sub_opt_feature);
   subs_.push_back(sub_feature);
+
+  reset_service_ = this->create_service<std_srvs::srv::Trigger>(
+      "reset",
+      [this](const std::shared_ptr<std_srvs::srv::Trigger::Request>,
+             std::shared_ptr<std_srvs::srv::Trigger::Response> response) {
+        estimator_->restart();
+        path.poses.clear();
+        response->success = true;
+        response->message = "VINS estimator and sensor buffers reset";
+      });
 
   publish_timer_ =
       this->create_wall_timer(std::chrono::milliseconds(20),
@@ -115,6 +212,13 @@ void VinsEstimator::stereoCallback(
   image.image0 = fromMsg(*img0);
   image.image1 = fromMsg(*img1);
   image.timestamp = fromMsg(img0->header.stamp);
+  image.sequence = ++image_callback_sequence_;
+  VINS_INFO << "Camera callback trace: sequence=" << image.sequence
+            << ", timestamp=" << std::fixed << std::setprecision(9)
+            << image.timestamp << ", fingerprint=0x" << std::hex
+            << imageFingerprint(image.image0) << std::dec
+            << ", size=" << image.image0.cols << "x" << image.image0.rows
+            << ", encoding=" << img0->encoding;
   estimator_->inputImage(image);
 }
 

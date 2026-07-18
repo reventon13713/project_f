@@ -20,6 +20,7 @@
 #include <vins/factor/projectionOneFrameTwoCamFactor.h>
 #include <vins/factor/projectionTwoFrameOneCamFactor.h>
 #include <vins/factor/projectionTwoFrameTwoCamFactor.h>
+#include <vins/factor/range_factor.h>
 #include <vins/featureTracker/feature_tracker.h>
 #include <vins/initial/initial_alignment.h>
 #include <vins/initial/initial_ex_rotation.h>
@@ -31,6 +32,7 @@
 
 #include <Eigen/Dense>
 #include <Eigen/Geometry>
+#include <atomic>
 #include <condition_variable>
 #include <mutex>
 #include <opencv2/core/eigen.hpp>
@@ -47,12 +49,15 @@ class Estimator {
   void initialize(std::shared_ptr<VINSOptions> options_);
   // interface
   void inputIMU(const IMUData &imu);
+  void inputRange(const RangeData &range);
   void inputFeature(Timestamp timestamp, const FeatureFrame &featureFrame);
   void inputImage(const ImageData &image);
   //
   void processMeasurements();
   //
   void resetState();
+  void restart();
+  void setInputDownsamplePhase(int phase);
   void setFirstPose(const Eigen::Vector3d &position,
                     const Eigen::Matrix3d &rotation);
 
@@ -72,6 +77,7 @@ class Estimator {
   bool getkeyframePose(PoseData &data);
 
  private:
+  void resetStateLocked();
   void initializeCamerasFromOptions();
   void processIMU(const IMUData &data, double deltaTime);
   void updateStateWithIMU(const IMUData &data, double deltaTime);
@@ -92,6 +98,7 @@ class Estimator {
   // internal
   bool initialStructure();
   bool checkIMUExcitation();
+  void logInitializationDiagnostics(Timestamp timestamp) const;
   std::vector<SFMFeature> buildSFMFeatures();
   bool solvePoseWithPnP(const std::vector<Quaterniond> &rotations,
                         const std::vector<Vector3d> &positions,
@@ -102,7 +109,9 @@ class Estimator {
   void slideWindow();
   void slideWindowNew();
   void slideWindowOld();
-  void optimize();
+  bool optimize();
+  bool validateEstimatorState(const char *context) const;
+  bool validateInitializationHealth() const;
   void prepareParameters();
   void updateEstimates();
   bool failureDetection();
@@ -124,7 +133,8 @@ class Estimator {
   void AddMarginalizationFactor(ceres::Problem &problem);
   void AddIMUFactors(ceres::Problem &problem);
   void AddFeatureFactors(ceres::Problem &problem);
-  void solveOptimization();
+  bool solveOptimization();
+  void AddRangeFactors(ceres::Problem &problem);
 
   void processOldMarginalization();
   void processNewMarginalization();
@@ -149,13 +159,29 @@ class Estimator {
   std::thread processThread;
   std::mutex processingMutex;
   std::mutex featureBufferMutex;
+  std::mutex featureTrackerMutex;
   std::condition_variable featureCondition;
   std::mutex propagateMutex;
   std::mutex imu_mutex;
   std::condition_variable imuCondition;
   //
   std::queue<IMUData> imuBuffer;
+  std::queue<RangeData> rangeBuffer;
+  std::mutex rangeMutex;
   queue<TimestampedFeatureFrame> featureBuffer;
+  RangeData rangeMeasurements[WINDOW_SIZE + 1];
+  int nonLinearUpdateCount = 0;
+  bool rangeFactorActivationLogged = false;
+  bool rangeGroundInitialized = false;
+  double rangeGroundZ = 0.0;
+  double lastOptimizationInitialCost = 0.0;
+  double lastOptimizationFinalCost = 0.0;
+  double lastOptimizationTimeSeconds = 0.0;
+  int lastOptimizationSuccessfulSteps = 0;
+  int lastOptimizationUnsuccessfulSteps = 0;
+  int lastOptimizationResidualBlocks = 0;
+  int lastOptimizationResiduals = 0;
+  ceres::TerminationType lastOptimizationTermination = ceres::FAILURE;
 
   Timestamp previousTimestamp = -1;
   Timestamp currentTimestamp = 0;
@@ -177,7 +203,8 @@ class Estimator {
   std::vector<IMUData> deltaTimeImuBuffer[(WINDOW_SIZE + 1)];
 
   // 计数变量
-  int inputImageCount = 0;
+  std::atomic<int> inputImageCount{0};
+  int inputDownsamplePhase = 0;
   int frameCount = 0;
   int backCount = 0;
   int frontCount = 0;

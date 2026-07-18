@@ -4,8 +4,8 @@
 imu: 1         
 num_of_cam: 1  
 
-imu_topic: "/imu/data"
-image0_topic: "/camera/image_raw"
+imu_topic: "/vio/imu"
+image0_topic: "/vio/camera/vins_image_raw"
 output_path: "/tmp/vins_output/"
 
 cam0_calib: "cam_pinhole.yaml"
@@ -13,17 +13,17 @@ image_width: 320
 image_height: 240
    
 # Extrinsic parameter between IMU and Camera.
-estimate_extrinsic: 1   # We don't have perfect extrinsics, optimize it
+estimate_extrinsic: 2   # Initialize camera-to-IMU rotation from a controlled yaw sweep.
 
 # Initial guess for extrinsics
 body_T_cam0: !!opencv-matrix
    rows: 4
    cols: 4
    dt: d
-   data: [1, 0, 0, 0,
-          0, 1, 0, 0,
-          0, 0, 1, 0,
-          0, 0, 0, 1]
+   data: [ 0,  0,  1, -0.158979,
+          -1,  0,  0, -0.044050,
+           0, -1,  0,  0.025074,
+           0,  0,  0,  1.0]
 
 multiple_thread: 1
 max_cnt: 150            
@@ -42,7 +42,7 @@ acc_w: 0.001
 gyr_w: 0.0001       
 g_norm: 9.81007     
 
-estimate_td: 0                      
+estimate_td: 1                      # Refine residual Gazebo camera ↔ PX4 IMU delay.
 td: 0.0                             
 load_previous_pose_graph: 0        
 pose_graph_save_path: "/tmp/pose_graph/" 

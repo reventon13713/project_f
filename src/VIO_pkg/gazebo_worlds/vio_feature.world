@@ -1,0 +1,75 @@
+<?xml version="1.0"?>
+<sdf version="1.6">
+  <!-- PX4 Gazebo Classic sitl_run.sh spawns the vehicle into the world named
+       "default".  Keep that contract even though this is a custom scene. -->
+  <world name="default">
+    <include><uri>model://sun</uri></include>
+    <include><uri>model://ground_plane</uri></include>
+    <include><uri>model://asphalt_plane</uri></include>
+    <physics name="default_physics" type="ode">
+      <gravity>0 0 -9.8066</gravity>
+      <max_step_size>0.004</max_step_size>
+      <real_time_factor>1</real_time_factor>
+      <real_time_update_rate>250</real_time_update_rate>
+    </physics>
+
+    <!-- Textured walls surround the safe flight volume.  The stock empty
+         world has almost no corner features for a forward monocular camera. -->
+    <model name="east_feature_wall"><static>true</static><pose>8 0 2.5 0 0 0</pose><link name="link">
+      <collision name="c"><geometry><box><size>0.2 16 5</size></box></geometry></collision>
+      <visual name="v"><geometry><box><size>0.2 16 5</size></box></geometry><material><script><uri>file://media/materials/scripts/gazebo.material</uri><name>Gazebo/Bricks</name></script></material></visual>
+    </link></model>
+    <model name="west_feature_wall"><static>true</static><pose>-8 0 2.5 0 0 0</pose><link name="link">
+      <collision name="c"><geometry><box><size>0.2 16 5</size></box></geometry></collision>
+      <visual name="v"><geometry><box><size>0.2 16 5</size></box></geometry><material><script><uri>file://media/materials/scripts/gazebo.material</uri><name>Gazebo/Residential</name></script></material></visual>
+    </link></model>
+    <model name="north_feature_wall"><static>true</static><pose>0 8 2.5 0 0 0</pose><link name="link">
+      <collision name="c"><geometry><box><size>16 0.2 5</size></box></geometry></collision>
+      <visual name="v"><geometry><box><size>16 0.2 5</size></box></geometry><material><script><uri>file://media/materials/scripts/gazebo.material</uri><name>Gazebo/Wood</name></script></material></visual>
+    </link></model>
+    <model name="south_feature_wall"><static>true</static><pose>0 -8 2.5 0 0 0</pose><link name="link">
+      <collision name="c"><geometry><box><size>16 0.2 5</size></box></geometry></collision>
+      <visual name="v"><geometry><box><size>16 0.2 5</size></box></geometry><material><script><uri>file://media/materials/scripts/gazebo.material</uri><name>Gazebo/BuildingFrame</name></script></material></visual>
+    </link></model>
+    <!-- Non-coplanar landmarks at several depths prevent planar-wall
+         degeneracy in the monocular five-point initialization. -->
+    <model name="feature_column_near_left"><static>true</static><pose>3 2 1.5 0 0 0</pose><link name="link">
+      <collision name="c"><geometry><box><size>0.8 0.8 3</size></box></geometry></collision>
+      <visual name="v"><geometry><box><size>0.8 0.8 3</size></box></geometry><material><script><uri>file://media/materials/scripts/gazebo.material</uri><name>Gazebo/WoodPallet</name></script></material></visual>
+    </link></model>
+    <model name="feature_column_near_right"><static>true</static><pose>4 -2 1.2 0 0 0</pose><link name="link">
+      <collision name="c"><geometry><box><size>1.0 1.0 2.4</size></box></geometry></collision>
+      <visual name="v"><geometry><box><size>1.0 1.0 2.4</size></box></geometry><material><script><uri>file://media/materials/scripts/gazebo.material</uri><name>Gazebo/Residential</name></script></material></visual>
+    </link></model>
+    <model name="feature_block_mid"><static>true</static><pose>5 0 0.75 0 0 0</pose><link name="link">
+      <collision name="c"><geometry><box><size>1.2 1.2 1.5</size></box></geometry></collision>
+      <visual name="v"><geometry><box><size>1.2 1.2 1.5</size></box></geometry><material><script><uri>file://media/materials/scripts/gazebo.material</uri><name>Gazebo/Bricks</name></script></material></visual>
+    </link></model>
+    <!-- High-contrast fiducial-like blocks on the wall currently seen during
+         hover.  The stock Wood texture is nearly uniform at 320x240 and led
+         to long-horizon monocular track degeneracy.  These boxes provide
+         corners at multiple depths/heights without relying on a repeating
+         bitmap texture. -->
+    <model name="north_marker_1"><static>true</static><pose>-5 7.72 1.0 0 0 0</pose><link name="link"><visual name="v"><geometry><box><size>0.55 0.22 0.55</size></box></geometry><material><ambient>0.02 0.02 0.02 1</ambient><diffuse>0.02 0.02 0.02 1</diffuse></material></visual><collision name="c"><geometry><box><size>0.55 0.22 0.55</size></box></geometry></collision></link></model>
+    <model name="north_marker_2"><static>true</static><pose>-3 7.72 3.4 0 0 0</pose><link name="link"><visual name="v"><geometry><box><size>0.70 0.22 0.70</size></box></geometry><material><ambient>1 1 1 1</ambient><diffuse>1 1 1 1</diffuse></material></visual><collision name="c"><geometry><box><size>0.70 0.22 0.70</size></box></geometry></collision></link></model>
+    <model name="north_marker_3"><static>true</static><pose>-1 7.72 2.0 0 0 0</pose><link name="link"><visual name="v"><geometry><box><size>0.45 0.22 0.45</size></box></geometry><material><ambient>0.02 0.02 0.02 1</ambient><diffuse>0.02 0.02 0.02 1</diffuse></material></visual><collision name="c"><geometry><box><size>0.45 0.22 0.45</size></box></geometry></collision></link></model>
+    <model name="north_marker_4"><static>true</static><pose>1 7.72 3.7 0 0 0</pose><link name="link"><visual name="v"><geometry><box><size>0.80 0.22 0.80</size></box></geometry><material><ambient>1 1 1 1</ambient><diffuse>1 1 1 1</diffuse></material></visual><collision name="c"><geometry><box><size>0.80 0.22 0.80</size></box></geometry></collision></link></model>
+    <model name="north_marker_5"><static>true</static><pose>3 7.72 1.3 0 0 0</pose><link name="link"><visual name="v"><geometry><box><size>0.60 0.22 0.60</size></box></geometry><material><ambient>0.02 0.02 0.02 1</ambient><diffuse>0.02 0.02 0.02 1</diffuse></material></visual><collision name="c"><geometry><box><size>0.60 0.22 0.60</size></box></geometry></collision></link></model>
+    <model name="north_marker_6"><static>true</static><pose>5 7.72 2.8 0 0 0</pose><link name="link"><visual name="v"><geometry><box><size>0.50 0.22 0.50</size></box></geometry><material><ambient>1 1 1 1</ambient><diffuse>1 1 1 1</diffuse></material></visual><collision name="c"><geometry><box><size>0.50 0.22 0.50</size></box></geometry></collision></link></model>
+    <!-- Visual-only foreground landmarks.  A wall full of corners is still
+         approximately one plane, which is a poor mono-SfM initialization
+         geometry.  These panels deliberately sit at y=3.6 and y=5.2 while
+         remaining outside the commanded flight corridor; omitting collision
+         geometry keeps the VIO calibration trajectory physically unchanged. -->
+    <model name="vio_depth_panel_1"><static>true</static><pose>-2.5 3.6 2.8 0 0 0</pose><link name="link"><visual name="black"><pose>0 -0.04 0 0 0 0</pose><geometry><box><size>0.95 0.08 0.95</size></box></geometry><material><ambient>0.01 0.01 0.01 1</ambient><diffuse>0.01 0.01 0.01 1</diffuse></material></visual><visual name="white"><pose>0 -0.085 0 0 0 0</pose><geometry><box><size>0.55 0.02 0.55</size></box></geometry><material><ambient>1 1 1 1</ambient><diffuse>1 1 1 1</diffuse></material></visual></link></model>
+    <model name="vio_depth_panel_2"><static>true</static><pose>2.3 3.6 1.4 0 0 0</pose><link name="link"><visual name="white"><pose>0 -0.04 0 0 0 0</pose><geometry><box><size>1.10 0.08 1.10</size></box></geometry><material><ambient>1 1 1 1</ambient><diffuse>1 1 1 1</diffuse></material></visual><visual name="black"><pose>0 -0.085 0 0 0 0</pose><geometry><box><size>0.50 0.02 0.50</size></box></geometry><material><ambient>0.01 0.01 0.01 1</ambient><diffuse>0.01 0.01 0.01 1</diffuse></material></visual></link></model>
+    <model name="vio_depth_panel_3"><static>true</static><pose>-1.2 5.2 1.1 0 0 0</pose><link name="link"><visual name="black"><pose>0 -0.04 0 0 0 0</pose><geometry><box><size>0.78 0.08 0.78</size></box></geometry><material><ambient>0.01 0.01 0.01 1</ambient><diffuse>0.01 0.01 0.01 1</diffuse></material></visual><visual name="white"><pose>0 -0.085 0 0 0 0</pose><geometry><box><size>0.34 0.02 0.34</size></box></geometry><material><ambient>1 1 1 1</ambient><diffuse>1 1 1 1</diffuse></material></visual></link></model>
+    <model name="vio_depth_panel_4"><static>true</static><pose>1.4 5.2 3.35 0 0 0</pose><link name="link"><visual name="white"><pose>0 -0.04 0 0 0 0</pose><geometry><box><size>0.82 0.08 0.82</size></box></geometry><material><ambient>1 1 1 1</ambient><diffuse>1 1 1 1</diffuse></material></visual><visual name="black"><pose>0 -0.085 0 0 0 0</pose><geometry><box><size>0.36 0.02 0.36</size></box></geometry><material><ambient>0.01 0.01 0.01 1</ambient><diffuse>0.01 0.01 0.01 1</diffuse></material></visual></link></model>
+    <!-- The iris_fpv_cam optical axis starts along +X.  These are the
+         corresponding foreground panels actually in the startup FOV. -->
+    <model name="vio_east_depth_panel_1"><static>true</static><pose>3.5 -2.4 2.7 0 0 0</pose><link name="link"><visual name="black"><pose>-0.04 0 0 0 0 0</pose><geometry><box><size>0.08 0.95 0.95</size></box></geometry><material><ambient>0.01 0.01 0.01 1</ambient><diffuse>0.01 0.01 0.01 1</diffuse></material></visual><visual name="white"><pose>-0.085 0 0 0 0 0</pose><geometry><box><size>0.02 0.55 0.55</size></box></geometry><material><ambient>1 1 1 1</ambient><diffuse>1 1 1 1</diffuse></material></visual></link></model>
+    <model name="vio_east_depth_panel_2"><static>true</static><pose>3.5 2.1 1.3 0 0 0</pose><link name="link"><visual name="white"><pose>-0.04 0 0 0 0 0</pose><geometry><box><size>0.08 1.10 1.10</size></box></geometry><material><ambient>1 1 1 1</ambient><diffuse>1 1 1 1</diffuse></material></visual><visual name="black"><pose>-0.085 0 0 0 0 0</pose><geometry><box><size>0.02 0.50 0.50</size></box></geometry><material><ambient>0.01 0.01 0.01 1</ambient><diffuse>0.01 0.01 0.01 1</diffuse></material></visual></link></model>
+    <model name="vio_east_depth_panel_3"><static>true</static><pose>5.1 -1.1 1.05 0 0 0</pose><link name="link"><visual name="black"><pose>-0.04 0 0 0 0 0</pose><geometry><box><size>0.08 0.78 0.78</size></box></geometry><material><ambient>0.01 0.01 0.01 1</ambient><diffuse>0.01 0.01 0.01 1</diffuse></material></visual><visual name="white"><pose>-0.085 0 0 0 0 0</pose><geometry><box><size>0.02 0.34 0.34</size></box></geometry><material><ambient>1 1 1 1</ambient><diffuse>1 1 1 1</diffuse></material></visual></link></model>
+    <model name="vio_east_depth_panel_4"><static>true</static><pose>5.1 1.5 3.25 0 0 0</pose><link name="link"><visual name="white"><pose>-0.04 0 0 0 0 0</pose><geometry><box><size>0.08 0.82 0.82</size></box></geometry><material><ambient>1 1 1 1</ambient><diffuse>1 1 1 1</diffuse></material></visual><visual name="black"><pose>-0.085 0 0 0 0 0</pose><geometry><box><size>0.02 0.36 0.36</size></box></geometry><material><ambient>0.01 0.01 0.01 1</ambient><diffuse>0.01 0.01 0.01 1</diffuse></material></visual></link></model>
+  </world>
+</sdf>

@@ -14,6 +14,7 @@
 #include <vins/utility/utility.h>
 
 #include <Eigen/Dense>
+#include <cmath>
 #include <fstream>
 #include <map>
 #include <opencv2/core/eigen.hpp>
@@ -68,12 +69,22 @@ struct VINSOptions {
   double time_delay = 0.0;
   int num_of_camera = 0;
   int stereo = 0;
+  int use_range = 0;
+  std::string range_topic;
+  double range_noise = 0.03;
+  double range_min_valid = 0.0;
+  double range_max_age = 0.1;
+  Eigen::Vector3d range_translation = Eigen::Vector3d::Zero();
   std::string image0_topic, image1_topic;
   std::vector<std::string> camera_names;
 
   int max_feature_count = 0;
   int min_feature_distance = 0;
   double ransac_reproj_threshold = 0.0;
+  // Keep the upstream 3 px behavior unless a camera/environment config opts
+  // into a measured threshold.  SITL uses 4 px to avoid repeatedly deleting
+  // geometrically consistent long tracks during rendered hover.
+  double outlier_rejection_threshold_px = 3.0;
   int show_track = 0;
   int enable_reverse_optical_flow_check = 0;
   ///////////////////////////////////////////////////////////////////////////
@@ -91,8 +102,37 @@ struct VINSOptions {
     this->max_feature_count = (int)fsSettings["max_cnt"];
     this->min_feature_distance = (int)fsSettings["min_dist"];
     this->ransac_reproj_threshold = (double)fsSettings["F_threshold"];
+    if (!fsSettings["outlier_rejection_threshold_px"].empty()) {
+      const double configured_threshold =
+          (double)fsSettings["outlier_rejection_threshold_px"];
+      if (std::isfinite(configured_threshold) && configured_threshold > 0.0)
+        this->outlier_rejection_threshold_px = configured_threshold;
+    }
     this->show_track = (int)fsSettings["show_track"];
     this->enable_reverse_optical_flow_check = (int)fsSettings["flow_back"];
+
+    if (!fsSettings["use_range"].empty())
+      this->use_range = (int)fsSettings["use_range"];
+    if (this->use_range) {
+      fsSettings["range_topic"] >> this->range_topic;
+      if (!fsSettings["range_noise"].empty())
+        this->range_noise = (double)fsSettings["range_noise"];
+      if (!fsSettings["range_min_valid"].empty())
+        this->range_min_valid = (double)fsSettings["range_min_valid"];
+      if (!fsSettings["range_max_age"].empty())
+        this->range_max_age = (double)fsSettings["range_max_age"];
+      cv::Mat cv_t;
+      fsSettings["body_T_range"] >> cv_t;
+      if (!cv_t.empty()) {
+        Eigen::Matrix4d T_range;
+        cv::cv2eigen(cv_t, T_range);
+        this->range_translation = T_range.block<3, 1>(0, 3);
+      }
+      VINS_INFO << "Range config: topic=" << this->range_topic
+                << ", noise=" << this->range_noise
+                << ", min_valid=" << this->range_min_valid
+                << ", max_age=" << this->range_max_age;
+    }
 
     this->USE_GPU = (int)fsSettings["use_gpu"];
     this->USE_GPU_ACC_FLOW = (int)fsSettings["use_gpu_acc_flow"];
@@ -206,6 +246,7 @@ struct VINSOptions {
     return extrinsic_estimation_mode == ExtrinsicEstimationMode::INITIALIZE;
   }
   bool shouldEstimateTD() const { return estimate_td_mode; }
+  bool hasRange() const { return use_range != 0; }
 };
 
 enum SIZE_PARAMETERIZATION {
