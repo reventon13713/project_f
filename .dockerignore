@@ -1,0 +1,13 @@
+.git
+artifacts
+build
+install
+log
+**/__pycache__
+**/*.pyc
+src/Micro-XRCE-DDS-Agent/build
+src/Micro-XRCE-DDS-Agent/install
+src/Micro-XRCE-DDS-Agent/log
+src/VINS-Fusion-ROS2/docker_catkin_ws/build
+src/VINS-Fusion-ROS2/docker_catkin_ws/devel
+src/VINS-Fusion-ROS2/docker_catkin_ws/log

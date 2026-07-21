@@ -53,7 +53,7 @@ def readable_bag_path(bag_path):
         yield str(target)
 
 
-def read_topic(bag_path, wanted):
+def read_topic(bag_path, wanted, include_topic=False):
     with readable_bag_path(bag_path) as readable_path:
         storage = rosbag2_py.StorageOptions(uri=readable_path, storage_id='sqlite3')
         converter = rosbag2_py.ConverterOptions('cdr', 'cdr')
@@ -64,8 +64,9 @@ def read_topic(bag_path, wanted):
         while reader.has_next():
             topic, payload, timestamp_ns = reader.read_next()
             if topic in wanted:
-                result.append(
-                    (timestamp_ns, deserialize_message(payload, get_message(type_map[topic]))))
+                message = deserialize_message(payload, get_message(type_map[topic]))
+                result.append((topic, timestamp_ns, message) if include_topic else
+                              (timestamp_ns, message))
         return result
 
 

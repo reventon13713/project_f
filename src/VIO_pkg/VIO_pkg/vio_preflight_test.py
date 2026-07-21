@@ -22,6 +22,9 @@ class VioPreflightTest(Node):
     def __init__(self):
         super().__init__('vio_preflight_test')
         self.declare_parameter('warmup_seconds', 5.0)
+        # A reset clears VINS' local epoch.  Hold at the GPS hover long enough
+        # to collect a fresh stationary IMU window before visual excitation.
+        self.declare_parameter('post_reset_warmup_seconds', 3.0)
         self.declare_parameter('takeoff_altitude', 2.0)
         self.declare_parameter('takeoff_speed', 0.30)
         # At the 10 Hz rendered-camera rate a quick corner-to-corner command
@@ -38,6 +41,10 @@ class VioPreflightTest(Node):
         self.declare_parameter('validation_timeout_seconds', 45.0)
         self.declare_parameter('excitation_repeats', 1)
         self.declare_parameter('max_vins_recoveries', 2)
+        # Stage-2 mode: use the first cross only to initialize/validate VINS,
+        # then fly a separate, fully observed relative-waypoint mission whose
+        # timestamps are recorded for independent Gazebo ground-truth scoring.
+        self.declare_parameter('ground_truth_waypoint_test', False)
         # Optional per-run evidence file.  Keep this outside the package so a
         # clean container restart never overwrites a previous run.
         self.declare_parameter('metrics_output', '')
@@ -145,6 +152,14 @@ class VioPreflightTest(Node):
         self.get_logger().info(f'[VIO preflight] {self.state} -> {state}')
         self.state = state
         self.state_start = self.get_clock().now()
+        if state == 'ASSESSMENT':
+            event = String()
+            event.data = json.dumps({
+                'event': 'RELATIVE_WAYPOINT_MISSION_START',
+                'attempt': self.vins_recovery_count,
+                'waypoint_count': len(self.excitation),
+            }, separators=(',', ':'))
+            self.event_pub.publish(event)
 
     def _status_cb(self, msg):
         self.status = msg
@@ -452,7 +467,8 @@ class VioPreflightTest(Node):
                     self.get_logger().error('VINS reset failed; holding hover.')
                     self._transition('FAILSAFE_HOVER')
         elif self.state == 'HOVER_VINS_WARMUP':
-            if self._elapsed() >= 2.0:
+            if self._elapsed() >= float(
+                    self.get_parameter('post_reset_warmup_seconds').value):
                 self._transition('EXCITATION')
         elif self.state == 'EXCITATION':
             target = self.excitation[self.excitation_index]
@@ -499,11 +515,15 @@ class VioPreflightTest(Node):
                 if self.valid_since is None:
                     self.valid_since = self._now_s()
                 elif self._now_s() - self.valid_since >= 8.0:
-                    self.ready_reference_vio = (None if self.last_vio_pos is None
-                                                else self.last_vio_pos.copy())
-                    self.ready_reference_px4 = (None if self.px4_pos is None
-                                                else self.px4_pos.copy())
-                    self._transition('READY_HOLD')
+                    if bool(self.get_parameter('ground_truth_waypoint_test').value):
+                        self.excitation_index = 0
+                        self._transition('ASSESSMENT')
+                    else:
+                        self.ready_reference_vio = (None if self.last_vio_pos is None
+                                                    else self.last_vio_pos.copy())
+                        self.ready_reference_px4 = (None if self.px4_pos is None
+                                                    else self.px4_pos.copy())
+                        self._transition('READY_HOLD')
             else:
                 self.valid_since = None
             if (self.state == 'VALIDATE' and self._elapsed() >
@@ -511,6 +531,33 @@ class VioPreflightTest(Node):
                 self.get_logger().error('VIO validation timed out; holding GPS hover, no handover.')
                 self._write_metrics('VALIDATION_TIMEOUT')
                 self._transition('FAILSAFE_HOVER')
+        elif self.state == 'ASSESSMENT':
+            if (self.last_vio_receive_time is None or
+                    self._now_s() - self.last_vio_receive_time > 1.0):
+                self.get_logger().error(
+                    'VINS output lost during scored waypoint mission; holding GPS hover.')
+                self._write_metrics('ASSESSMENT_VINS_OUTPUT_LOST')
+                self._transition('FAILSAFE_HOVER')
+                return
+            target = self.excitation[self.excitation_index]
+            reached = self._move_command(
+                target[:3], float(self.get_parameter('excitation_speed').value))
+            actual_reached = (self.px4_pos is not None and
+                              np.linalg.norm(self.px4_pos - np.asarray(target[:3])) < 0.25)
+            if reached and actual_reached:
+                event = String()
+                event.data = json.dumps({
+                    'event': 'RELATIVE_WAYPOINT_REACHED',
+                    'attempt': self.vins_recovery_count,
+                    'index': self.excitation_index,
+                    'target_ned_m': [float(value) for value in target[:3]],
+                }, separators=(',', ':'))
+                self.event_pub.publish(event)
+                self.excitation_index += 1
+                if self.excitation_index == len(self.excitation):
+                    self.ready_reference_vio = self.last_vio_pos.copy()
+                    self.ready_reference_px4 = self.px4_pos.copy()
+                    self._transition('READY_HOLD')
         elif self.state == 'READY_HOLD':
             if self.ready_reference_vio is None or self.ready_reference_px4 is None:
                 self._transition('FAILSAFE_HOVER')

@@ -18,6 +18,7 @@ def generate_launch_description():
     vio_share = get_package_share_directory('VIO_pkg')
     vio_launch = os.path.join(vio_share, 'launch', 'vio_vins.launch.py')
     rviz_config = os.path.join(vio_share, 'config', 'vins_rviz_config.rviz')
+    gazebo_world = os.environ.get('VIO_GAZEBO_WORLD', 'vio_baylands')
 
     agent = ExecuteProcess(
         cmd=['MicroXRCEAgent', 'udp4', '-p', '8888'],
@@ -29,8 +30,8 @@ def generate_launch_description():
         cmd=['bash', '-lc',
              'cd /home/reventon/PX4-Autopilot && '
              'GAZEBO_PLUGIN_PATH="/opt/ros/humble/lib:${GAZEBO_PLUGIN_PATH:-}" '
-             'PX4_SITL_WORLD=vio_feature '
              'make px4_sitl gazebo-classic_iris_fpv_cam'],
+        additional_env={'PX4_SITL_WORLD': gazebo_world},
         name='px4_gazebo', output='screen', emulate_tty=True)
 
     vins = IncludeLaunchDescription(

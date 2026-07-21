@@ -1,0 +1,2 @@
+# Standard MAVLink mission protocol used by QGroundControl and PX4 SITL.
+pymavlink==2.4.49

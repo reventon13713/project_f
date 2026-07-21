@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<sdf version="1.6">
+  <world name="default">
+    <plugin name="vio_gps_control" filename="libvio_gps_control.so"/>
+  </world>
+</sdf>

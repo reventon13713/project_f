@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+set -Eeuo pipefail
+
+PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+
+RECORD_BAGS=1 \
+PRESERVE_LAST_BAGS="${PRESERVE_LAST_BAGS:-1}" \
+READY_HOLD_SECONDS="${READY_HOLD_SECONDS:-20}" \
+POST_METRICS_RECORD_SECONDS="${POST_METRICS_RECORD_SECONDS:-15}" \
+RUN_TIMEOUT_SECONDS="${RUN_TIMEOUT_SECONDS:-600}" \
+PX4_GPS_EV_FUSION_TEST=1 \
+GPS_EV_GLOBAL_FUSION_EVALUATION=1 \
+EXPERIMENT_LABEL="${EXPERIMENT_LABEL:-stage5_gps_vio_global_fusion}" \
+  "${PROJECT_ROOT}/tools/run_clean_preflight_repeats.sh" "${1:-1}"

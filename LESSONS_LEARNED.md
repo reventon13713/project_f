@@ -1,5 +1,54 @@
 # Lessons Learned
 
+## QGC mission의 yaw와 속도도 VIO 검증 envelope의 일부다
+
+- 잘못된 접근 또는 가정: global waypoint 좌표만 작게 잡으면 QGC/PX4 mission이 기존 0.55 m/s 상대 waypoint 시험과 같은 운동이라고 가정했다.
+- 왜 문제였는지: yaw `NaN`은 각 leg 방향으로 기체를 회전시켰고 PX4 기본 mission 속도는 약 `1.4 m/s`였다. 두 조건 모두 검증 envelope를 벗어나 GPS dropout 전후 VINS jump와 fail-closed latch를 재현했다.
+- 올바른 접근: QGC plan 자체에 `DO_CHANGE_SPEED=0.55 m/s`를 첫 item으로 넣고 모든 글로벌 waypoint yaw를 초기 heading으로 고정한다. runner 외부 파라미터만으로 mission 의미를 숨기지 않는다.
+
+## ULog과 rosbag 판정 시간창은 mission result에서 닫는다
+
+- 잘못된 접근 또는 가정: dropout 뒤 recorder 종료까지의 모든 ULog sample을 mission 연속성 판정에 포함했다.
+- 왜 문제였는지: mission finished 뒤 AUTO.LOITER/cleanup에서 발생한 global reset까지 mission 중 jump로 계산했고, ROS callback 순서 때문에 최종 waypoint와 동시에 바뀐 nav state를 조기 이탈로 오판했다.
+- 올바른 접근: bag event의 simulation time으로 ULog dropout~mission-result(+0.5 s) 창을 자르고, completion 권위는 ULog `mission_result.finished`와 reached sequence로 둔다. reset counter 변화는 실제 geodetic step과 함께 판정한다.
+
+## Gazebo fault 명령은 명령 성공이 아니라 sensor stream 결과로 판정한다
+
+- 잘못된 접근 또는 가정: `gz topic -p` 프로세스가 실행되면 custom Gazebo subscriber에 명령이 전달됐다고 가정했다.
+- 왜 문제였는지: master에는 subscriber가 보였지만 callback은 실행되지 않았고 GPS 메시지는 계속 발행됐다.
+- 실제 확인된 원인/사실: transport CLI 실행/timeout은 delivery 증거가 아니다. gzserver world-update가 project-owned sentinel을 관찰해 sensor `SetActive(false)`를 호출하자 GPS stream이 실제로 정지했다.
+- 올바른 접근: injector command, Gazebo 적용, PX4 GPS sample stale, native aid flag를 서로 독립 assertion으로 둔다.
+
+## propagated pose publication time과 camera header time을 혼동하지 않는다
+
+- 잘못된 접근 또는 가정: global alignment node가 발행한 latest propagated pose에도 원 camera sample timestamp를 그대로 PX4 EV measurement time으로 쓰면 항상 안정적으로 fuse된다고 가정했다.
+- 왜 문제였는지: 느린 SITL scheduling에서는 current propagated pose가 수백 ms old measurement로 취급돼 EV aid가 반복 중단됐고 GPS dropout 뒤 no-aid failsafe로 이어졌다.
+- 올바른 접근: 기본 raw/measurement 계약은 유지하되, latest propagated aligned pose임이 명시된 stage-6 경로만 receipt timestamp opt-in을 사용한다. 이 선택은 artifact config에 반드시 기록한다.
+
+## readiness 이전 hold와 readiness 이후 evidence window를 혼동하지 않는다
+
+- 잘못된 접근 또는 가정: `READY_HOLD_SECONDS`를 늘리면 global alignment 뒤 GPS+EV fusion 기록 구간도 같이 길어진다고 가정했다.
+- 왜 문제였는지: `/vio/ready`와 global alignment는 ready hold가 끝난 뒤에야 열리므로 35초 hold는 alignment를 늦출 뿐이었다. 첫 stage-5 run은 융합과 오차가 정상이었지만 post-metrics 기록이 7.87초라 고정 10초 acceptance를 충족하지 못했다.
+- 확인된 사실: `POST_METRICS_RECORD_SECONDS=15`로 readiness 이후 기록만 늘린 clean run은 정렬 뒤 18.56초를 확보했고 같은 acceptance를 통과했다.
+- 올바른 접근: estimator validation/hover hold와 handover 뒤 fusion evidence duration을 별도 lifecycle parameter로 설계하고 artifact에 둘 다 기록한다.
+- 다음에도 지켜야 할 규칙: acceptance 최소 지속시간이 있으면 gate가 실제로 열린 timestamp부터 recorder 종료까지의 구간을 직접 측정한다.
+
+## WGS84 출력에서는 PX4 AMSL reference를 ellipsoid altitude로 그대로 쓰지 않는다
+
+- 잘못된 접근 또는 가정: `VehicleLocalPosition.ref_alt`를 `NavSatFix.altitude`에 직접 넣어도 같은 global altitude datum이라고 가정.
+- 왜 문제였는지: PX4 local reference altitude는 AMSL이고 ROS `NavSatFix` altitude는 WGS84 ellipsoid다. datum 차이를 무시하면 수평 위치가 맞아도 고도에 상수 bias가 남는다.
+- 확인된 사실: `SensorGps.alt_ellipsoid - alt`로 geoid separation을 얻어 PX4 ref AMSL에 더할 수 있다. Baylands bag에서 이 origin과 NED/ECEF 변환은 PX4 fused ellipsoid position 대비 3-D RMSE `0.0387 m`였다.
+- 올바른 접근: 정렬 시 두 GPS altitude를 함께 고정하고, message contract에 맞는 ellipsoid datum을 명시한다. QGC/PX4 AMSL이 필요한 경로는 별도 필드를 사용한다.
+- 다음에도 지켜야 할 규칙: latitude/longitude가 WGS84라는 말만으로 altitude datum까지 같다고 가정하지 않는다.
+
+## VIO global frame은 reset 뒤 비행 중 자동 stitching하지 않는다
+
+- 잘못된 접근 또는 가정: reset 전후 GPS/PX4 sample이 있으면 새 arbitrary VIO frame을 자동 재정렬해 계속 발행해도 안전하다고 가정.
+- 왜 문제였는지: controller와 global trajectory가 이미 이전 frame을 소비한 뒤 자동 재정렬하면 위치/heading discontinuity를 정상 이동처럼 노출할 수 있다.
+- 확인된 사실: 현재 노드는 lock 뒤 output gap, timestamp 역행, pose jump, 새 readiness generation을 latch-close하며 합성 ROS 회귀에서 새 generation 뒤 재개하지 않았다.
+- 올바른 접근: pre-lock reset은 sample history를 비우고 새 epoch를 평가하되, post-lock fault는 명시적 restart/상위 상태 전환 전까지 닫는다.
+- 다음에도 지켜야 할 규칙: estimator reset counter 전달과 global-frame continuity 승인은 별개의 안전 계약으로 다룬다.
+
 ## 진단 부하 제거도 scheduling을 바꾸는 알고리즘 실험으로 취급한다
 
 - 잘못된 접근 또는 가정: frame fingerprint와 queue trace는 진단뿐이므로 끄면 CPU 부하만 줄고 estimator 결과는 같거나 좋아진다고 가정.
@@ -275,3 +324,15 @@
 
 - 문제: reset 뒤 scale accumulator만 초기화하고 yaw/translation alignment pair를 남기면 서로 다른 arbitrary local frame이 섞여 수 m vector error가 생긴다.
 - 올바른 접근: reset 성공 시 VIO sample/scale뿐 아니라 alignment pair, fitted yaw/translation, vector-error accumulator를 원자적으로 새 epoch로 초기화한다.
+
+## 2026-07-21 — 초기화 운동과 정확도 assessment를 같은 궤적으로 쓰지 않는다
+
+- 잘못된 접근: VINS가 상대 waypoint cross 도중 초기화돼도 그 cross 전체를 accuracy trajectory로 평가하려 했다.
+- 문제: raw VIO가 없는 앞부분과 reset epoch가 섞이고, 늦은 초기화에서는 공통 XY motion이 없어 yaw 정렬 자체가 불가능했다.
+- 올바른 접근: 초기화/건강성 검증을 먼저 끝낸 뒤 별도의 scored waypoint mission을 시작하고, start/reached event로 정확한 평가 interval을 기록한다.
+
+## 2026-07-21 — motion threshold는 sensor sample rate와 함께 정의한다
+
+- 잘못된 접근: 약 10 Hz VINS yaw-fit용 연속 이동 threshold `0.02 m`를 약 50 Hz GT/PX4 pair에도 그대로 적용했다.
+- 문제: `0.55 m/s` 비행의 GT 연속 step은 약 `0.011 m`라 모든 XY sample이 삭제됐고 건강한 bag이 평가 불가가 됐다.
+- 올바른 접근: 동일 물리 운동이라도 sample rate에 맞춰 threshold를 정한다. 이 시험은 VIO↔GT `0.02 m`, GT↔PX4 `0.005 m`를 사용하며 같은 보존 bag으로 원인 하나만 수정해 재검증했다.

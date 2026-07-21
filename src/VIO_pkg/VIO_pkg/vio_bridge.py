@@ -21,12 +21,18 @@ class VioBridge(Node):
         # placed in a namespace.  Make the topic configurable, but keep the
         # default aligned with vins_fusion_ros2.launch.py.
         self.declare_parameter('vins_odom_topic', '/odometry')
+        # ``enu_flu`` is the legacy/raw VINS contract.  Stage 4 consumes the
+        # global-position node's already aligned PX4 local-frame output:
+        # position/velocity NED and attitude body-FRD -> NED.
+        self.declare_parameter('odom_frame_contract', 'enu_flu')
+        self.declare_parameter('readiness_topic', '/vio/ready')
         # Keep estimator evaluation independent of PX4's EKF.  Feeding an
         # unvalidated VINS pose back into PX4 makes the "ground truth" path
         # used by the preflight test circular and can destabilize the flight.
         # Enable this only after the preflight scale check reports READY.
         self.declare_parameter('publish_visual_odometry', False)
         self.declare_parameter('max_output_age_seconds', 0.20)
+        self.declare_parameter('px4_timestamp_sample_from_receipt', False)
         self.declare_parameter('max_position_step_m', 0.15)
         self.declare_parameter('max_implied_speed_mps', 1.5)
         self.declare_parameter('required_healthy_samples', 10)
@@ -36,10 +42,18 @@ class VioBridge(Node):
         # restart by default; controlled tests may explicitly opt in.
         self.declare_parameter('allow_rehandover_after_fault', False)
         vins_odom_topic = self.get_parameter('vins_odom_topic').value
+        self.odom_frame_contract = str(
+            self.get_parameter('odom_frame_contract').value)
+        if self.odom_frame_contract not in ('enu_flu', 'ned_frd'):
+            raise ValueError(
+                "odom_frame_contract must be 'enu_flu' or 'ned_frd'")
+        readiness_topic = str(self.get_parameter('readiness_topic').value)
         self.publish_visual_odometry = bool(
             self.get_parameter('publish_visual_odometry').value)
         self.max_output_age_seconds = float(
             self.get_parameter('max_output_age_seconds').value)
+        self.px4_timestamp_sample_from_receipt = bool(
+            self.get_parameter('px4_timestamp_sample_from_receipt').value)
         self.max_position_step_m = float(
             self.get_parameter('max_position_step_m').value)
         self.max_implied_speed_mps = float(
@@ -67,7 +81,7 @@ class VioBridge(Node):
             self.odom_callback,
             10
         )
-        self.create_subscription(Bool, '/vio/ready', self._ready_callback, 10)
+        self.create_subscription(Bool, readiness_topic, self._ready_callback, 10)
         self.create_timer(0.1, self._health_timer)
 
         self.imu_pub = self.create_publisher(
@@ -120,7 +134,8 @@ class VioBridge(Node):
         self.get_logger().info(
             f'VIO Bridge started: {vins_odom_topic} -> PX4 visual odometry, '
             f'PX4 SensorCombined -> /imu/data '
-            f'(visual odometry publish={self.publish_visual_odometry})')
+            f'(contract={self.odom_frame_contract}, ready={readiness_topic}, '
+            f'visual odometry publish={self.publish_visual_odometry})')
 
     def _timestamp_us(self) -> int:
         return int(self.get_clock().now().nanoseconds / 1000)
@@ -315,19 +330,41 @@ class VioBridge(Node):
         # VehicleOdometry. PX4 requires both fields in its own time domain.
         px4_msg.timestamp_sample = int(max(
             0, ros_sample_timestamp_us - self._px4_to_ros_offset_us))
+        if self.px4_timestamp_sample_from_receipt:
+            # The aligned odometry pose is the estimator's latest propagated
+            # state at publication. In high-latency SITL runs, using its camera
+            # header makes PX4 treat a current pose as an old measurement and
+            # repeatedly stop EV aid. Receipt mode is explicit and opt-in.
+            px4_msg.timestamp_sample = int(self._last_px4_timestamp_us)
         px4_msg.timestamp = int(max(self._last_px4_timestamp_us,
                                     px4_msg.timestamp_sample))
         
         px4_msg.pose_frame = VehicleOdometry.POSE_FRAME_NED
         
-        # Position ENU -> NED
-        px4_msg.position[0] = float(msg.pose.pose.position.y)
-        px4_msg.position[1] = float(msg.pose.pose.position.x)
-        px4_msg.position[2] = float(-msg.pose.pose.position.z)
-        
-        # Orientation ENU -> NED
-        r_ros = R.from_quat(quaternion).as_matrix()
-        r_px4 = self.R_enu_to_ned @ r_ros @ self.R_flu_to_frd
+        if self.odom_frame_contract == 'enu_flu':
+            # Raw VINS: position/velocity are ENU and attitude is body-FLU ->
+            # ENU, so convert to PX4's NED/FRD convention.
+            px4_msg.position[0] = float(msg.pose.pose.position.y)
+            px4_msg.position[1] = float(msg.pose.pose.position.x)
+            px4_msg.position[2] = float(-msg.pose.pose.position.z)
+            r_ros = R.from_quat(quaternion).as_matrix()
+            r_px4 = self.R_enu_to_ned @ r_ros @ self.R_flu_to_frd
+            velocity = np.array([
+                msg.twist.twist.linear.y, msg.twist.twist.linear.x,
+                -msg.twist.twist.linear.z], dtype=float)
+        else:
+            # /vio/aligned_odometry is already PX4 local NED with body-FRD
+            # attitude.  Applying ENU/FLU conversion again would swap axes
+            # and invert Z, creating a false EV measurement.
+            px4_msg.position = [float(position[0]), float(position[1]),
+                                 float(position[2])]
+            r_px4 = R.from_quat(quaternion).as_matrix()
+            velocity = np.array([
+                msg.twist.twist.linear.x, msg.twist.twist.linear.y,
+                msg.twist.twist.linear.z], dtype=float)
+        if not np.isfinite(velocity).all():
+            self._invalidate_handover('non-finite velocity')
+            return
         q_px4 = R.from_matrix(r_px4).as_quat() # returns [x, y, z, w]
         
         px4_msg.q[0] = float(q_px4[3]) # w
@@ -335,12 +372,11 @@ class VioBridge(Node):
         px4_msg.q[2] = float(q_px4[1]) # y
         px4_msg.q[3] = float(q_px4[2]) # z
         
-        # VINS fills Odometry.twist.linear in its world frame, not the body
-        # frame.  Convert ENU-world velocity to PX4 NED-world velocity.
+        # VehicleOdometry velocity is expressed in its selected world frame.
         px4_msg.velocity_frame = VehicleOdometry.VELOCITY_FRAME_NED
-        px4_msg.velocity[0] = float(msg.twist.twist.linear.y)
-        px4_msg.velocity[1] = float(msg.twist.twist.linear.x)
-        px4_msg.velocity[2] = float(-msg.twist.twist.linear.z)
+        px4_msg.velocity[0] = float(velocity[0])
+        px4_msg.velocity[1] = float(velocity[1])
+        px4_msg.velocity[2] = float(velocity[2])
 
         # VINS does not estimate angular velocity in this Odometry output.
         # NaN explicitly tells PX4 that this field is unavailable.

@@ -57,4 +57,10 @@ def generate_launch_description():
                 'config_file': LaunchConfiguration('config_file'),
                 'use_sim_time': 'true',
             }.items()),
+        # Learn and publish the VIO global transform independently. This node
+        # never writes PX4 external vision; that connection belongs to stage 4.
+        Node(
+            package='VIO_pkg', executable='vio_global_position',
+            name='vio_global_position', output='screen',
+            parameters=[{'use_sim_time': True}]),
     ])

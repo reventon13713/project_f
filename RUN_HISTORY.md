@@ -1,5 +1,95 @@
 # Run History
 
+## 2026-07-22 00:55~01:00 KST — Stage 7·8 QGC mission/GT 최종 acceptance
+
+- 계약: QGC-compatible 글로벌 mission을 PX4 `AUTO.MISSION`으로 실행하고 실제 GPS sensor를 sequence 5에서 끈다. 남은 waypoint 5·6·7, QGC map feed 연속 이동, 독립 GT 오차를 evidence rosbag과 동일 실행 ULog로 판정한다.
+- mission: item 0 `DO_CHANGE_SPEED=0.55 m/s`, 고정 yaw 약 `90.09°`, WGS84 waypoint 7개, 수락 반경 `0.50 m`, 약 3.2 m 사각 경로. 생성 plan은 run의 `qgc_stage7.plan`이다.
+- live: GPS age `17.9 s`, post-command GPS 1개 뒤 stream 정지, EV age `0.10 s`, global alignment/handover true, sequence 0~7 reached, mission finished. post-dropout GT/PX4/VIO path `9.282/8.786/8.638 m`.
+- rosbag GT: PX4/VIO RMSE `0.4608/0.4179 m`, max `0.5458/0.5338 m`, waypoint horizontal max `0.7342 m`; PX4 map max step/gap `0.2139 m/0.1151 s`, VIO max step/gap `0.0792 m/0.5586 s`.
+- ULog: post-dropout EV pos/vel fused `177/178`, rejection 0, stale 뒤 GPS false와 EV pos+vel true 각 17 flags, mission current/reached 6·7 및 finished. global reset counter 1회, 실제 max step `0.2139 m`.
+- artifact: `artifacts/clean_repeats/20260722T005537KST/20260722T005543KST_run01/`. 최초 offline JSON은 receipt gap `0.559 > 0.50 s`만 실패했다. bridge 비-latch와 EV age 근거로 recorder gap 계약을 `0.60 s`로 확정해 같은 bag/ULog을 재판정했고 원본은 `.pre_gap_adjustment.json`으로 보존했다.
+- 앞선 기능 실패는 mission yaw 미지정 회전과 기본 약 `1.4 m/s` 속도로 VINS jump가 발생한 경우였다. 고정 yaw와 mission 내부 speed item으로 수정했다. 이후 infra-only camera discovery 실패는 기능 분모에서 제외했다.
+
+## 2026-07-21 23:21 KST — Stage 6 Gazebo GPS dropout clean acceptance
+
+- 목적: GPS+EV 준비 뒤 실제 Gazebo GPS sensor 출력을 끄고 PX4가 EV-only armed 비행을 지속하는지 확인.
+- 명령: `tools/run_stage6_gps_dropout_test.sh 2`; run01 완료 뒤 run02 partial은 수동 종료해 분모에서 제외.
+- 조건: Baylands, `iris_fpv_cam`, excitation 2회, bridge receipt timestamp opt-in, max age `0.50 s`, `EKF2_EV_CTRL=7`, `EKF2_NOAID_TOUT=10000000 us`, full camera bag 없음(stage 8 범위).
+- 결과: run01 `HOVER_READY`, dropout pass. GPS age `10.0 s`, post-command GPS message 1개, EV input 120, post-dropout EV fused poll 63, native `cs_gps=false`, EV pos/vel true, dead-reckoning false. armed/Offboard nav 14 유지, 새 failsafe/nav change 없음, 8초 최대 drift `0.0488 m`.
+- 판정: 6단계 성공 1/1 complete run. QGC global mission 지속은 미검증.
+- artifact: `artifacts/clean_repeats/20260721T232113KST/20260721T232119KST_run01/`.
+
+## 2026-07-21 20:54~23:15 KST — Stage 6 injector bring-up 및 실패 시도
+
+- Gazebo transport `gz topic`은 subscriber가 보이는데도 world plugin callback에 명령을 전달하지 않아 GPS stream이 계속됐고 기각했다. sentinel을 gzserver update loop가 읽는 방식으로 교체한 뒤 smoke에서 `off:gps_sensors=0`, live에서 GPS stream 정지를 확인했다.
+- 초기 live 시도에는 VINS validation timeout, camera publisher startup infra failure, bridge output-age latch, global alignment 부족이 섞였다. complete 기능 실패는 GPS stream 지속 또는 EV aid 상실/failsafe로 기록했고, infra/partial은 acceptance 분모에서 제외했다.
+- GPS가 실제 정지한 첫 기능 run은 EV aid가 끊겨 약 5초 뒤 failsafe가 발생해 기각했다. latest propagated aligned pose를 explicit receipt timestamp로 전달하고 no-aid timeout을 10초로 둔 뒤 최종 clean에서 EV aid가 지속됐다.
+
+## 2026-07-21 20:27~20:31 KST — 5단계 GPS+VIO 정상 fusion global 연속성 완료
+
+- 목적/계약: GPS를 정상 유지한 상태에서 stage-4 GPS+EV fusion이 PX4와 `/vio/global_position`의 연속적인 WGS84 trajectory를 만드는지 rosbag과 동일 실행 ULog로 판정했다. 고정 acceptance는 정렬 뒤 `≥10 s`/`≥50` pair, RMSE `≤0.50 m`, max `≤1.00 m`, error-change/VIO/PX4 step `≤0.50 m`, VIO gap `≤0.50 s`, ULog GPS+EV pos+vel 동시 fusion/각 aid fused/global reset 0이다.
+- 구현/명령: `vio_global_fusion_metrics.py`, ULog marker/copy/evaluation runner 연결, `run_stage5_gps_vio_fusion_test.sh`, pinned `pyulog==0.9.0`. 최종 명령은 `tools/run_stage5_gps_vio_fusion_test.sh 1`이었다.
+- 첫 attempt `20260721T202332KST/run01`: rosbag RMSE/max `0.0913/0.1061 m`, ULog fusion과 reset 조건은 통과했지만 정렬 뒤 pair duration이 `7.87 s`라 10초 최소 창에서 fail했다. `READY_HOLD_SECONDS`는 readiness 이전이므로 늘려도 post-alignment evidence가 늘지 않는다. acceptance를 완화하지 않고 wrapper의 `POST_METRICS_RECORD_SECONDS`를 `15`로 수정했다.
+- 최종 clean run `20260721T202758KST/20260721T202803KST_run01`: `HOVER_READY`, recovery 0, global fusion pass. rosbag 18.56초/177쌍, RMSE/p95/max `0.1072/0.1171/0.1223 m`, max consecutive error change `0.00468 m`, VIO/PX4 max step `0.00470/0.00355 m`, VIO max gap `0.223 s`, GPS 3-D fix 48 sample이었다.
+- ULog: GPS+EV pos+EV vel 동시 25 sample, `vehicle_visual_odometry` 234 sample, EV pos/vel 각 fused 178/rejected 0, GNSS pos fused 392/rejected 0. fusion 뒤 global 24.0초/3,001 sample에서 lat/lon reset 0, max step `0.00392 m`였다.
+- 검증/artifact: runner 내 Docker colcon build, `py_compile`, `bash -n`, `git diff --check`, 기존 stage-4 bag+ULog offline 회귀, 새 live rosbag+ULog 자동 acceptance를 통과했다. artifact에는 compressed `sensor_ground_truth_bag`, `px4.ulg`, `global_fusion_metrics.json`, component logs가 있고 postflight process는 0이다.
+- 판정: 5단계 완료. 실제 GPS `off`, QGC global mission, dropout 뒤 GT 판정과 GPS 복구는 아직 수행하지 않았다.
+
+## 2026-07-21 09:39~09:42 KST — 4단계 aligned NED PX4 EV + GPS fusion
+
+- 목적: `vio_global_position`이 lock한 local NED VIO pose/velocity를 PX4 external vision으로 공급하고, GPS를 유지한 채 EKF2 GPS+EV position/velocity fusion을 확인한다.
+- 명령: `RECORD_BAGS=1 PRESERVE_LAST_BAGS=1 READY_HOLD_SECONDS=20 RUN_TIMEOUT_SECONDS=600 PX4_GPS_EV_FUSION_TEST=1 EXPERIMENT_LABEL=stage4_gps_ev_fusion tools/run_clean_preflight_repeats.sh 1`
+- 결과: run01은 `HOVER_READY`, VINS recovery 0, trajectory RMSE/max `0.0603/0.0993 m`, global alignment/handover true, EV input 13개였다. native PX4 flags의 `cs_gps=true`, `cs_ev_pos=true`, `cs_ev_vel=true` 동시 유지로 fusion JSON pass를 기록했다.
+- 검증: Docker build, legacy handover smoke, aligned-NED bridge contract regression, Python compile, bash syntax, `git diff --check` 통과.
+- artifact: `artifacts/clean_repeats/20260721T093911KST/20260721T093916KST_run01/`의 `metrics.json`, `px4_gps_ev_fusion_metrics.json`, compressed ROS bag와 component logs.
+- 이전 무효 attempt: `20260721T093446KST/run01`은 fusion verifier가 preflight readiness 전에 timeout되어 EV input 0으로 끝났다. lifecycle 수정 뒤 위 run에서 통과했으며 성공률 분모에 포함하지 않는다.
+
+## 2026-07-21 08:46~08:56 KST — `vio_global_position` Baylands 3단계 완료
+
+- 목적/계약: GPS 정상 중 VIO↔PX4 local NED scale·yaw·translation과 WGS84 origin을 고정해 `/vio/global_position`을 발행한다. VIO 새 epoch는 자동 연결하지 않는다. 기존 독립 GT acceptance와 EV publisher 0을 유지하면서 PX4 fused WGS84 대비 RMSE `≤0.50 m`, max `≤1.00 m`를 요구했다.
+- 구현/명령: `vio_global_position.py`, `vio_global_position_metrics.py`, `vio_vins.launch.py`, `setup.py`, recorder topic, `test_vio_global_position.py`, `run_vio_global_position_test.sh`. 실행 명령은 `tools/run_vio_global_position_test.sh`였다.
+- live run: `artifacts/clean_repeats/20260721T084626KST/20260721T084630KST_run01/`. terminal `HOVER_READY`, VINS recovery 0, EV publisher 0. 기존 stage-2 GT도 RMSE/max/GT reach/waypoint VIO-GT `0.0448/0.1307/0.2952/0.0667 m`로 통과했다.
+- global lock: synchronized current-epoch sample 474개, scale `0.97725`, yaw `-0.16°`, local-NED fit RMSE/max `0.056/0.111 m`, origin `37.41354280,-121.99654950,1.35 m ellipsoid`.
+- global 판정: 68 VIO global sample 전부 PX4 global과 pairing. WGS84 ECEF 3-D RMSE/p95/max `0.038675/0.066106/0.069871 m`, pass. `global_position_metrics.json`과 compressed rosbag을 run directory에 보존했다.
+- wrapper 오류: live run 뒤 run directory glob을 `run*`로 써 evaluator가 잘못된 root bag을 열려 했다. 실제 run 이름 형식 `*_run01`에 맞게 수정한 뒤 같은 보존 bag을 재평가해 통과했다. 비행 결과나 분모에는 영향이 없다.
+- 정적/회귀: `py_compile`, `bash -n`, `git diff --check`, Docker `colcon build --packages-select VIO_pkg --symlink-install`, 합성 scale/yaw/translation·WGS84와 lock→new-ready latch ROS test 통과. 종료 후 관련 runtime process 0.
+- 판정: 3단계 완료. GPS+EV fusion, GPS dropout, QGC global mission은 아직 수행하지 않았으며 다음은 4단계다.
+
+## 2026-07-21 07:52~08:07 KST — Baylands 상대 waypoint 독립 GT 2단계 완료
+
+- 목적/계약: GPS·PX4 EV·global conversion을 변경하지 않고 Baylands에서 raw VINS 상대좌표 waypoint 정확도를 독립 Gazebo P3D GT로 판정. 초기화 cross 뒤 별도 12-waypoint XYZ assessment를 비행하고 no-scale yaw/translation fit으로 RMSE `≤0.30 m`, trajectory max/GT reach max/waypoint VIO-GT max `≤0.50 m`를 요구했다.
+- 구현/명령: `vio_preflight_test.py`, `vio_ground_truth_metrics.py`, `vio_bag_metrics.py`, `setup.py`, `package.xml`, `run_clean_preflight_repeats.sh`, `run_baylands_relative_waypoint_test.sh`; 최종 명령 `tools/run_baylands_relative_waypoint_test.sh 2`.
+- 무효 run `20260721T075206KST`: initialization cross를 바로 scored event로 사용해 VIO가 XY leg 뒤에 초기화됐고 공통 XY motion이 부족했다. 이 run은 accuracy 분모에서 제외했다.
+- 평가기 수정 run `20260721T075549KST`: 별도 assessment는 `HOVER_READY`; 첫 offline 평가가 50 Hz GT 연속 step에 VINS용 `0.02 m` motion threshold를 써 실패했다. GT/PX4 threshold를 `0.005 m`로 수정해 같은 bag을 재평가했고 RMSE/max/GT reach/waypoint VIO-GT max `0.0472/0.1045/0.2656/0.1041 m`, 12/12로 통과했다.
+- 최종 자동 batch `20260721T080015KST`: GT `2/2` pass. run01은 attempt 1, 347 synchronized sample, RMSE/max/GT reach/waypoint VIO-GT max `0.0423/0.1309/0.2465/0.0757 m`; run02는 attempt 0, 345 sample, `0.0413/0.1192/0.3087/0.0915 m`였다.
+- terminal 분리: run01은 pre-score VINS recovery 1회 후 assessment를 통과했으나 직후 hover drift로 `FAILSAFE_HOVER`; run02는 `HOVER_READY`. 따라서 scored GT accuracy는 `2/2`, terminal은 `1/2`, recovery-free는 `1/2`다. VIO failure probability 0을 주장하지 않는다.
+- 기록: 각 run의 `sensor_ground_truth_bag/*.db3.zstd`, `ground_truth_metrics.json`, `metrics.json`, 로그와 `summary.tsv`는 `artifacts/clean_repeats/20260721T080015KST/`. GPS 정상, `/fmu/in/vehicle_visual_odometry` publisher 0, 종료 후 host/container 잔여 process 0.
+- 정적 검증: `bash -n`, `py_compile`, `git diff --check`, 합성 yaw/translation 및 complete-attempt test, Docker ROS 2 `colcon build --packages-select VIO_pkg --symlink-install` 통과.
+- 판정: 2단계 완료. 다음은 `vio_global_position` 구현이며 이 결과를 GPS+VIO fusion 완료로 확대 해석하지 않는다.
+
+## 2026-07-21 07:32~07:38 KST — Open Robotics Baylands 선정·통합 smoke 완료
+
+- 목적: 인위적 `vio_feature.world`를 대체할 공개 outdoor world를 PX4 v1.14.4 Gazebo Classic과 현재 VIO sensor chain에 통합한다.
+- 선정/재현성: Open Robotics model database의 `http://models.gazebosim.org/baylands/model.tar.gz`, 150,768,931 bytes, SHA-256 `18bce28a1ae89a146b57218653d773ed432d4bd381252ffb19102af98f7e952c`. 설치 스크립트가 hash를 검증하고 원본 3개 DAE·material·texture를 설치한다.
+- 구현: `vio_baylands.world`, visual-only `vio_baylands` wrapper, ROS 2 camera/IMU/range 및 독립 Gazebo P3D ground truth가 포함된 `iris_fpv_cam`, 설치 스크립트, demo/runner world 선택을 연결했다. 원본 mesh collision 대신 500×500 m 평면 collision을 사용한다.
+- 실패와 수정: 첫 smoke의 `/vio/ground_truth/odometry`가 `z=-8106 m`로 낙하했다. 평면 collision의 `collide_without_contact=true`가 접촉력을 막은 원인이어서 제거했다. 최종 3-mesh smoke에서 `z=0.054251 m`, range `0.14146 m`, GPS altitude `1.345 m`로 정지했다.
+- final sensor smoke: 관측 wall-time rate는 `/clock` 8.92 Hz, IMU 111.13 Hz, camera 21.52 Hz, range 24.30 Hz, independent ground truth 45.27 Hz, PX4 GPS 2.05 Hz였다. 설정 rate는 각각 Gazebo clock, 200, 20, 30, 50, PX4 GPS chain이며 무거운 scene의 wall-time scheduling 차이는 2단계에서 계속 기록한다.
+- visual smoke: 320×240 RGB8 camera frame 평균/표준편차 `139.57/51.74`, Shi-Tomasi corner 102개. 원본 3개 mesh를 모두 로드한 뒤 자연 식생과 지형이 camera에 렌더링됐다.
+- geodetic smoke: world origin `37.413534, -121.996561, 1.3 m`; PX4 GPS `37.4135428, -121.9965495, 1.356 m`, 즉 `(1.01,0.98)` m spawn과 일치한다.
+- 정적 검증: `gz sdf -k` model/world 통과, installer local-archive 경로 통과, `bash -n`, `git diff --check` 통과. GPS/EV fusion/global conversion은 변경하지 않았다.
+- 판정: 1단계 완료. 이 smoke는 VIO waypoint 정확도 판정이 아니며 2단계 비행 시험으로 합산하지 않는다.
+
+## 2026-07-21 KST — GPS 상실 뒤 VIO 기반 글로벌 waypoint mission 개발 계획 확정
+
+- 목적: 기존 VIO 품질 개선·VIO fault fallback 중심의 작업에서, GPS 정상 구간의 VIO↔GPS 관계를 이용해 GPS 상실 뒤에도 글로벌 waypoint mission을 계속하는 개발 순서로 전환.
+- 코드/실행: 없음. 이번 항목은 사용자와 합의한 설계·우선순위 기록이며 실험 결과가 아니다.
+- 확정된 구조: 새 `vio_global_position` ROS 2 노드가 GPS 정상 중 동기화된 VIO/GPS/PX4 sample에서 scale·yaw·translation과 WGS84 origin을 고정한다. GPS 상실 뒤 raw VIO를 VIO-derived latitude/longitude/altitude로 변환해 `/vio/global_position`으로 발행하고, 정렬된 local-NED VIO는 기존 `vio_bridge`를 통해 PX4 external vision에 전달한다.
+- 좌표/mission 정책: QGroundControl의 글로벌 waypoint mission을 유지한다. PX4의 local `VehicleOdometry` 입력은 external-vision interface용이며, 최종 운용·로그·지도 출력은 PX4 `VehicleGlobalPosition` 및 `/vio/global_position`의 WGS84 좌표다. GNSS sensor message를 위장해 주입하지 않는다.
+- 첫 검증: GPS/EV fusion/global conversion을 변경하지 않고 현실적인 공개 outdoor/suburban Gazebo Classic world에서 relative waypoint 비행을 수행한다. raw VIO trajectory와 독립 Gazebo ground truth를 비교하며 초기 목표는 RMSE `0.2~0.3 m`, 최대/waypoint 도달 오차 `0.5 m` 이하이다.
+- world 정책: 기존 인위적 `vio_feature.world`를 후속 mission environment로 사용하지 않는다. 도로·건물·식생·울타리·차량 등 자연 feature를 가진 공개 world를 통합하고, PX4 v1.14.4 Gazebo Classic/`iris_fpv_cam`/sensor chain/독립 ground truth/`spherical_coordinates` compatibility를 먼저 smoke한다.
+- 후속 순서: relative VIO accuracy → `vio_global_position` → GPS+VIO fusion → 실제 simulated GPS `off` injector → GPS-denied 글로벌 mission 완주 및 QGroundControl 지도 연속성 확인 → GPS 복구 후 재융합.
+- 범위 제외: 추가 VIO 품질 튜닝, 30~100회 VIO soak, `gps stuck/wrong`, 장시간 GPS 상실, 기존 VIO-fault→GPS fallback/GNSS-denied 착륙 확장은 현재 작업 범위가 아니다. 기존 안전 근거와 제한은 삭제하지 않는다.
+
 ## 2026-07-17 16:00~19:00 KST — 시각화/trace scheduling 및 reset-epoch 후보 반증
 
 - initialization final cost-per-block은 failure/healthy/recovery 분포가 겹쳐 acceptance gate 후보에서 제외했다. 동작을 바꾸지 않는 초기화/solver 진단 로그만 남겼다.

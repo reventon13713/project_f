@@ -1,0 +1,36 @@
+<?xml version='1.0'?>
+<sdf version='1.5'>
+  <model name='iris_fpv_cam'>
+    <include><uri>model://iris</uri></include>
+
+    <include>
+      <uri>model://fpv_cam</uri>
+      <pose>0 0 0 0 0 0</pose>
+    </include>
+    <joint name='fpv_cam_joint' type='fixed'>
+      <child>fpv_cam::link</child>
+      <parent>iris::base_link</parent>
+    </joint>
+
+    <include>
+      <uri>model://vio_imu</uri>
+      <pose>0 0 0.02 0 0 0</pose>
+    </include>
+    <joint name='vio_imu_joint' type='fixed'>
+      <child>vio_imu::link</child>
+      <parent>iris::base_link</parent>
+    </joint>
+
+    <!-- Gazebo-native pose, independent of PX4 EKF and VINS estimates. -->
+    <plugin name='vio_ground_truth' filename='libgazebo_ros_p3d.so'>
+      <ros>
+        <namespace>/vio</namespace>
+        <remapping>odom:=ground_truth/odometry</remapping>
+      </ros>
+      <body_name>iris::base_link</body_name>
+      <frame_name>world</frame_name>
+      <update_rate>50</update_rate>
+      <gaussian_noise>0</gaussian_noise>
+    </plugin>
+  </model>
+</sdf>

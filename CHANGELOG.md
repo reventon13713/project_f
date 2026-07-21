@@ -1,5 +1,63 @@
 # Changelog
 
+## 2026-07-22 — Stage 7 QGC global mission and Stage 8 rosbag/ULog ground truth
+
+- 다른 컴퓨터에서 같은 환경을 재현하도록 `Dockerfile.0722`, `.dockerignore`, `PORTABLE_SETUP.md`를 추가했다. Docker Hub `reventon13713/project_f:0722`는 `pyulog==0.9.0`, `pymavlink==2.4.49`, SHA-256으로 고정한 Baylands assets를 포함하며 published digest는 `sha256:9fb94dd93bdd1c1cdd2bec78c1178593c85c14a84c62d480d09912d8abf9e45a`다.
+- `vio_qgc_mission_test.py`를 추가했다. QGC-compatible `.plan`과 동일한 MAVLink mission을 업로드하고, 고정 yaw와 `DO_CHANGE_SPEED=0.55 m/s`로 기존 VIO 운동 계약을 유지하며 sequence 5에서 실제 Gazebo GPS를 끈다.
+- `vio_mission_ground_truth_metrics.py`는 mission event 시간창에서 PX4/VIO WGS84 trajectory를 독립 Gazebo GT에 no-scale yaw/translation 정렬하고 path, jump, gap, RMSE/max, waypoint 오차를 판정한다. 같은 ULog의 mission finished, nav state, GPS/EV flags, EV aid fuse/rejection, global reset/step을 교차 확인한다.
+- repeat runner에 stage-7 lifecycle, 저부하 evidence bag, ULog 보존/평가, 결과 merge, QGC/PX4 mission 의존성 검사와 infra-failure nonzero exit를 연결했다. `run_stage7_qgc_mission_ground_truth_test.sh`와 pinned `pymavlink==2.4.49` requirements를 추가했다.
+- 최종 Baylands evidence `20260722T005543KST_run01`은 GPS dropout 뒤 3개 waypoint와 GT `9.28 m`를 완료했다. PX4/VIO GT RMSE `0.461/0.418 m`, 지도 max step `0.214 m`, ULog EV fused `177/178`, mission finished로 7·8단계를 통과했다.
+
+## 2026-07-21 — Stage 6 actual Gazebo GPS dropout
+
+- `vio_gazebo_plugins`를 추가했다. `libvio_gps_control.so`는 explicit sentinel 변화에 따라 Gazebo GPS sensor를 직접 on/off하며, `vio_gps_control_command`가 명령을 원자적으로 생성한다. transport CLI 전달 실패를 성공으로 오인하지 않도록 GPS stream stale이 최종 권위다.
+- `vio_gps_dropout_test.py`와 `run_stage6_gps_dropout_test.sh`를 추가하고 repeat runner에 stage-6 lifecycle, metrics merge, cleanup, GPS dropout event, EV/no-aid 설정을 연결했다.
+- `vio_bridge.py`에 opt-in `px4_timestamp_sample_from_receipt`를 추가했다. 기본 false이며 stage-6 SITL에서만 aligned estimator의 latest propagated pose publication time을 PX4 sample time으로 사용한다.
+- Gazebo plugin smoke, Python/bash/diff 검사, Docker build와 Baylands clean `20260721T232119KST/run01` acceptance를 통과했다. 롤백 시 sensor plugin과 evaluator를 함께 제거해야 하며 `EKF2_GPS_CTRL=0`을 실제 GPS dropout 근거로 대체하면 안 된다.
+
+## 2026-07-21 — stage-5 GPS+EV global continuity rosbag/ULog acceptance
+
+- `vio_global_fusion_metrics.py`를 추가했다. alignment 뒤 GPS fix/handover, PX4↔VIO WGS84 RMSE/max, consecutive error, 양쪽 global step, VIO gap을 rosbag에서 판정하고 동일 실행 ULog의 GPS/EV 동시 control flag, 실제 GNSS/EV aid `fused`, rejection, global reset/step을 교차 판정한다.
+- `run_clean_preflight_repeats.sh`에 opt-in `GPS_EV_GLOBAL_FUSION_EVALUATION=1`을 추가했다. stage-4+bag mode를 강제하고 launch 전 marker 뒤 생성된 ULog만 `px4.ulg`로 보존하며 offline 결과를 primary metrics/outcome에 병합한다. pyulog가 없으면 비행 전에 fail한다.
+- `run_stage5_gps_vio_fusion_test.sh`는 GPS를 유지하고 stage-4 fusion, bag/ULog 보존, 20초 ready hold와 15초 post-metrics record를 재현한다. `requirements-ulog.txt`는 ROS 2 Humble system NumPy와 호환되는 `pyulog==0.9.0`을 고정한다.
+- 정적 검사, Docker build, 기존 stage-4 artifact 회귀와 Baylands `20260721T202758KST/run01` live acceptance를 통과했다. GPS dropout/fault injection 동작은 변경하지 않았다.
+
+## 2026-07-21 — aligned NED PX4 external-vision integration
+
+- `vio_bridge.py`에 `odom_frame_contract`(`enu_flu`/`ned_frd`)와 `readiness_topic`을 추가했다. stage-4 `/vio/aligned_odometry`는 PX4 local NED/body-FRD contract를 만족하므로 raw VINS ENU/FLU 변환 없이 `VehicleOdometry`로 전달한다.
+- `vio_gps_ev_fusion_test.py`를 추가했다. global alignment와 handover, EV input을 확인한 뒤 native PX4 estimator flags의 GPS/EV position/EV velocity가 동시에 유지될 때만 성공 JSON을 남긴다. alignment 이전과 이후 timeout을 분리했다.
+- `run_clean_preflight_repeats.sh`에 `PX4_GPS_EV_FUSION_TEST=1` opt-in을 추가했다. `EKF2_EV_CTRL=7`으로 EV pos/height/velocity aid를 켜고 GPS는 유지하며, relevant ROS topics와 fusion JSON을 rosbag/artifact에 기록한다. fault mode와 동시 실행은 금지했다.
+- `test_vio_aligned_bridge_contract.py`는 aligned NED position/velocity와 FRD attitude가 PX4 input에서 축 교환 없이 보존되는 ROS 회귀다. legacy handover regression, Docker build와 Baylands GPS+EV fusion run을 통과했다.
+- 롤백 시 `ned_frd` mode를 raw VINS input에 적용하면 안 된다. GPS dropout/mission continuation은 이 변경 범위에 포함되지 않는다.
+
+## 2026-07-21 — `vio_global_position` fail-closed global alignment
+
+- `vio_global_position.py`를 추가해 신선하고 유효한 VIO/GPS/PX4 local sample에서 scale·yaw·translation과 WGS84 origin을 고정하고 `NavSatFix /vio/global_position` 및 NED `/vio/aligned_odometry`를 발행한다. ellipsoid/MSL 차이는 `SensorGps`의 두 altitude로 보존한다.
+- alignment excitation/scale/error gate와 정렬 뒤 output gap·timestamp 역행·pose jump·새 readiness generation latch를 구현했다. latch 뒤 자동 재정렬은 없고 node restart가 필요하다.
+- `vio_vins.launch.py`에 노드를 통합하되 PX4 external vision 연결은 하지 않았다. 반복 recorder에 GPS/local/global/global-output topic을 추가했다.
+- `vio_global_position_metrics.py`, 합성 math/ROS policy test, `run_vio_global_position_test.sh`를 추가했다. Docker build와 Baylands `20260721T084626KST`에서 local fit RMSE/max `0.056/0.111 m`, PX4 global 대비 WGS84 RMSE/max `0.0387/0.0699 m`로 통과했다.
+- 롤백 시 `vio_vins.launch.py`의 node와 새 recorder topic/entry point를 함께 제거해야 한다. `/vio/aligned_odometry`를 raw VINS ENU와 혼동하면 안 되며 PX4 EV 연결은 4단계 전까지 비활성이다.
+
+## 2026-07-21 — VIO reset 뒤 stationary initialization window 명시화
+
+- `vio_preflight_test.py`의 reset 뒤 hover warm-up을 하드코딩 `2 s`에서 파라미터 `post_reset_warmup_seconds=3.0`으로 바꿨다.
+- 초기 heading 유지와 부드러운 XYZ 병진 cross는 기존대로 유지한다. 변경 목적은 새 VINS epoch가 excitation 전 독립 stationary IMU window를 갖게 하는 것이며, GPS/EV/global conversion에는 영향이 없다.
+
+## 2026-07-21 — Baylands relative-waypoint independent ground-truth acceptance
+
+- `vio_preflight_test.py`에 opt-in scored assessment state와 12개 waypoint start/reached event를 추가했다. 초기화용 cross와 평가용 cross를 분리하며 assessment 중 VINS output loss는 fail-closed한다.
+- `vio_ground_truth_metrics.py`를 추가해 raw VINS, Gazebo P3D GT, PX4 local pose, waypoint event를 no-scale yaw/translation 정렬로 평가한다. RMSE `0.30 m`, trajectory/waypoint max `0.50 m` acceptance를 자동 판정한다.
+- `run_clean_preflight_repeats.sh`가 독립 GT publisher/message를 확인하고 토픽을 bag에 기록하며, opt-in 평가 JSON·summary를 만들고 assertion failure를 비정상 종료로 전달하도록 확장했다. 전용 `run_baylands_relative_waypoint_test.sh`를 추가했다.
+- `vio_bag_metrics.read_topic()`에 호환 기본값을 유지하는 topic-tag 반환 옵션을 추가했고, `setup.py`/`package.xml`에 새 executable과 `rosbag2_py` runtime dependency를 연결했다.
+- 정적 검사, 합성 yaw/translation test, ROS 2 build와 Baylands 최종 GT `2/2`를 통과했다. external vision/global conversion은 변경하지 않았다.
+
+## 2026-07-21 — public Baylands outdoor world integration
+
+- Open Robotics `baylands` archive의 URL, 크기, SHA-256을 고정한 설치 스크립트와 PX4 Gazebo Classic용 `vio_baylands.world`를 추가했다.
+- upstream 3개 visual mesh와 자연 texture를 모두 유지하고, 무거운 mesh collision은 500 m 평면으로 분리했다. 첫 smoke에서 발견한 `collide_without_contact` 낙하 결함을 제거했다.
+- ROS 2 camera/IMU/range와 독립 P3D ground truth를 포함하는 `iris_fpv_cam` assets를 프로젝트에서 설치하도록 했고, demo 기본 world 및 반복 runner의 선택 가능한 `PX4_SITL_WORLD`를 연결했다.
+- PX4 v1.14.4에서 sensor/GPS/geodetic origin/ground contact/camera feature smoke를 통과했다. external-vision fusion과 global conversion은 변경하지 않았다.
+
 ## 2026-07-17 — visualization load reduction and rejected reset-epoch experiments
 
 - SITL config의 `show_track`을 `0`으로 바꿔 비행 중 diagnostic tracking image 렌더링/publication을 끊었다. 유효 live 9/9 terminal·recovery 0을 확인했다.
