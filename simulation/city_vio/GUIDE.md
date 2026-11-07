@@ -25,7 +25,7 @@
 ```bash
 docker pull reventon13713/project_f:2026-11-07-sim-inputs
 docker run --rm reventon13713/project_f:2026-11-07-sim-inputs sha256sum --quiet -c SHA256SUMS
-docker run --rm -it --name city-vio reventon13713/project_f:2026-11-07-sim-inputs ./start-sensors.sh
+docker run --init --rm -it --shm-size=256m --name city-vio reventon13713/project_f:2026-11-07-sim-inputs ./start-sensors.sh
 ```
 
 첫 터미널은 열어 두고, Jetson의 두 번째 터미널에서 VIO를 실행한다.
