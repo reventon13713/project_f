@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<sdf version="1.6">
+  <model name="vio_low_rise_city"><static>true</static><link name="geometry">
+<visual name="city_ground"><pose>0.000 0.000 -0.180 0 0 0.000000000</pose>
+<geometry><box><size>410.000 370.000 0.350</size></box></geometry><material><ambient>0.31 0.34 0.29 1</ambient><diffuse>0.31 0.34 0.29 1</diffuse></material></visual>
+
+<collision name="city_ground_collision"><pose>0.000 0.000 -0.180 0 0 0.000000000</pose>
+<geometry><box><size>410.000 370.000 0.350</size></box></geometry></collision>
+
+  </link></model>
+</sdf>

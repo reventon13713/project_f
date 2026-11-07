@@ -1,0 +1,95 @@
+<?xml version="1.0"?>
+<sdf version="1.6">
+  <model name="vio_low_rise_city_road_v_1"><static>true</static><link name="geometry">
+<collision name="road_vertical_1_collision"><pose>-90.000 0.000 0.035 0 0 0.000000000</pose>
+<geometry><box><size>10.000 350.000 0.070</size></box></geometry></collision>
+
+<visual name="road_vertical_1_tile_0"><pose>-90.000 -155.000 0.075 0 0 0.000000000</pose>
+<geometry><box><size>10.000 40.000 0.080</size></box></geometry><material><script><uri>model://vio_low_rise_city/materials/scripts</uri><uri>model://vio_low_rise_city/materials/textures</uri><name>VioLowRiseCity/AsphaltNonperiodic</name></script></material></visual>
+
+<visual name="road_vertical_1_tile_1"><pose>-90.000 -115.000 0.075 0 0 0.000000000</pose>
+<geometry><box><size>10.000 40.000 0.080</size></box></geometry><material><script><uri>model://vio_low_rise_city/materials/scripts</uri><uri>model://vio_low_rise_city/materials/textures</uri><name>VioLowRiseCity/AsphaltNonperiodic</name></script></material></visual>
+
+<visual name="road_vertical_1_tile_2"><pose>-90.000 -75.000 0.075 0 0 0.000000000</pose>
+<geometry><box><size>10.000 40.000 0.080</size></box></geometry><material><script><uri>model://vio_low_rise_city/materials/scripts</uri><uri>model://vio_low_rise_city/materials/textures</uri><name>VioLowRiseCity/AsphaltNonperiodic</name></script></material></visual>
+
+<visual name="road_vertical_1_tile_3"><pose>-90.000 -35.000 0.075 0 0 0.000000000</pose>
+<geometry><box><size>10.000 40.000 0.080</size></box></geometry><material><script><uri>model://vio_low_rise_city/materials/scripts</uri><uri>model://vio_low_rise_city/materials/textures</uri><name>VioLowRiseCity/AsphaltNonperiodic</name></script></material></visual>
+
+<visual name="road_vertical_1_tile_4"><pose>-90.000 5.000 0.075 0 0 0.000000000</pose>
+<geometry><box><size>10.000 40.000 0.080</size></box></geometry><material><script><uri>model://vio_low_rise_city/materials/scripts</uri><uri>model://vio_low_rise_city/materials/textures</uri><name>VioLowRiseCity/AsphaltNonperiodic</name></script></material></visual>
+
+<visual name="road_vertical_1_tile_5"><pose>-90.000 45.000 0.075 0 0 0.000000000</pose>
+<geometry><box><size>10.000 40.000 0.080</size></box></geometry><material><script><uri>model://vio_low_rise_city/materials/scripts</uri><uri>model://vio_low_rise_city/materials/textures</uri><name>VioLowRiseCity/AsphaltNonperiodic</name></script></material></visual>
+
+<visual name="road_vertical_1_tile_6"><pose>-90.000 85.000 0.075 0 0 0.000000000</pose>
+<geometry><box><size>10.000 40.000 0.080</size></box></geometry><material><script><uri>model://vio_low_rise_city/materials/scripts</uri><uri>model://vio_low_rise_city/materials/textures</uri><name>VioLowRiseCity/AsphaltNonperiodic</name></script></material></visual>
+
+<visual name="road_vertical_1_tile_7"><pose>-90.000 125.000 0.075 0 0 0.000000000</pose>
+<geometry><box><size>10.000 40.000 0.080</size></box></geometry><material><script><uri>model://vio_low_rise_city/materials/scripts</uri><uri>model://vio_low_rise_city/materials/textures</uri><name>VioLowRiseCity/AsphaltNonperiodic</name></script></material></visual>
+
+<visual name="road_vertical_1_tile_8"><pose>-90.000 165.000 0.075 0 0 0.000000000</pose>
+<geometry><box><size>10.000 40.000 0.080</size></box></geometry><material><script><uri>model://vio_low_rise_city/materials/scripts</uri><uri>model://vio_low_rise_city/materials/textures</uri><name>VioLowRiseCity/AsphaltNonperiodic</name></script></material></visual>
+
+<visual name="vline_1_0"><pose>-90.000 -164.000 0.125 0 0 0.000000000</pose>
+<geometry><box><size>0.200 5.000 0.025</size></box></geometry><material><ambient>0.92 0.90 0.74 1</ambient><diffuse>0.92 0.90 0.74 1</diffuse></material></visual>
+
+<visual name="vline_1_1"><pose>-90.000 -152.000 0.125 0 0 0.000000000</pose>
+<geometry><box><size>0.200 5.000 0.025</size></box></geometry><material><ambient>0.92 0.90 0.74 1</ambient><diffuse>0.92 0.90 0.74 1</diffuse></material></visual>
+
+<visual name="vline_1_3"><pose>-90.000 -128.000 0.125 0 0 0.000000000</pose>
+<geometry><box><size>0.200 5.000 0.025</size></box></geometry><material><ambient>0.92 0.90 0.74 1</ambient><diffuse>0.92 0.90 0.74 1</diffuse></material></visual>
+
+<visual name="vline_1_4"><pose>-90.000 -116.000 0.125 0 0 0.000000000</pose>
+<geometry><box><size>0.200 5.000 0.025</size></box></geometry><material><ambient>0.92 0.90 0.74 1</ambient><diffuse>0.92 0.90 0.74 1</diffuse></material></visual>
+
+<visual name="vline_1_5"><pose>-90.000 -104.000 0.125 0 0 0.000000000</pose>
+<geometry><box><size>0.200 5.000 0.025</size></box></geometry><material><ambient>0.92 0.90 0.74 1</ambient><diffuse>0.92 0.90 0.74 1</diffuse></material></visual>
+
+<visual name="vline_1_6"><pose>-90.000 -92.000 0.125 0 0 0.000000000</pose>
+<geometry><box><size>0.200 5.000 0.025</size></box></geometry><material><ambient>0.92 0.90 0.74 1</ambient><diffuse>0.92 0.90 0.74 1</diffuse></material></visual>
+
+<visual name="vline_1_7"><pose>-90.000 -80.000 0.125 0 0 0.000000000</pose>
+<geometry><box><size>0.200 5.000 0.025</size></box></geometry><material><ambient>0.92 0.90 0.74 1</ambient><diffuse>0.92 0.90 0.74 1</diffuse></material></visual>
+
+<visual name="vline_1_9"><pose>-90.000 -56.000 0.125 0 0 0.000000000</pose>
+<geometry><box><size>0.200 5.000 0.025</size></box></geometry><material><ambient>0.92 0.90 0.74 1</ambient><diffuse>0.92 0.90 0.74 1</diffuse></material></visual>
+
+<visual name="vline_1_10"><pose>-90.000 -44.000 0.125 0 0 0.000000000</pose>
+<geometry><box><size>0.200 5.000 0.025</size></box></geometry><material><ambient>0.92 0.90 0.74 1</ambient><diffuse>0.92 0.90 0.74 1</diffuse></material></visual>
+
+<visual name="vline_1_11"><pose>-90.000 -32.000 0.125 0 0 0.000000000</pose>
+<geometry><box><size>0.200 5.000 0.025</size></box></geometry><material><ambient>0.92 0.90 0.74 1</ambient><diffuse>0.92 0.90 0.74 1</diffuse></material></visual>
+
+<visual name="vline_1_12"><pose>-90.000 -20.000 0.125 0 0 0.000000000</pose>
+<geometry><box><size>0.200 5.000 0.025</size></box></geometry><material><ambient>0.92 0.90 0.74 1</ambient><diffuse>0.92 0.90 0.74 1</diffuse></material></visual>
+
+<visual name="vline_1_15"><pose>-90.000 16.000 0.125 0 0 0.000000000</pose>
+<geometry><box><size>0.200 5.000 0.025</size></box></geometry><material><ambient>0.92 0.90 0.74 1</ambient><diffuse>0.92 0.90 0.74 1</diffuse></material></visual>
+
+<visual name="vline_1_16"><pose>-90.000 28.000 0.125 0 0 0.000000000</pose>
+<geometry><box><size>0.200 5.000 0.025</size></box></geometry><material><ambient>0.92 0.90 0.74 1</ambient><diffuse>0.92 0.90 0.74 1</diffuse></material></visual>
+
+<visual name="vline_1_17"><pose>-90.000 40.000 0.125 0 0 0.000000000</pose>
+<geometry><box><size>0.200 5.000 0.025</size></box></geometry><material><ambient>0.92 0.90 0.74 1</ambient><diffuse>0.92 0.90 0.74 1</diffuse></material></visual>
+
+<visual name="vline_1_18"><pose>-90.000 52.000 0.125 0 0 0.000000000</pose>
+<geometry><box><size>0.200 5.000 0.025</size></box></geometry><material><ambient>0.92 0.90 0.74 1</ambient><diffuse>0.92 0.90 0.74 1</diffuse></material></visual>
+
+<visual name="vline_1_21"><pose>-90.000 88.000 0.125 0 0 0.000000000</pose>
+<geometry><box><size>0.200 5.000 0.025</size></box></geometry><material><ambient>0.92 0.90 0.74 1</ambient><diffuse>0.92 0.90 0.74 1</diffuse></material></visual>
+
+<visual name="vline_1_22"><pose>-90.000 100.000 0.125 0 0 0.000000000</pose>
+<geometry><box><size>0.200 5.000 0.025</size></box></geometry><material><ambient>0.92 0.90 0.74 1</ambient><diffuse>0.92 0.90 0.74 1</diffuse></material></visual>
+
+<visual name="vline_1_23"><pose>-90.000 112.000 0.125 0 0 0.000000000</pose>
+<geometry><box><size>0.200 5.000 0.025</size></box></geometry><material><ambient>0.92 0.90 0.74 1</ambient><diffuse>0.92 0.90 0.74 1</diffuse></material></visual>
+
+<visual name="vline_1_24"><pose>-90.000 124.000 0.125 0 0 0.000000000</pose>
+<geometry><box><size>0.200 5.000 0.025</size></box></geometry><material><ambient>0.92 0.90 0.74 1</ambient><diffuse>0.92 0.90 0.74 1</diffuse></material></visual>
+
+<visual name="vline_1_27"><pose>-90.000 160.000 0.125 0 0 0.000000000</pose>
+<geometry><box><size>0.200 5.000 0.025</size></box></geometry><material><ambient>0.92 0.90 0.74 1</ambient><diffuse>0.92 0.90 0.74 1</diffuse></material></visual>
+
+  </link></model>
+</sdf>

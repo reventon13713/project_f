@@ -1,0 +1,1010 @@
+<?xml version="1.0"?>
+<sdf version="1.6">
+  <model name="vio_low_rise_city_road_h_0"><static>true</static><link name="geometry">
+<collision name="road_horizontal_0_collision"><pose>0.000 -140.000 0.035 0 0 0.000000000</pose>
+<geometry><box><size>390.000 10.000 0.070</size></box></geometry></collision>
+
+<visual name="road_horizontal_0_tile_0"><pose>-175.000 -140.000 0.115 0 0 0.000000000</pose>
+<geometry><box><size>40.000 10.000 0.080</size></box></geometry><material><script><uri>model://vio_low_rise_city/materials/scripts</uri><uri>model://vio_low_rise_city/materials/textures</uri><name>VioLowRiseCity/AsphaltNonperiodic</name></script></material></visual>
+
+<visual name="road_horizontal_0_tile_1"><pose>-135.000 -140.000 0.115 0 0 0.000000000</pose>
+<geometry><box><size>40.000 10.000 0.080</size></box></geometry><material><script><uri>model://vio_low_rise_city/materials/scripts</uri><uri>model://vio_low_rise_city/materials/textures</uri><name>VioLowRiseCity/AsphaltNonperiodic</name></script></material></visual>
+
+<visual name="road_horizontal_0_tile_2"><pose>-95.000 -140.000 0.115 0 0 0.000000000</pose>
+<geometry><box><size>40.000 10.000 0.080</size></box></geometry><material><script><uri>model://vio_low_rise_city/materials/scripts</uri><uri>model://vio_low_rise_city/materials/textures</uri><name>VioLowRiseCity/AsphaltNonperiodic</name></script></material></visual>
+
+<visual name="road_horizontal_0_tile_3"><pose>-55.000 -140.000 0.115 0 0 0.000000000</pose>
+<geometry><box><size>40.000 10.000 0.080</size></box></geometry><material><script><uri>model://vio_low_rise_city/materials/scripts</uri><uri>model://vio_low_rise_city/materials/textures</uri><name>VioLowRiseCity/AsphaltNonperiodic</name></script></material></visual>
+
+<visual name="road_horizontal_0_tile_4"><pose>-15.000 -140.000 0.115 0 0 0.000000000</pose>
+<geometry><box><size>40.000 10.000 0.080</size></box></geometry><material><script><uri>model://vio_low_rise_city/materials/scripts</uri><uri>model://vio_low_rise_city/materials/textures</uri><name>VioLowRiseCity/AsphaltNonperiodic</name></script></material></visual>
+
+<visual name="road_horizontal_0_tile_5"><pose>25.000 -140.000 0.115 0 0 0.000000000</pose>
+<geometry><box><size>40.000 10.000 0.080</size></box></geometry><material><script><uri>model://vio_low_rise_city/materials/scripts</uri><uri>model://vio_low_rise_city/materials/textures</uri><name>VioLowRiseCity/AsphaltNonperiodic</name></script></material></visual>
+
+<visual name="road_horizontal_0_tile_6"><pose>65.000 -140.000 0.115 0 0 0.000000000</pose>
+<geometry><box><size>40.000 10.000 0.080</size></box></geometry><material><script><uri>model://vio_low_rise_city/materials/scripts</uri><uri>model://vio_low_rise_city/materials/textures</uri><name>VioLowRiseCity/AsphaltNonperiodic</name></script></material></visual>
+
+<visual name="road_horizontal_0_tile_7"><pose>105.000 -140.000 0.115 0 0 0.000000000</pose>
+<geometry><box><size>40.000 10.000 0.080</size></box></geometry><material><script><uri>model://vio_low_rise_city/materials/scripts</uri><uri>model://vio_low_rise_city/materials/textures</uri><name>VioLowRiseCity/AsphaltNonperiodic</name></script></material></visual>
+
+<visual name="road_horizontal_0_tile_8"><pose>145.000 -140.000 0.115 0 0 0.000000000</pose>
+<geometry><box><size>40.000 10.000 0.080</size></box></geometry><material><script><uri>model://vio_low_rise_city/materials/scripts</uri><uri>model://vio_low_rise_city/materials/textures</uri><name>VioLowRiseCity/AsphaltNonperiodic</name></script></material></visual>
+
+<visual name="road_horizontal_0_tile_9"><pose>175.000 -140.000 0.115 0 0 0.000000000</pose>
+<geometry><box><size>40.000 10.000 0.080</size></box></geometry><material><script><uri>model://vio_low_rise_city/materials/scripts</uri><uri>model://vio_low_rise_city/materials/textures</uri><name>VioLowRiseCity/AsphaltNonperiodic</name></script></material></visual>
+
+<visual name="road_horizontal_0_depth_car_020_lower_body"><pose>-171.000 -143.000 0.680 0 0 0.000000000</pose>
+<geometry><box><size>4.800 1.950 1.150</size></box></geometry><material><ambient>0.58 0.10 0.08 1</ambient><diffuse>0.58 0.10 0.08 1</diffuse></material></visual>
+
+<visual name="road_horizontal_0_depth_car_020_upper_body"><pose>-171.350 -143.000 1.880 0 0 0.000000000</pose>
+<geometry><box><size>3.550 1.780 1.340</size></box></geometry><material><ambient>0.58 0.10 0.08 1</ambient><diffuse>0.58 0.10 0.08 1</diffuse></material></visual>
+
+<visual name="road_horizontal_0_depth_car_020_windscreen"><pose>-169.530 -143.000 1.840 0 0 0.000000000</pose>
+<geometry><box><size>0.120 1.600 1.100</size></box></geometry><material><ambient>0.12 0.18 0.21 1</ambient><diffuse>0.12 0.18 0.21 1</diffuse></material></visual>
+
+<collision name="road_horizontal_0_depth_car_020_body_collision"><pose>-171.000 -143.000 1.275 0 0 0.000000000</pose>
+<geometry><box><size>4.800 1.950 2.550</size></box></geometry></collision>
+
+<visual name="road_horizontal_0_depth_car_020_roof_marker"><pose>-171.550 -143.000 2.595 0 0 0.000000000</pose>
+<geometry><box><size>1.650 0.480 0.090</size></box></geometry><material><ambient>0.08 0.10 0.11 1</ambient><diffuse>0.08 0.10 0.11 1</diffuse></material></visual>
+
+<visual name="road_horizontal_0_depth_car_021_lower_body"><pose>-171.000 -137.000 0.540 0 0 0.000000000</pose>
+<geometry><box><size>4.400 1.850 0.820</size></box></geometry><material><ambient>0.10 0.25 0.48 1</ambient><diffuse>0.10 0.25 0.48 1</diffuse></material></visual>
+
+<visual name="road_horizontal_0_depth_car_021_bonnet"><pose>-169.620 -137.000 1.020 0 0 0.000000000</pose>
+<geometry><box><size>1.180 1.760 0.250</size></box></geometry><material><ambient>0.10 0.25 0.48 1</ambient><diffuse>0.10 0.25 0.48 1</diffuse></material></visual>
+
+<visual name="road_horizontal_0_depth_car_021_glazed_cabin"><pose>-171.250 -137.000 1.260 0 0 0.000000000</pose>
+<geometry><box><size>2.150 1.550 0.720</size></box></geometry><material><ambient>0.16 0.22 0.25 1</ambient><diffuse>0.16 0.22 0.25 1</diffuse></material></visual>
+
+<collision name="road_horizontal_0_depth_car_021_body_collision"><pose>-171.000 -137.000 0.810 0 0 0.000000000</pose>
+<geometry><box><size>4.400 1.850 1.620</size></box></geometry></collision>
+
+<visual name="road_horizontal_0_depth_car_021_roof_marker"><pose>-171.150 -137.000 1.665 0 0 0.000000000</pose>
+<geometry><box><size>1.050 0.480 0.090</size></box></geometry><material><ambient>0.91 0.88 0.68 1</ambient><diffuse>0.91 0.88 0.68 1</diffuse></material></visual>
+
+<visual name="road_horizontal_0_depth_car_022_lower_body"><pose>-158.000 -143.000 0.680 0 0 0.000000000</pose>
+<geometry><box><size>4.800 1.950 1.150</size></box></geometry><material><ambient>0.64 0.62 0.56 1</ambient><diffuse>0.64 0.62 0.56 1</diffuse></material></visual>
+
+<visual name="road_horizontal_0_depth_car_022_upper_body"><pose>-158.350 -143.000 1.880 0 0 0.000000000</pose>
+<geometry><box><size>3.550 1.780 1.340</size></box></geometry><material><ambient>0.64 0.62 0.56 1</ambient><diffuse>0.64 0.62 0.56 1</diffuse></material></visual>
+
+<visual name="road_horizontal_0_depth_car_022_windscreen"><pose>-156.530 -143.000 1.840 0 0 0.000000000</pose>
+<geometry><box><size>0.120 1.600 1.100</size></box></geometry><material><ambient>0.12 0.18 0.21 1</ambient><diffuse>0.12 0.18 0.21 1</diffuse></material></visual>
+
+<collision name="road_horizontal_0_depth_car_022_body_collision"><pose>-158.000 -143.000 1.275 0 0 0.000000000</pose>
+<geometry><box><size>4.800 1.950 2.550</size></box></geometry></collision>
+
+<visual name="road_horizontal_0_depth_car_022_roof_marker"><pose>-157.750 -143.000 2.595 0 0 0.000000000</pose>
+<geometry><box><size>1.350 0.480 0.090</size></box></geometry><material><ambient>0.08 0.10 0.11 1</ambient><diffuse>0.08 0.10 0.11 1</diffuse></material></visual>
+
+<visual name="road_horizontal_0_depth_car_023_lower_body"><pose>-158.000 -137.000 0.540 0 0 0.000000000</pose>
+<geometry><box><size>4.400 1.850 0.820</size></box></geometry><material><ambient>0.20 0.38 0.24 1</ambient><diffuse>0.20 0.38 0.24 1</diffuse></material></visual>
+
+<visual name="road_horizontal_0_depth_car_023_bonnet"><pose>-156.620 -137.000 1.020 0 0 0.000000000</pose>
+<geometry><box><size>1.180 1.760 0.250</size></box></geometry><material><ambient>0.20 0.38 0.24 1</ambient><diffuse>0.20 0.38 0.24 1</diffuse></material></visual>
+
+<visual name="road_horizontal_0_depth_car_023_glazed_cabin"><pose>-158.250 -137.000 1.260 0 0 0.000000000</pose>
+<geometry><box><size>2.150 1.550 0.720</size></box></geometry><material><ambient>0.16 0.22 0.25 1</ambient><diffuse>0.16 0.22 0.25 1</diffuse></material></visual>
+
+<collision name="road_horizontal_0_depth_car_023_body_collision"><pose>-158.000 -137.000 0.810 0 0 0.000000000</pose>
+<geometry><box><size>4.400 1.850 1.620</size></box></geometry></collision>
+
+<visual name="road_horizontal_0_depth_car_023_roof_marker"><pose>-157.400 -137.000 1.665 0 0 0.000000000</pose>
+<geometry><box><size>1.650 0.480 0.090</size></box></geometry><material><ambient>0.91 0.88 0.68 1</ambient><diffuse>0.91 0.88 0.68 1</diffuse></material></visual>
+
+<visual name="road_horizontal_0_depth_car_024_lower_body"><pose>-141.000 -143.000 0.680 0 0 0.000000000</pose>
+<geometry><box><size>4.800 1.950 1.150</size></box></geometry><material><ambient>0.58 0.10 0.08 1</ambient><diffuse>0.58 0.10 0.08 1</diffuse></material></visual>
+
+<visual name="road_horizontal_0_depth_car_024_upper_body"><pose>-141.350 -143.000 1.880 0 0 0.000000000</pose>
+<geometry><box><size>3.550 1.780 1.340</size></box></geometry><material><ambient>0.58 0.10 0.08 1</ambient><diffuse>0.58 0.10 0.08 1</diffuse></material></visual>
+
+<visual name="road_horizontal_0_depth_car_024_windscreen"><pose>-139.530 -143.000 1.840 0 0 0.000000000</pose>
+<geometry><box><size>0.120 1.600 1.100</size></box></geometry><material><ambient>0.12 0.18 0.21 1</ambient><diffuse>0.12 0.18 0.21 1</diffuse></material></visual>
+
+<collision name="road_horizontal_0_depth_car_024_body_collision"><pose>-141.000 -143.000 1.275 0 0 0.000000000</pose>
+<geometry><box><size>4.800 1.950 2.550</size></box></geometry></collision>
+
+<visual name="road_horizontal_0_depth_car_024_roof_marker"><pose>-141.550 -143.000 2.595 0 0 0.000000000</pose>
+<geometry><box><size>1.050 0.480 0.090</size></box></geometry><material><ambient>0.08 0.10 0.11 1</ambient><diffuse>0.08 0.10 0.11 1</diffuse></material></visual>
+
+<visual name="road_horizontal_0_depth_car_025_lower_body"><pose>-141.000 -137.000 0.540 0 0 0.000000000</pose>
+<geometry><box><size>4.400 1.850 0.820</size></box></geometry><material><ambient>0.10 0.25 0.48 1</ambient><diffuse>0.10 0.25 0.48 1</diffuse></material></visual>
+
+<visual name="road_horizontal_0_depth_car_025_bonnet"><pose>-139.620 -137.000 1.020 0 0 0.000000000</pose>
+<geometry><box><size>1.180 1.760 0.250</size></box></geometry><material><ambient>0.10 0.25 0.48 1</ambient><diffuse>0.10 0.25 0.48 1</diffuse></material></visual>
+
+<visual name="road_horizontal_0_depth_car_025_glazed_cabin"><pose>-141.250 -137.000 1.260 0 0 0.000000000</pose>
+<geometry><box><size>2.150 1.550 0.720</size></box></geometry><material><ambient>0.16 0.22 0.25 1</ambient><diffuse>0.16 0.22 0.25 1</diffuse></material></visual>
+
+<collision name="road_horizontal_0_depth_car_025_body_collision"><pose>-141.000 -137.000 0.810 0 0 0.000000000</pose>
+<geometry><box><size>4.400 1.850 1.620</size></box></geometry></collision>
+
+<visual name="road_horizontal_0_depth_car_025_roof_marker"><pose>-141.150 -137.000 1.665 0 0 0.000000000</pose>
+<geometry><box><size>1.350 0.480 0.090</size></box></geometry><material><ambient>0.91 0.88 0.68 1</ambient><diffuse>0.91 0.88 0.68 1</diffuse></material></visual>
+
+<visual name="road_horizontal_0_depth_car_026_lower_body"><pose>-123.000 -143.000 0.680 0 0 0.000000000</pose>
+<geometry><box><size>4.800 1.950 1.150</size></box></geometry><material><ambient>0.64 0.62 0.56 1</ambient><diffuse>0.64 0.62 0.56 1</diffuse></material></visual>
+
+<visual name="road_horizontal_0_depth_car_026_upper_body"><pose>-123.350 -143.000 1.880 0 0 0.000000000</pose>
+<geometry><box><size>3.550 1.780 1.340</size></box></geometry><material><ambient>0.64 0.62 0.56 1</ambient><diffuse>0.64 0.62 0.56 1</diffuse></material></visual>
+
+<visual name="road_horizontal_0_depth_car_026_windscreen"><pose>-121.530 -143.000 1.840 0 0 0.000000000</pose>
+<geometry><box><size>0.120 1.600 1.100</size></box></geometry><material><ambient>0.12 0.18 0.21 1</ambient><diffuse>0.12 0.18 0.21 1</diffuse></material></visual>
+
+<collision name="road_horizontal_0_depth_car_026_body_collision"><pose>-123.000 -143.000 1.275 0 0 0.000000000</pose>
+<geometry><box><size>4.800 1.950 2.550</size></box></geometry></collision>
+
+<visual name="road_horizontal_0_depth_car_026_roof_marker"><pose>-122.750 -143.000 2.595 0 0 0.000000000</pose>
+<geometry><box><size>1.650 0.480 0.090</size></box></geometry><material><ambient>0.08 0.10 0.11 1</ambient><diffuse>0.08 0.10 0.11 1</diffuse></material></visual>
+
+<visual name="road_horizontal_0_depth_car_027_lower_body"><pose>-123.000 -137.000 0.540 0 0 0.000000000</pose>
+<geometry><box><size>4.400 1.850 0.820</size></box></geometry><material><ambient>0.20 0.38 0.24 1</ambient><diffuse>0.20 0.38 0.24 1</diffuse></material></visual>
+
+<visual name="road_horizontal_0_depth_car_027_bonnet"><pose>-121.620 -137.000 1.020 0 0 0.000000000</pose>
+<geometry><box><size>1.180 1.760 0.250</size></box></geometry><material><ambient>0.20 0.38 0.24 1</ambient><diffuse>0.20 0.38 0.24 1</diffuse></material></visual>
+
+<visual name="road_horizontal_0_depth_car_027_glazed_cabin"><pose>-123.250 -137.000 1.260 0 0 0.000000000</pose>
+<geometry><box><size>2.150 1.550 0.720</size></box></geometry><material><ambient>0.16 0.22 0.25 1</ambient><diffuse>0.16 0.22 0.25 1</diffuse></material></visual>
+
+<collision name="road_horizontal_0_depth_car_027_body_collision"><pose>-123.000 -137.000 0.810 0 0 0.000000000</pose>
+<geometry><box><size>4.400 1.850 1.620</size></box></geometry></collision>
+
+<visual name="road_horizontal_0_depth_car_027_roof_marker"><pose>-122.400 -137.000 1.665 0 0 0.000000000</pose>
+<geometry><box><size>1.050 0.480 0.090</size></box></geometry><material><ambient>0.91 0.88 0.68 1</ambient><diffuse>0.91 0.88 0.68 1</diffuse></material></visual>
+
+<visual name="road_horizontal_0_depth_car_028_lower_body"><pose>-106.000 -143.000 0.680 0 0 0.000000000</pose>
+<geometry><box><size>4.800 1.950 1.150</size></box></geometry><material><ambient>0.58 0.10 0.08 1</ambient><diffuse>0.58 0.10 0.08 1</diffuse></material></visual>
+
+<visual name="road_horizontal_0_depth_car_028_upper_body"><pose>-106.350 -143.000 1.880 0 0 0.000000000</pose>
+<geometry><box><size>3.550 1.780 1.340</size></box></geometry><material><ambient>0.58 0.10 0.08 1</ambient><diffuse>0.58 0.10 0.08 1</diffuse></material></visual>
+
+<visual name="road_horizontal_0_depth_car_028_windscreen"><pose>-104.530 -143.000 1.840 0 0 0.000000000</pose>
+<geometry><box><size>0.120 1.600 1.100</size></box></geometry><material><ambient>0.12 0.18 0.21 1</ambient><diffuse>0.12 0.18 0.21 1</diffuse></material></visual>
+
+<collision name="road_horizontal_0_depth_car_028_body_collision"><pose>-106.000 -143.000 1.275 0 0 0.000000000</pose>
+<geometry><box><size>4.800 1.950 2.550</size></box></geometry></collision>
+
+<visual name="road_horizontal_0_depth_car_028_roof_marker"><pose>-106.550 -143.000 2.595 0 0 0.000000000</pose>
+<geometry><box><size>1.350 0.480 0.090</size></box></geometry><material><ambient>0.08 0.10 0.11 1</ambient><diffuse>0.08 0.10 0.11 1</diffuse></material></visual>
+
+<visual name="road_horizontal_0_depth_car_029_lower_body"><pose>-106.000 -137.000 0.540 0 0 0.000000000</pose>
+<geometry><box><size>4.400 1.850 0.820</size></box></geometry><material><ambient>0.10 0.25 0.48 1</ambient><diffuse>0.10 0.25 0.48 1</diffuse></material></visual>
+
+<visual name="road_horizontal_0_depth_car_029_bonnet"><pose>-104.620 -137.000 1.020 0 0 0.000000000</pose>
+<geometry><box><size>1.180 1.760 0.250</size></box></geometry><material><ambient>0.10 0.25 0.48 1</ambient><diffuse>0.10 0.25 0.48 1</diffuse></material></visual>
+
+<visual name="road_horizontal_0_depth_car_029_glazed_cabin"><pose>-106.250 -137.000 1.260 0 0 0.000000000</pose>
+<geometry><box><size>2.150 1.550 0.720</size></box></geometry><material><ambient>0.16 0.22 0.25 1</ambient><diffuse>0.16 0.22 0.25 1</diffuse></material></visual>
+
+<collision name="road_horizontal_0_depth_car_029_body_collision"><pose>-106.000 -137.000 0.810 0 0 0.000000000</pose>
+<geometry><box><size>4.400 1.850 1.620</size></box></geometry></collision>
+
+<visual name="road_horizontal_0_depth_car_029_roof_marker"><pose>-106.150 -137.000 1.665 0 0 0.000000000</pose>
+<geometry><box><size>1.650 0.480 0.090</size></box></geometry><material><ambient>0.91 0.88 0.68 1</ambient><diffuse>0.91 0.88 0.68 1</diffuse></material></visual>
+
+<visual name="road_horizontal_0_depth_car_030_lower_body"><pose>-81.000 -143.000 0.680 0 0 0.000000000</pose>
+<geometry><box><size>4.800 1.950 1.150</size></box></geometry><material><ambient>0.64 0.62 0.56 1</ambient><diffuse>0.64 0.62 0.56 1</diffuse></material></visual>
+
+<visual name="road_horizontal_0_depth_car_030_upper_body"><pose>-81.350 -143.000 1.880 0 0 0.000000000</pose>
+<geometry><box><size>3.550 1.780 1.340</size></box></geometry><material><ambient>0.64 0.62 0.56 1</ambient><diffuse>0.64 0.62 0.56 1</diffuse></material></visual>
+
+<visual name="road_horizontal_0_depth_car_030_windscreen"><pose>-79.530 -143.000 1.840 0 0 0.000000000</pose>
+<geometry><box><size>0.120 1.600 1.100</size></box></geometry><material><ambient>0.12 0.18 0.21 1</ambient><diffuse>0.12 0.18 0.21 1</diffuse></material></visual>
+
+<collision name="road_horizontal_0_depth_car_030_body_collision"><pose>-81.000 -143.000 1.275 0 0 0.000000000</pose>
+<geometry><box><size>4.800 1.950 2.550</size></box></geometry></collision>
+
+<visual name="road_horizontal_0_depth_car_030_roof_marker"><pose>-80.750 -143.000 2.595 0 0 0.000000000</pose>
+<geometry><box><size>1.050 0.480 0.090</size></box></geometry><material><ambient>0.08 0.10 0.11 1</ambient><diffuse>0.08 0.10 0.11 1</diffuse></material></visual>
+
+<visual name="road_horizontal_0_depth_car_031_lower_body"><pose>-81.000 -137.000 0.540 0 0 0.000000000</pose>
+<geometry><box><size>4.400 1.850 0.820</size></box></geometry><material><ambient>0.20 0.38 0.24 1</ambient><diffuse>0.20 0.38 0.24 1</diffuse></material></visual>
+
+<visual name="road_horizontal_0_depth_car_031_bonnet"><pose>-79.620 -137.000 1.020 0 0 0.000000000</pose>
+<geometry><box><size>1.180 1.760 0.250</size></box></geometry><material><ambient>0.20 0.38 0.24 1</ambient><diffuse>0.20 0.38 0.24 1</diffuse></material></visual>
+
+<visual name="road_horizontal_0_depth_car_031_glazed_cabin"><pose>-81.250 -137.000 1.260 0 0 0.000000000</pose>
+<geometry><box><size>2.150 1.550 0.720</size></box></geometry><material><ambient>0.16 0.22 0.25 1</ambient><diffuse>0.16 0.22 0.25 1</diffuse></material></visual>
+
+<collision name="road_horizontal_0_depth_car_031_body_collision"><pose>-81.000 -137.000 0.810 0 0 0.000000000</pose>
+<geometry><box><size>4.400 1.850 1.620</size></box></geometry></collision>
+
+<visual name="road_horizontal_0_depth_car_031_roof_marker"><pose>-80.400 -137.000 1.665 0 0 0.000000000</pose>
+<geometry><box><size>1.350 0.480 0.090</size></box></geometry><material><ambient>0.91 0.88 0.68 1</ambient><diffuse>0.91 0.88 0.68 1</diffuse></material></visual>
+
+<visual name="road_horizontal_0_depth_car_032_lower_body"><pose>-68.000 -143.000 0.680 0 0 0.000000000</pose>
+<geometry><box><size>4.800 1.950 1.150</size></box></geometry><material><ambient>0.58 0.10 0.08 1</ambient><diffuse>0.58 0.10 0.08 1</diffuse></material></visual>
+
+<visual name="road_horizontal_0_depth_car_032_upper_body"><pose>-68.350 -143.000 1.880 0 0 0.000000000</pose>
+<geometry><box><size>3.550 1.780 1.340</size></box></geometry><material><ambient>0.58 0.10 0.08 1</ambient><diffuse>0.58 0.10 0.08 1</diffuse></material></visual>
+
+<visual name="road_horizontal_0_depth_car_032_windscreen"><pose>-66.530 -143.000 1.840 0 0 0.000000000</pose>
+<geometry><box><size>0.120 1.600 1.100</size></box></geometry><material><ambient>0.12 0.18 0.21 1</ambient><diffuse>0.12 0.18 0.21 1</diffuse></material></visual>
+
+<collision name="road_horizontal_0_depth_car_032_body_collision"><pose>-68.000 -143.000 1.275 0 0 0.000000000</pose>
+<geometry><box><size>4.800 1.950 2.550</size></box></geometry></collision>
+
+<visual name="road_horizontal_0_depth_car_032_roof_marker"><pose>-68.550 -143.000 2.595 0 0 0.000000000</pose>
+<geometry><box><size>1.650 0.480 0.090</size></box></geometry><material><ambient>0.08 0.10 0.11 1</ambient><diffuse>0.08 0.10 0.11 1</diffuse></material></visual>
+
+<visual name="road_horizontal_0_depth_car_033_lower_body"><pose>-68.000 -137.000 0.540 0 0 0.000000000</pose>
+<geometry><box><size>4.400 1.850 0.820</size></box></geometry><material><ambient>0.10 0.25 0.48 1</ambient><diffuse>0.10 0.25 0.48 1</diffuse></material></visual>
+
+<visual name="road_horizontal_0_depth_car_033_bonnet"><pose>-66.620 -137.000 1.020 0 0 0.000000000</pose>
+<geometry><box><size>1.180 1.760 0.250</size></box></geometry><material><ambient>0.10 0.25 0.48 1</ambient><diffuse>0.10 0.25 0.48 1</diffuse></material></visual>
+
+<visual name="road_horizontal_0_depth_car_033_glazed_cabin"><pose>-68.250 -137.000 1.260 0 0 0.000000000</pose>
+<geometry><box><size>2.150 1.550 0.720</size></box></geometry><material><ambient>0.16 0.22 0.25 1</ambient><diffuse>0.16 0.22 0.25 1</diffuse></material></visual>
+
+<collision name="road_horizontal_0_depth_car_033_body_collision"><pose>-68.000 -137.000 0.810 0 0 0.000000000</pose>
+<geometry><box><size>4.400 1.850 1.620</size></box></geometry></collision>
+
+<visual name="road_horizontal_0_depth_car_033_roof_marker"><pose>-68.150 -137.000 1.665 0 0 0.000000000</pose>
+<geometry><box><size>1.050 0.480 0.090</size></box></geometry><material><ambient>0.91 0.88 0.68 1</ambient><diffuse>0.91 0.88 0.68 1</diffuse></material></visual>
+
+<visual name="road_horizontal_0_depth_car_034_lower_body"><pose>-51.000 -143.000 0.680 0 0 0.000000000</pose>
+<geometry><box><size>4.800 1.950 1.150</size></box></geometry><material><ambient>0.64 0.62 0.56 1</ambient><diffuse>0.64 0.62 0.56 1</diffuse></material></visual>
+
+<visual name="road_horizontal_0_depth_car_034_upper_body"><pose>-51.350 -143.000 1.880 0 0 0.000000000</pose>
+<geometry><box><size>3.550 1.780 1.340</size></box></geometry><material><ambient>0.64 0.62 0.56 1</ambient><diffuse>0.64 0.62 0.56 1</diffuse></material></visual>
+
+<visual name="road_horizontal_0_depth_car_034_windscreen"><pose>-49.530 -143.000 1.840 0 0 0.000000000</pose>
+<geometry><box><size>0.120 1.600 1.100</size></box></geometry><material><ambient>0.12 0.18 0.21 1</ambient><diffuse>0.12 0.18 0.21 1</diffuse></material></visual>
+
+<collision name="road_horizontal_0_depth_car_034_body_collision"><pose>-51.000 -143.000 1.275 0 0 0.000000000</pose>
+<geometry><box><size>4.800 1.950 2.550</size></box></geometry></collision>
+
+<visual name="road_horizontal_0_depth_car_034_roof_marker"><pose>-50.750 -143.000 2.595 0 0 0.000000000</pose>
+<geometry><box><size>1.350 0.480 0.090</size></box></geometry><material><ambient>0.08 0.10 0.11 1</ambient><diffuse>0.08 0.10 0.11 1</diffuse></material></visual>
+
+<visual name="road_horizontal_0_depth_car_035_lower_body"><pose>-51.000 -137.000 0.540 0 0 0.000000000</pose>
+<geometry><box><size>4.400 1.850 0.820</size></box></geometry><material><ambient>0.20 0.38 0.24 1</ambient><diffuse>0.20 0.38 0.24 1</diffuse></material></visual>
+
+<visual name="road_horizontal_0_depth_car_035_bonnet"><pose>-49.620 -137.000 1.020 0 0 0.000000000</pose>
+<geometry><box><size>1.180 1.760 0.250</size></box></geometry><material><ambient>0.20 0.38 0.24 1</ambient><diffuse>0.20 0.38 0.24 1</diffuse></material></visual>
+
+<visual name="road_horizontal_0_depth_car_035_glazed_cabin"><pose>-51.250 -137.000 1.260 0 0 0.000000000</pose>
+<geometry><box><size>2.150 1.550 0.720</size></box></geometry><material><ambient>0.16 0.22 0.25 1</ambient><diffuse>0.16 0.22 0.25 1</diffuse></material></visual>
+
+<collision name="road_horizontal_0_depth_car_035_body_collision"><pose>-51.000 -137.000 0.810 0 0 0.000000000</pose>
+<geometry><box><size>4.400 1.850 1.620</size></box></geometry></collision>
+
+<visual name="road_horizontal_0_depth_car_035_roof_marker"><pose>-50.400 -137.000 1.665 0 0 0.000000000</pose>
+<geometry><box><size>1.650 0.480 0.090</size></box></geometry><material><ambient>0.91 0.88 0.68 1</ambient><diffuse>0.91 0.88 0.68 1</diffuse></material></visual>
+
+<visual name="road_horizontal_0_depth_car_036_lower_body"><pose>-33.000 -143.000 0.680 0 0 0.000000000</pose>
+<geometry><box><size>4.800 1.950 1.150</size></box></geometry><material><ambient>0.58 0.10 0.08 1</ambient><diffuse>0.58 0.10 0.08 1</diffuse></material></visual>
+
+<visual name="road_horizontal_0_depth_car_036_upper_body"><pose>-33.350 -143.000 1.880 0 0 0.000000000</pose>
+<geometry><box><size>3.550 1.780 1.340</size></box></geometry><material><ambient>0.58 0.10 0.08 1</ambient><diffuse>0.58 0.10 0.08 1</diffuse></material></visual>
+
+<visual name="road_horizontal_0_depth_car_036_windscreen"><pose>-31.530 -143.000 1.840 0 0 0.000000000</pose>
+<geometry><box><size>0.120 1.600 1.100</size></box></geometry><material><ambient>0.12 0.18 0.21 1</ambient><diffuse>0.12 0.18 0.21 1</diffuse></material></visual>
+
+<collision name="road_horizontal_0_depth_car_036_body_collision"><pose>-33.000 -143.000 1.275 0 0 0.000000000</pose>
+<geometry><box><size>4.800 1.950 2.550</size></box></geometry></collision>
+
+<visual name="road_horizontal_0_depth_car_036_roof_marker"><pose>-33.550 -143.000 2.595 0 0 0.000000000</pose>
+<geometry><box><size>1.050 0.480 0.090</size></box></geometry><material><ambient>0.08 0.10 0.11 1</ambient><diffuse>0.08 0.10 0.11 1</diffuse></material></visual>
+
+<visual name="road_horizontal_0_depth_car_037_lower_body"><pose>-33.000 -137.000 0.540 0 0 0.000000000</pose>
+<geometry><box><size>4.400 1.850 0.820</size></box></geometry><material><ambient>0.10 0.25 0.48 1</ambient><diffuse>0.10 0.25 0.48 1</diffuse></material></visual>
+
+<visual name="road_horizontal_0_depth_car_037_bonnet"><pose>-31.620 -137.000 1.020 0 0 0.000000000</pose>
+<geometry><box><size>1.180 1.760 0.250</size></box></geometry><material><ambient>0.10 0.25 0.48 1</ambient><diffuse>0.10 0.25 0.48 1</diffuse></material></visual>
+
+<visual name="road_horizontal_0_depth_car_037_glazed_cabin"><pose>-33.250 -137.000 1.260 0 0 0.000000000</pose>
+<geometry><box><size>2.150 1.550 0.720</size></box></geometry><material><ambient>0.16 0.22 0.25 1</ambient><diffuse>0.16 0.22 0.25 1</diffuse></material></visual>
+
+<collision name="road_horizontal_0_depth_car_037_body_collision"><pose>-33.000 -137.000 0.810 0 0 0.000000000</pose>
+<geometry><box><size>4.400 1.850 1.620</size></box></geometry></collision>
+
+<visual name="road_horizontal_0_depth_car_037_roof_marker"><pose>-33.150 -137.000 1.665 0 0 0.000000000</pose>
+<geometry><box><size>1.350 0.480 0.090</size></box></geometry><material><ambient>0.91 0.88 0.68 1</ambient><diffuse>0.91 0.88 0.68 1</diffuse></material></visual>
+
+<visual name="road_horizontal_0_depth_car_038_lower_body"><pose>-16.000 -143.000 0.680 0 0 0.000000000</pose>
+<geometry><box><size>4.800 1.950 1.150</size></box></geometry><material><ambient>0.64 0.62 0.56 1</ambient><diffuse>0.64 0.62 0.56 1</diffuse></material></visual>
+
+<visual name="road_horizontal_0_depth_car_038_upper_body"><pose>-16.350 -143.000 1.880 0 0 0.000000000</pose>
+<geometry><box><size>3.550 1.780 1.340</size></box></geometry><material><ambient>0.64 0.62 0.56 1</ambient><diffuse>0.64 0.62 0.56 1</diffuse></material></visual>
+
+<visual name="road_horizontal_0_depth_car_038_windscreen"><pose>-14.530 -143.000 1.840 0 0 0.000000000</pose>
+<geometry><box><size>0.120 1.600 1.100</size></box></geometry><material><ambient>0.12 0.18 0.21 1</ambient><diffuse>0.12 0.18 0.21 1</diffuse></material></visual>
+
+<collision name="road_horizontal_0_depth_car_038_body_collision"><pose>-16.000 -143.000 1.275 0 0 0.000000000</pose>
+<geometry><box><size>4.800 1.950 2.550</size></box></geometry></collision>
+
+<visual name="road_horizontal_0_depth_car_038_roof_marker"><pose>-15.750 -143.000 2.595 0 0 0.000000000</pose>
+<geometry><box><size>1.650 0.480 0.090</size></box></geometry><material><ambient>0.08 0.10 0.11 1</ambient><diffuse>0.08 0.10 0.11 1</diffuse></material></visual>
+
+<visual name="road_horizontal_0_depth_car_039_lower_body"><pose>-16.000 -137.000 0.540 0 0 0.000000000</pose>
+<geometry><box><size>4.400 1.850 0.820</size></box></geometry><material><ambient>0.20 0.38 0.24 1</ambient><diffuse>0.20 0.38 0.24 1</diffuse></material></visual>
+
+<visual name="road_horizontal_0_depth_car_039_bonnet"><pose>-14.620 -137.000 1.020 0 0 0.000000000</pose>
+<geometry><box><size>1.180 1.760 0.250</size></box></geometry><material><ambient>0.20 0.38 0.24 1</ambient><diffuse>0.20 0.38 0.24 1</diffuse></material></visual>
+
+<visual name="road_horizontal_0_depth_car_039_glazed_cabin"><pose>-16.250 -137.000 1.260 0 0 0.000000000</pose>
+<geometry><box><size>2.150 1.550 0.720</size></box></geometry><material><ambient>0.16 0.22 0.25 1</ambient><diffuse>0.16 0.22 0.25 1</diffuse></material></visual>
+
+<collision name="road_horizontal_0_depth_car_039_body_collision"><pose>-16.000 -137.000 0.810 0 0 0.000000000</pose>
+<geometry><box><size>4.400 1.850 1.620</size></box></geometry></collision>
+
+<visual name="road_horizontal_0_depth_car_039_roof_marker"><pose>-15.400 -137.000 1.665 0 0 0.000000000</pose>
+<geometry><box><size>1.050 0.480 0.090</size></box></geometry><material><ambient>0.91 0.88 0.68 1</ambient><diffuse>0.91 0.88 0.68 1</diffuse></material></visual>
+
+<visual name="road_horizontal_0_depth_car_040_lower_body"><pose>9.000 -143.000 0.680 0 0 0.000000000</pose>
+<geometry><box><size>4.800 1.950 1.150</size></box></geometry><material><ambient>0.58 0.10 0.08 1</ambient><diffuse>0.58 0.10 0.08 1</diffuse></material></visual>
+
+<visual name="road_horizontal_0_depth_car_040_upper_body"><pose>8.650 -143.000 1.880 0 0 0.000000000</pose>
+<geometry><box><size>3.550 1.780 1.340</size></box></geometry><material><ambient>0.58 0.10 0.08 1</ambient><diffuse>0.58 0.10 0.08 1</diffuse></material></visual>
+
+<visual name="road_horizontal_0_depth_car_040_windscreen"><pose>10.470 -143.000 1.840 0 0 0.000000000</pose>
+<geometry><box><size>0.120 1.600 1.100</size></box></geometry><material><ambient>0.12 0.18 0.21 1</ambient><diffuse>0.12 0.18 0.21 1</diffuse></material></visual>
+
+<collision name="road_horizontal_0_depth_car_040_body_collision"><pose>9.000 -143.000 1.275 0 0 0.000000000</pose>
+<geometry><box><size>4.800 1.950 2.550</size></box></geometry></collision>
+
+<visual name="road_horizontal_0_depth_car_040_roof_marker"><pose>8.450 -143.000 2.595 0 0 0.000000000</pose>
+<geometry><box><size>1.350 0.480 0.090</size></box></geometry><material><ambient>0.08 0.10 0.11 1</ambient><diffuse>0.08 0.10 0.11 1</diffuse></material></visual>
+
+<visual name="road_horizontal_0_depth_car_041_lower_body"><pose>9.000 -137.000 0.540 0 0 0.000000000</pose>
+<geometry><box><size>4.400 1.850 0.820</size></box></geometry><material><ambient>0.10 0.25 0.48 1</ambient><diffuse>0.10 0.25 0.48 1</diffuse></material></visual>
+
+<visual name="road_horizontal_0_depth_car_041_bonnet"><pose>10.380 -137.000 1.020 0 0 0.000000000</pose>
+<geometry><box><size>1.180 1.760 0.250</size></box></geometry><material><ambient>0.10 0.25 0.48 1</ambient><diffuse>0.10 0.25 0.48 1</diffuse></material></visual>
+
+<visual name="road_horizontal_0_depth_car_041_glazed_cabin"><pose>8.750 -137.000 1.260 0 0 0.000000000</pose>
+<geometry><box><size>2.150 1.550 0.720</size></box></geometry><material><ambient>0.16 0.22 0.25 1</ambient><diffuse>0.16 0.22 0.25 1</diffuse></material></visual>
+
+<collision name="road_horizontal_0_depth_car_041_body_collision"><pose>9.000 -137.000 0.810 0 0 0.000000000</pose>
+<geometry><box><size>4.400 1.850 1.620</size></box></geometry></collision>
+
+<visual name="road_horizontal_0_depth_car_041_roof_marker"><pose>8.850 -137.000 1.665 0 0 0.000000000</pose>
+<geometry><box><size>1.650 0.480 0.090</size></box></geometry><material><ambient>0.91 0.88 0.68 1</ambient><diffuse>0.91 0.88 0.68 1</diffuse></material></visual>
+
+<visual name="road_horizontal_0_depth_car_042_lower_body"><pose>22.000 -143.000 0.680 0 0 0.000000000</pose>
+<geometry><box><size>4.800 1.950 1.150</size></box></geometry><material><ambient>0.64 0.62 0.56 1</ambient><diffuse>0.64 0.62 0.56 1</diffuse></material></visual>
+
+<visual name="road_horizontal_0_depth_car_042_upper_body"><pose>21.650 -143.000 1.880 0 0 0.000000000</pose>
+<geometry><box><size>3.550 1.780 1.340</size></box></geometry><material><ambient>0.64 0.62 0.56 1</ambient><diffuse>0.64 0.62 0.56 1</diffuse></material></visual>
+
+<visual name="road_horizontal_0_depth_car_042_windscreen"><pose>23.470 -143.000 1.840 0 0 0.000000000</pose>
+<geometry><box><size>0.120 1.600 1.100</size></box></geometry><material><ambient>0.12 0.18 0.21 1</ambient><diffuse>0.12 0.18 0.21 1</diffuse></material></visual>
+
+<collision name="road_horizontal_0_depth_car_042_body_collision"><pose>22.000 -143.000 1.275 0 0 0.000000000</pose>
+<geometry><box><size>4.800 1.950 2.550</size></box></geometry></collision>
+
+<visual name="road_horizontal_0_depth_car_042_roof_marker"><pose>22.250 -143.000 2.595 0 0 0.000000000</pose>
+<geometry><box><size>1.050 0.480 0.090</size></box></geometry><material><ambient>0.08 0.10 0.11 1</ambient><diffuse>0.08 0.10 0.11 1</diffuse></material></visual>
+
+<visual name="road_horizontal_0_depth_car_043_lower_body"><pose>22.000 -137.000 0.540 0 0 0.000000000</pose>
+<geometry><box><size>4.400 1.850 0.820</size></box></geometry><material><ambient>0.20 0.38 0.24 1</ambient><diffuse>0.20 0.38 0.24 1</diffuse></material></visual>
+
+<visual name="road_horizontal_0_depth_car_043_bonnet"><pose>23.380 -137.000 1.020 0 0 0.000000000</pose>
+<geometry><box><size>1.180 1.760 0.250</size></box></geometry><material><ambient>0.20 0.38 0.24 1</ambient><diffuse>0.20 0.38 0.24 1</diffuse></material></visual>
+
+<visual name="road_horizontal_0_depth_car_043_glazed_cabin"><pose>21.750 -137.000 1.260 0 0 0.000000000</pose>
+<geometry><box><size>2.150 1.550 0.720</size></box></geometry><material><ambient>0.16 0.22 0.25 1</ambient><diffuse>0.16 0.22 0.25 1</diffuse></material></visual>
+
+<collision name="road_horizontal_0_depth_car_043_body_collision"><pose>22.000 -137.000 0.810 0 0 0.000000000</pose>
+<geometry><box><size>4.400 1.850 1.620</size></box></geometry></collision>
+
+<visual name="road_horizontal_0_depth_car_043_roof_marker"><pose>22.600 -137.000 1.665 0 0 0.000000000</pose>
+<geometry><box><size>1.350 0.480 0.090</size></box></geometry><material><ambient>0.91 0.88 0.68 1</ambient><diffuse>0.91 0.88 0.68 1</diffuse></material></visual>
+
+<visual name="road_horizontal_0_depth_car_044_lower_body"><pose>39.000 -143.000 0.680 0 0 0.000000000</pose>
+<geometry><box><size>4.800 1.950 1.150</size></box></geometry><material><ambient>0.58 0.10 0.08 1</ambient><diffuse>0.58 0.10 0.08 1</diffuse></material></visual>
+
+<visual name="road_horizontal_0_depth_car_044_upper_body"><pose>38.650 -143.000 1.880 0 0 0.000000000</pose>
+<geometry><box><size>3.550 1.780 1.340</size></box></geometry><material><ambient>0.58 0.10 0.08 1</ambient><diffuse>0.58 0.10 0.08 1</diffuse></material></visual>
+
+<visual name="road_horizontal_0_depth_car_044_windscreen"><pose>40.470 -143.000 1.840 0 0 0.000000000</pose>
+<geometry><box><size>0.120 1.600 1.100</size></box></geometry><material><ambient>0.12 0.18 0.21 1</ambient><diffuse>0.12 0.18 0.21 1</diffuse></material></visual>
+
+<collision name="road_horizontal_0_depth_car_044_body_collision"><pose>39.000 -143.000 1.275 0 0 0.000000000</pose>
+<geometry><box><size>4.800 1.950 2.550</size></box></geometry></collision>
+
+<visual name="road_horizontal_0_depth_car_044_roof_marker"><pose>38.450 -143.000 2.595 0 0 0.000000000</pose>
+<geometry><box><size>1.650 0.480 0.090</size></box></geometry><material><ambient>0.08 0.10 0.11 1</ambient><diffuse>0.08 0.10 0.11 1</diffuse></material></visual>
+
+<visual name="road_horizontal_0_depth_car_045_lower_body"><pose>39.000 -137.000 0.540 0 0 0.000000000</pose>
+<geometry><box><size>4.400 1.850 0.820</size></box></geometry><material><ambient>0.10 0.25 0.48 1</ambient><diffuse>0.10 0.25 0.48 1</diffuse></material></visual>
+
+<visual name="road_horizontal_0_depth_car_045_bonnet"><pose>40.380 -137.000 1.020 0 0 0.000000000</pose>
+<geometry><box><size>1.180 1.760 0.250</size></box></geometry><material><ambient>0.10 0.25 0.48 1</ambient><diffuse>0.10 0.25 0.48 1</diffuse></material></visual>
+
+<visual name="road_horizontal_0_depth_car_045_glazed_cabin"><pose>38.750 -137.000 1.260 0 0 0.000000000</pose>
+<geometry><box><size>2.150 1.550 0.720</size></box></geometry><material><ambient>0.16 0.22 0.25 1</ambient><diffuse>0.16 0.22 0.25 1</diffuse></material></visual>
+
+<collision name="road_horizontal_0_depth_car_045_body_collision"><pose>39.000 -137.000 0.810 0 0 0.000000000</pose>
+<geometry><box><size>4.400 1.850 1.620</size></box></geometry></collision>
+
+<visual name="road_horizontal_0_depth_car_045_roof_marker"><pose>38.850 -137.000 1.665 0 0 0.000000000</pose>
+<geometry><box><size>1.050 0.480 0.090</size></box></geometry><material><ambient>0.91 0.88 0.68 1</ambient><diffuse>0.91 0.88 0.68 1</diffuse></material></visual>
+
+<visual name="road_horizontal_0_depth_car_046_lower_body"><pose>57.000 -143.000 0.680 0 0 0.000000000</pose>
+<geometry><box><size>4.800 1.950 1.150</size></box></geometry><material><ambient>0.64 0.62 0.56 1</ambient><diffuse>0.64 0.62 0.56 1</diffuse></material></visual>
+
+<visual name="road_horizontal_0_depth_car_046_upper_body"><pose>56.650 -143.000 1.880 0 0 0.000000000</pose>
+<geometry><box><size>3.550 1.780 1.340</size></box></geometry><material><ambient>0.64 0.62 0.56 1</ambient><diffuse>0.64 0.62 0.56 1</diffuse></material></visual>
+
+<visual name="road_horizontal_0_depth_car_046_windscreen"><pose>58.470 -143.000 1.840 0 0 0.000000000</pose>
+<geometry><box><size>0.120 1.600 1.100</size></box></geometry><material><ambient>0.12 0.18 0.21 1</ambient><diffuse>0.12 0.18 0.21 1</diffuse></material></visual>
+
+<collision name="road_horizontal_0_depth_car_046_body_collision"><pose>57.000 -143.000 1.275 0 0 0.000000000</pose>
+<geometry><box><size>4.800 1.950 2.550</size></box></geometry></collision>
+
+<visual name="road_horizontal_0_depth_car_046_roof_marker"><pose>57.250 -143.000 2.595 0 0 0.000000000</pose>
+<geometry><box><size>1.350 0.480 0.090</size></box></geometry><material><ambient>0.08 0.10 0.11 1</ambient><diffuse>0.08 0.10 0.11 1</diffuse></material></visual>
+
+<visual name="road_horizontal_0_depth_car_047_lower_body"><pose>57.000 -137.000 0.540 0 0 0.000000000</pose>
+<geometry><box><size>4.400 1.850 0.820</size></box></geometry><material><ambient>0.20 0.38 0.24 1</ambient><diffuse>0.20 0.38 0.24 1</diffuse></material></visual>
+
+<visual name="road_horizontal_0_depth_car_047_bonnet"><pose>58.380 -137.000 1.020 0 0 0.000000000</pose>
+<geometry><box><size>1.180 1.760 0.250</size></box></geometry><material><ambient>0.20 0.38 0.24 1</ambient><diffuse>0.20 0.38 0.24 1</diffuse></material></visual>
+
+<visual name="road_horizontal_0_depth_car_047_glazed_cabin"><pose>56.750 -137.000 1.260 0 0 0.000000000</pose>
+<geometry><box><size>2.150 1.550 0.720</size></box></geometry><material><ambient>0.16 0.22 0.25 1</ambient><diffuse>0.16 0.22 0.25 1</diffuse></material></visual>
+
+<collision name="road_horizontal_0_depth_car_047_body_collision"><pose>57.000 -137.000 0.810 0 0 0.000000000</pose>
+<geometry><box><size>4.400 1.850 1.620</size></box></geometry></collision>
+
+<visual name="road_horizontal_0_depth_car_047_roof_marker"><pose>57.600 -137.000 1.665 0 0 0.000000000</pose>
+<geometry><box><size>1.650 0.480 0.090</size></box></geometry><material><ambient>0.91 0.88 0.68 1</ambient><diffuse>0.91 0.88 0.68 1</diffuse></material></visual>
+
+<visual name="road_horizontal_0_depth_car_048_lower_body"><pose>74.000 -143.000 0.680 0 0 0.000000000</pose>
+<geometry><box><size>4.800 1.950 1.150</size></box></geometry><material><ambient>0.58 0.10 0.08 1</ambient><diffuse>0.58 0.10 0.08 1</diffuse></material></visual>
+
+<visual name="road_horizontal_0_depth_car_048_upper_body"><pose>73.650 -143.000 1.880 0 0 0.000000000</pose>
+<geometry><box><size>3.550 1.780 1.340</size></box></geometry><material><ambient>0.58 0.10 0.08 1</ambient><diffuse>0.58 0.10 0.08 1</diffuse></material></visual>
+
+<visual name="road_horizontal_0_depth_car_048_windscreen"><pose>75.470 -143.000 1.840 0 0 0.000000000</pose>
+<geometry><box><size>0.120 1.600 1.100</size></box></geometry><material><ambient>0.12 0.18 0.21 1</ambient><diffuse>0.12 0.18 0.21 1</diffuse></material></visual>
+
+<collision name="road_horizontal_0_depth_car_048_body_collision"><pose>74.000 -143.000 1.275 0 0 0.000000000</pose>
+<geometry><box><size>4.800 1.950 2.550</size></box></geometry></collision>
+
+<visual name="road_horizontal_0_depth_car_048_roof_marker"><pose>73.450 -143.000 2.595 0 0 0.000000000</pose>
+<geometry><box><size>1.050 0.480 0.090</size></box></geometry><material><ambient>0.08 0.10 0.11 1</ambient><diffuse>0.08 0.10 0.11 1</diffuse></material></visual>
+
+<visual name="road_horizontal_0_depth_car_049_lower_body"><pose>74.000 -137.000 0.540 0 0 0.000000000</pose>
+<geometry><box><size>4.400 1.850 0.820</size></box></geometry><material><ambient>0.10 0.25 0.48 1</ambient><diffuse>0.10 0.25 0.48 1</diffuse></material></visual>
+
+<visual name="road_horizontal_0_depth_car_049_bonnet"><pose>75.380 -137.000 1.020 0 0 0.000000000</pose>
+<geometry><box><size>1.180 1.760 0.250</size></box></geometry><material><ambient>0.10 0.25 0.48 1</ambient><diffuse>0.10 0.25 0.48 1</diffuse></material></visual>
+
+<visual name="road_horizontal_0_depth_car_049_glazed_cabin"><pose>73.750 -137.000 1.260 0 0 0.000000000</pose>
+<geometry><box><size>2.150 1.550 0.720</size></box></geometry><material><ambient>0.16 0.22 0.25 1</ambient><diffuse>0.16 0.22 0.25 1</diffuse></material></visual>
+
+<collision name="road_horizontal_0_depth_car_049_body_collision"><pose>74.000 -137.000 0.810 0 0 0.000000000</pose>
+<geometry><box><size>4.400 1.850 1.620</size></box></geometry></collision>
+
+<visual name="road_horizontal_0_depth_car_049_roof_marker"><pose>73.850 -137.000 1.665 0 0 0.000000000</pose>
+<geometry><box><size>1.350 0.480 0.090</size></box></geometry><material><ambient>0.91 0.88 0.68 1</ambient><diffuse>0.91 0.88 0.68 1</diffuse></material></visual>
+
+<visual name="road_horizontal_0_depth_car_050_lower_body"><pose>99.000 -143.000 0.680 0 0 0.000000000</pose>
+<geometry><box><size>4.800 1.950 1.150</size></box></geometry><material><ambient>0.64 0.62 0.56 1</ambient><diffuse>0.64 0.62 0.56 1</diffuse></material></visual>
+
+<visual name="road_horizontal_0_depth_car_050_upper_body"><pose>98.650 -143.000 1.880 0 0 0.000000000</pose>
+<geometry><box><size>3.550 1.780 1.340</size></box></geometry><material><ambient>0.64 0.62 0.56 1</ambient><diffuse>0.64 0.62 0.56 1</diffuse></material></visual>
+
+<visual name="road_horizontal_0_depth_car_050_windscreen"><pose>100.470 -143.000 1.840 0 0 0.000000000</pose>
+<geometry><box><size>0.120 1.600 1.100</size></box></geometry><material><ambient>0.12 0.18 0.21 1</ambient><diffuse>0.12 0.18 0.21 1</diffuse></material></visual>
+
+<collision name="road_horizontal_0_depth_car_050_body_collision"><pose>99.000 -143.000 1.275 0 0 0.000000000</pose>
+<geometry><box><size>4.800 1.950 2.550</size></box></geometry></collision>
+
+<visual name="road_horizontal_0_depth_car_050_roof_marker"><pose>99.250 -143.000 2.595 0 0 0.000000000</pose>
+<geometry><box><size>1.650 0.480 0.090</size></box></geometry><material><ambient>0.08 0.10 0.11 1</ambient><diffuse>0.08 0.10 0.11 1</diffuse></material></visual>
+
+<visual name="road_horizontal_0_depth_car_051_lower_body"><pose>99.000 -137.000 0.540 0 0 0.000000000</pose>
+<geometry><box><size>4.400 1.850 0.820</size></box></geometry><material><ambient>0.20 0.38 0.24 1</ambient><diffuse>0.20 0.38 0.24 1</diffuse></material></visual>
+
+<visual name="road_horizontal_0_depth_car_051_bonnet"><pose>100.380 -137.000 1.020 0 0 0.000000000</pose>
+<geometry><box><size>1.180 1.760 0.250</size></box></geometry><material><ambient>0.20 0.38 0.24 1</ambient><diffuse>0.20 0.38 0.24 1</diffuse></material></visual>
+
+<visual name="road_horizontal_0_depth_car_051_glazed_cabin"><pose>98.750 -137.000 1.260 0 0 0.000000000</pose>
+<geometry><box><size>2.150 1.550 0.720</size></box></geometry><material><ambient>0.16 0.22 0.25 1</ambient><diffuse>0.16 0.22 0.25 1</diffuse></material></visual>
+
+<collision name="road_horizontal_0_depth_car_051_body_collision"><pose>99.000 -137.000 0.810 0 0 0.000000000</pose>
+<geometry><box><size>4.400 1.850 1.620</size></box></geometry></collision>
+
+<visual name="road_horizontal_0_depth_car_051_roof_marker"><pose>99.600 -137.000 1.665 0 0 0.000000000</pose>
+<geometry><box><size>1.050 0.480 0.090</size></box></geometry><material><ambient>0.91 0.88 0.68 1</ambient><diffuse>0.91 0.88 0.68 1</diffuse></material></visual>
+
+<visual name="road_horizontal_0_depth_car_052_lower_body"><pose>112.000 -143.000 0.680 0 0 0.000000000</pose>
+<geometry><box><size>4.800 1.950 1.150</size></box></geometry><material><ambient>0.58 0.10 0.08 1</ambient><diffuse>0.58 0.10 0.08 1</diffuse></material></visual>
+
+<visual name="road_horizontal_0_depth_car_052_upper_body"><pose>111.650 -143.000 1.880 0 0 0.000000000</pose>
+<geometry><box><size>3.550 1.780 1.340</size></box></geometry><material><ambient>0.58 0.10 0.08 1</ambient><diffuse>0.58 0.10 0.08 1</diffuse></material></visual>
+
+<visual name="road_horizontal_0_depth_car_052_windscreen"><pose>113.470 -143.000 1.840 0 0 0.000000000</pose>
+<geometry><box><size>0.120 1.600 1.100</size></box></geometry><material><ambient>0.12 0.18 0.21 1</ambient><diffuse>0.12 0.18 0.21 1</diffuse></material></visual>
+
+<collision name="road_horizontal_0_depth_car_052_body_collision"><pose>112.000 -143.000 1.275 0 0 0.000000000</pose>
+<geometry><box><size>4.800 1.950 2.550</size></box></geometry></collision>
+
+<visual name="road_horizontal_0_depth_car_052_roof_marker"><pose>111.450 -143.000 2.595 0 0 0.000000000</pose>
+<geometry><box><size>1.350 0.480 0.090</size></box></geometry><material><ambient>0.08 0.10 0.11 1</ambient><diffuse>0.08 0.10 0.11 1</diffuse></material></visual>
+
+<visual name="road_horizontal_0_depth_car_053_lower_body"><pose>112.000 -137.000 0.540 0 0 0.000000000</pose>
+<geometry><box><size>4.400 1.850 0.820</size></box></geometry><material><ambient>0.10 0.25 0.48 1</ambient><diffuse>0.10 0.25 0.48 1</diffuse></material></visual>
+
+<visual name="road_horizontal_0_depth_car_053_bonnet"><pose>113.380 -137.000 1.020 0 0 0.000000000</pose>
+<geometry><box><size>1.180 1.760 0.250</size></box></geometry><material><ambient>0.10 0.25 0.48 1</ambient><diffuse>0.10 0.25 0.48 1</diffuse></material></visual>
+
+<visual name="road_horizontal_0_depth_car_053_glazed_cabin"><pose>111.750 -137.000 1.260 0 0 0.000000000</pose>
+<geometry><box><size>2.150 1.550 0.720</size></box></geometry><material><ambient>0.16 0.22 0.25 1</ambient><diffuse>0.16 0.22 0.25 1</diffuse></material></visual>
+
+<collision name="road_horizontal_0_depth_car_053_body_collision"><pose>112.000 -137.000 0.810 0 0 0.000000000</pose>
+<geometry><box><size>4.400 1.850 1.620</size></box></geometry></collision>
+
+<visual name="road_horizontal_0_depth_car_053_roof_marker"><pose>111.850 -137.000 1.665 0 0 0.000000000</pose>
+<geometry><box><size>1.650 0.480 0.090</size></box></geometry><material><ambient>0.91 0.88 0.68 1</ambient><diffuse>0.91 0.88 0.68 1</diffuse></material></visual>
+
+<visual name="road_horizontal_0_depth_car_054_lower_body"><pose>129.000 -143.000 0.680 0 0 0.000000000</pose>
+<geometry><box><size>4.800 1.950 1.150</size></box></geometry><material><ambient>0.64 0.62 0.56 1</ambient><diffuse>0.64 0.62 0.56 1</diffuse></material></visual>
+
+<visual name="road_horizontal_0_depth_car_054_upper_body"><pose>128.650 -143.000 1.880 0 0 0.000000000</pose>
+<geometry><box><size>3.550 1.780 1.340</size></box></geometry><material><ambient>0.64 0.62 0.56 1</ambient><diffuse>0.64 0.62 0.56 1</diffuse></material></visual>
+
+<visual name="road_horizontal_0_depth_car_054_windscreen"><pose>130.470 -143.000 1.840 0 0 0.000000000</pose>
+<geometry><box><size>0.120 1.600 1.100</size></box></geometry><material><ambient>0.12 0.18 0.21 1</ambient><diffuse>0.12 0.18 0.21 1</diffuse></material></visual>
+
+<collision name="road_horizontal_0_depth_car_054_body_collision"><pose>129.000 -143.000 1.275 0 0 0.000000000</pose>
+<geometry><box><size>4.800 1.950 2.550</size></box></geometry></collision>
+
+<visual name="road_horizontal_0_depth_car_054_roof_marker"><pose>129.250 -143.000 2.595 0 0 0.000000000</pose>
+<geometry><box><size>1.050 0.480 0.090</size></box></geometry><material><ambient>0.08 0.10 0.11 1</ambient><diffuse>0.08 0.10 0.11 1</diffuse></material></visual>
+
+<visual name="road_horizontal_0_depth_car_055_lower_body"><pose>129.000 -137.000 0.540 0 0 0.000000000</pose>
+<geometry><box><size>4.400 1.850 0.820</size></box></geometry><material><ambient>0.20 0.38 0.24 1</ambient><diffuse>0.20 0.38 0.24 1</diffuse></material></visual>
+
+<visual name="road_horizontal_0_depth_car_055_bonnet"><pose>130.380 -137.000 1.020 0 0 0.000000000</pose>
+<geometry><box><size>1.180 1.760 0.250</size></box></geometry><material><ambient>0.20 0.38 0.24 1</ambient><diffuse>0.20 0.38 0.24 1</diffuse></material></visual>
+
+<visual name="road_horizontal_0_depth_car_055_glazed_cabin"><pose>128.750 -137.000 1.260 0 0 0.000000000</pose>
+<geometry><box><size>2.150 1.550 0.720</size></box></geometry><material><ambient>0.16 0.22 0.25 1</ambient><diffuse>0.16 0.22 0.25 1</diffuse></material></visual>
+
+<collision name="road_horizontal_0_depth_car_055_body_collision"><pose>129.000 -137.000 0.810 0 0 0.000000000</pose>
+<geometry><box><size>4.400 1.850 1.620</size></box></geometry></collision>
+
+<visual name="road_horizontal_0_depth_car_055_roof_marker"><pose>129.600 -137.000 1.665 0 0 0.000000000</pose>
+<geometry><box><size>1.350 0.480 0.090</size></box></geometry><material><ambient>0.91 0.88 0.68 1</ambient><diffuse>0.91 0.88 0.68 1</diffuse></material></visual>
+
+<visual name="road_horizontal_0_depth_car_056_lower_body"><pose>147.000 -143.000 0.680 0 0 0.000000000</pose>
+<geometry><box><size>4.800 1.950 1.150</size></box></geometry><material><ambient>0.58 0.10 0.08 1</ambient><diffuse>0.58 0.10 0.08 1</diffuse></material></visual>
+
+<visual name="road_horizontal_0_depth_car_056_upper_body"><pose>146.650 -143.000 1.880 0 0 0.000000000</pose>
+<geometry><box><size>3.550 1.780 1.340</size></box></geometry><material><ambient>0.58 0.10 0.08 1</ambient><diffuse>0.58 0.10 0.08 1</diffuse></material></visual>
+
+<visual name="road_horizontal_0_depth_car_056_windscreen"><pose>148.470 -143.000 1.840 0 0 0.000000000</pose>
+<geometry><box><size>0.120 1.600 1.100</size></box></geometry><material><ambient>0.12 0.18 0.21 1</ambient><diffuse>0.12 0.18 0.21 1</diffuse></material></visual>
+
+<collision name="road_horizontal_0_depth_car_056_body_collision"><pose>147.000 -143.000 1.275 0 0 0.000000000</pose>
+<geometry><box><size>4.800 1.950 2.550</size></box></geometry></collision>
+
+<visual name="road_horizontal_0_depth_car_056_roof_marker"><pose>146.450 -143.000 2.595 0 0 0.000000000</pose>
+<geometry><box><size>1.650 0.480 0.090</size></box></geometry><material><ambient>0.08 0.10 0.11 1</ambient><diffuse>0.08 0.10 0.11 1</diffuse></material></visual>
+
+<visual name="road_horizontal_0_depth_car_057_lower_body"><pose>147.000 -137.000 0.540 0 0 0.000000000</pose>
+<geometry><box><size>4.400 1.850 0.820</size></box></geometry><material><ambient>0.10 0.25 0.48 1</ambient><diffuse>0.10 0.25 0.48 1</diffuse></material></visual>
+
+<visual name="road_horizontal_0_depth_car_057_bonnet"><pose>148.380 -137.000 1.020 0 0 0.000000000</pose>
+<geometry><box><size>1.180 1.760 0.250</size></box></geometry><material><ambient>0.10 0.25 0.48 1</ambient><diffuse>0.10 0.25 0.48 1</diffuse></material></visual>
+
+<visual name="road_horizontal_0_depth_car_057_glazed_cabin"><pose>146.750 -137.000 1.260 0 0 0.000000000</pose>
+<geometry><box><size>2.150 1.550 0.720</size></box></geometry><material><ambient>0.16 0.22 0.25 1</ambient><diffuse>0.16 0.22 0.25 1</diffuse></material></visual>
+
+<collision name="road_horizontal_0_depth_car_057_body_collision"><pose>147.000 -137.000 0.810 0 0 0.000000000</pose>
+<geometry><box><size>4.400 1.850 1.620</size></box></geometry></collision>
+
+<visual name="road_horizontal_0_depth_car_057_roof_marker"><pose>146.850 -137.000 1.665 0 0 0.000000000</pose>
+<geometry><box><size>1.050 0.480 0.090</size></box></geometry><material><ambient>0.91 0.88 0.68 1</ambient><diffuse>0.91 0.88 0.68 1</diffuse></material></visual>
+
+<visual name="road_horizontal_0_depth_car_058_lower_body"><pose>164.000 -143.000 0.680 0 0 0.000000000</pose>
+<geometry><box><size>4.800 1.950 1.150</size></box></geometry><material><ambient>0.64 0.62 0.56 1</ambient><diffuse>0.64 0.62 0.56 1</diffuse></material></visual>
+
+<visual name="road_horizontal_0_depth_car_058_upper_body"><pose>163.650 -143.000 1.880 0 0 0.000000000</pose>
+<geometry><box><size>3.550 1.780 1.340</size></box></geometry><material><ambient>0.64 0.62 0.56 1</ambient><diffuse>0.64 0.62 0.56 1</diffuse></material></visual>
+
+<visual name="road_horizontal_0_depth_car_058_windscreen"><pose>165.470 -143.000 1.840 0 0 0.000000000</pose>
+<geometry><box><size>0.120 1.600 1.100</size></box></geometry><material><ambient>0.12 0.18 0.21 1</ambient><diffuse>0.12 0.18 0.21 1</diffuse></material></visual>
+
+<collision name="road_horizontal_0_depth_car_058_body_collision"><pose>164.000 -143.000 1.275 0 0 0.000000000</pose>
+<geometry><box><size>4.800 1.950 2.550</size></box></geometry></collision>
+
+<visual name="road_horizontal_0_depth_car_058_roof_marker"><pose>164.250 -143.000 2.595 0 0 0.000000000</pose>
+<geometry><box><size>1.350 0.480 0.090</size></box></geometry><material><ambient>0.08 0.10 0.11 1</ambient><diffuse>0.08 0.10 0.11 1</diffuse></material></visual>
+
+<visual name="road_horizontal_0_depth_car_059_lower_body"><pose>164.000 -137.000 0.540 0 0 0.000000000</pose>
+<geometry><box><size>4.400 1.850 0.820</size></box></geometry><material><ambient>0.20 0.38 0.24 1</ambient><diffuse>0.20 0.38 0.24 1</diffuse></material></visual>
+
+<visual name="road_horizontal_0_depth_car_059_bonnet"><pose>165.380 -137.000 1.020 0 0 0.000000000</pose>
+<geometry><box><size>1.180 1.760 0.250</size></box></geometry><material><ambient>0.20 0.38 0.24 1</ambient><diffuse>0.20 0.38 0.24 1</diffuse></material></visual>
+
+<visual name="road_horizontal_0_depth_car_059_glazed_cabin"><pose>163.750 -137.000 1.260 0 0 0.000000000</pose>
+<geometry><box><size>2.150 1.550 0.720</size></box></geometry><material><ambient>0.16 0.22 0.25 1</ambient><diffuse>0.16 0.22 0.25 1</diffuse></material></visual>
+
+<collision name="road_horizontal_0_depth_car_059_body_collision"><pose>164.000 -137.000 0.810 0 0 0.000000000</pose>
+<geometry><box><size>4.400 1.850 1.620</size></box></geometry></collision>
+
+<visual name="road_horizontal_0_depth_car_059_roof_marker"><pose>164.600 -137.000 1.665 0 0 0.000000000</pose>
+<geometry><box><size>1.650 0.480 0.090</size></box></geometry><material><ambient>0.91 0.88 0.68 1</ambient><diffuse>0.91 0.88 0.68 1</diffuse></material></visual>
+
+<visual name="hline_0_2"><pose>-164.000 -140.000 0.130 0 0 0.000000000</pose>
+<geometry><box><size>5.000 0.200 0.025</size></box></geometry><material><ambient>0.92 0.90 0.74 1</ambient><diffuse>0.92 0.90 0.74 1</diffuse></material></visual>
+
+<visual name="hline_0_3"><pose>-152.000 -140.000 0.130 0 0 0.000000000</pose>
+<geometry><box><size>5.000 0.200 0.025</size></box></geometry><material><ambient>0.92 0.90 0.74 1</ambient><diffuse>0.92 0.90 0.74 1</diffuse></material></visual>
+
+<visual name="hline_0_4"><pose>-140.000 -140.000 0.130 0 0 0.000000000</pose>
+<geometry><box><size>5.000 0.200 0.025</size></box></geometry><material><ambient>0.92 0.90 0.74 1</ambient><diffuse>0.92 0.90 0.74 1</diffuse></material></visual>
+
+<visual name="hline_0_5"><pose>-128.000 -140.000 0.130 0 0 0.000000000</pose>
+<geometry><box><size>5.000 0.200 0.025</size></box></geometry><material><ambient>0.92 0.90 0.74 1</ambient><diffuse>0.92 0.90 0.74 1</diffuse></material></visual>
+
+<visual name="hline_0_6"><pose>-116.000 -140.000 0.130 0 0 0.000000000</pose>
+<geometry><box><size>5.000 0.200 0.025</size></box></geometry><material><ambient>0.92 0.90 0.74 1</ambient><diffuse>0.92 0.90 0.74 1</diffuse></material></visual>
+
+<visual name="hline_0_7"><pose>-104.000 -140.000 0.130 0 0 0.000000000</pose>
+<geometry><box><size>5.000 0.200 0.025</size></box></geometry><material><ambient>0.92 0.90 0.74 1</ambient><diffuse>0.92 0.90 0.74 1</diffuse></material></visual>
+
+<visual name="hline_0_9"><pose>-80.000 -140.000 0.130 0 0 0.000000000</pose>
+<geometry><box><size>5.000 0.200 0.025</size></box></geometry><material><ambient>0.92 0.90 0.74 1</ambient><diffuse>0.92 0.90 0.74 1</diffuse></material></visual>
+
+<visual name="hline_0_10"><pose>-68.000 -140.000 0.130 0 0 0.000000000</pose>
+<geometry><box><size>5.000 0.200 0.025</size></box></geometry><material><ambient>0.92 0.90 0.74 1</ambient><diffuse>0.92 0.90 0.74 1</diffuse></material></visual>
+
+<visual name="hline_0_11"><pose>-56.000 -140.000 0.130 0 0 0.000000000</pose>
+<geometry><box><size>5.000 0.200 0.025</size></box></geometry><material><ambient>0.92 0.90 0.74 1</ambient><diffuse>0.92 0.90 0.74 1</diffuse></material></visual>
+
+<visual name="hline_0_12"><pose>-44.000 -140.000 0.130 0 0 0.000000000</pose>
+<geometry><box><size>5.000 0.200 0.025</size></box></geometry><material><ambient>0.92 0.90 0.74 1</ambient><diffuse>0.92 0.90 0.74 1</diffuse></material></visual>
+
+<visual name="hline_0_13"><pose>-32.000 -140.000 0.130 0 0 0.000000000</pose>
+<geometry><box><size>5.000 0.200 0.025</size></box></geometry><material><ambient>0.92 0.90 0.74 1</ambient><diffuse>0.92 0.90 0.74 1</diffuse></material></visual>
+
+<visual name="hline_0_14"><pose>-20.000 -140.000 0.130 0 0 0.000000000</pose>
+<geometry><box><size>5.000 0.200 0.025</size></box></geometry><material><ambient>0.92 0.90 0.74 1</ambient><diffuse>0.92 0.90 0.74 1</diffuse></material></visual>
+
+<visual name="hline_0_17"><pose>16.000 -140.000 0.130 0 0 0.000000000</pose>
+<geometry><box><size>5.000 0.200 0.025</size></box></geometry><material><ambient>0.92 0.90 0.74 1</ambient><diffuse>0.92 0.90 0.74 1</diffuse></material></visual>
+
+<visual name="hline_0_18"><pose>28.000 -140.000 0.130 0 0 0.000000000</pose>
+<geometry><box><size>5.000 0.200 0.025</size></box></geometry><material><ambient>0.92 0.90 0.74 1</ambient><diffuse>0.92 0.90 0.74 1</diffuse></material></visual>
+
+<visual name="hline_0_19"><pose>40.000 -140.000 0.130 0 0 0.000000000</pose>
+<geometry><box><size>5.000 0.200 0.025</size></box></geometry><material><ambient>0.92 0.90 0.74 1</ambient><diffuse>0.92 0.90 0.74 1</diffuse></material></visual>
+
+<visual name="hline_0_20"><pose>52.000 -140.000 0.130 0 0 0.000000000</pose>
+<geometry><box><size>5.000 0.200 0.025</size></box></geometry><material><ambient>0.92 0.90 0.74 1</ambient><diffuse>0.92 0.90 0.74 1</diffuse></material></visual>
+
+<visual name="hline_0_21"><pose>64.000 -140.000 0.130 0 0 0.000000000</pose>
+<geometry><box><size>5.000 0.200 0.025</size></box></geometry><material><ambient>0.92 0.90 0.74 1</ambient><diffuse>0.92 0.90 0.74 1</diffuse></material></visual>
+
+<visual name="hline_0_22"><pose>76.000 -140.000 0.130 0 0 0.000000000</pose>
+<geometry><box><size>5.000 0.200 0.025</size></box></geometry><material><ambient>0.92 0.90 0.74 1</ambient><diffuse>0.92 0.90 0.74 1</diffuse></material></visual>
+
+<visual name="hline_0_24"><pose>100.000 -140.000 0.130 0 0 0.000000000</pose>
+<geometry><box><size>5.000 0.200 0.025</size></box></geometry><material><ambient>0.92 0.90 0.74 1</ambient><diffuse>0.92 0.90 0.74 1</diffuse></material></visual>
+
+<visual name="hline_0_25"><pose>112.000 -140.000 0.130 0 0 0.000000000</pose>
+<geometry><box><size>5.000 0.200 0.025</size></box></geometry><material><ambient>0.92 0.90 0.74 1</ambient><diffuse>0.92 0.90 0.74 1</diffuse></material></visual>
+
+<visual name="hline_0_26"><pose>124.000 -140.000 0.130 0 0 0.000000000</pose>
+<geometry><box><size>5.000 0.200 0.025</size></box></geometry><material><ambient>0.92 0.90 0.74 1</ambient><diffuse>0.92 0.90 0.74 1</diffuse></material></visual>
+
+<visual name="hline_0_27"><pose>136.000 -140.000 0.130 0 0 0.000000000</pose>
+<geometry><box><size>5.000 0.200 0.025</size></box></geometry><material><ambient>0.92 0.90 0.74 1</ambient><diffuse>0.92 0.90 0.74 1</diffuse></material></visual>
+
+<visual name="hline_0_28"><pose>148.000 -140.000 0.130 0 0 0.000000000</pose>
+<geometry><box><size>5.000 0.200 0.025</size></box></geometry><material><ambient>0.92 0.90 0.74 1</ambient><diffuse>0.92 0.90 0.74 1</diffuse></material></visual>
+
+<visual name="hline_0_29"><pose>160.000 -140.000 0.130 0 0 0.000000000</pose>
+<geometry><box><size>5.000 0.200 0.025</size></box></geometry><material><ambient>0.92 0.90 0.74 1</ambient><diffuse>0.92 0.90 0.74 1</diffuse></material></visual>
+
+<visual name="crosswalk_0_0_south_0"><pose>-182.700 -146.200 0.145 0 0 0.000000000</pose>
+<geometry><box><size>0.760 3.000 0.025</size></box></geometry><material><ambient>0.89 0.89 0.86 1</ambient><diffuse>0.89 0.89 0.86 1</diffuse></material></visual>
+
+<visual name="crosswalk_0_0_south_1"><pose>-181.350 -146.200 0.145 0 0 0.000000000</pose>
+<geometry><box><size>0.760 3.000 0.025</size></box></geometry><material><ambient>0.89 0.89 0.86 1</ambient><diffuse>0.89 0.89 0.86 1</diffuse></material></visual>
+
+<visual name="crosswalk_0_0_south_2"><pose>-180.000 -146.200 0.145 0 0 0.000000000</pose>
+<geometry><box><size>0.760 3.000 0.025</size></box></geometry><material><ambient>0.89 0.89 0.86 1</ambient><diffuse>0.89 0.89 0.86 1</diffuse></material></visual>
+
+<visual name="crosswalk_0_0_south_3"><pose>-178.650 -146.200 0.145 0 0 0.000000000</pose>
+<geometry><box><size>0.760 3.000 0.025</size></box></geometry><material><ambient>0.89 0.89 0.86 1</ambient><diffuse>0.89 0.89 0.86 1</diffuse></material></visual>
+
+<visual name="crosswalk_0_0_south_4"><pose>-177.300 -146.200 0.145 0 0 0.000000000</pose>
+<geometry><box><size>0.760 3.000 0.025</size></box></geometry><material><ambient>0.89 0.89 0.86 1</ambient><diffuse>0.89 0.89 0.86 1</diffuse></material></visual>
+
+<visual name="crosswalk_0_0_north_0"><pose>-182.700 -133.800 0.145 0 0 0.000000000</pose>
+<geometry><box><size>0.760 3.000 0.025</size></box></geometry><material><ambient>0.89 0.89 0.86 1</ambient><diffuse>0.89 0.89 0.86 1</diffuse></material></visual>
+
+<visual name="crosswalk_0_0_north_1"><pose>-181.350 -133.800 0.145 0 0 0.000000000</pose>
+<geometry><box><size>0.760 3.000 0.025</size></box></geometry><material><ambient>0.89 0.89 0.86 1</ambient><diffuse>0.89 0.89 0.86 1</diffuse></material></visual>
+
+<visual name="crosswalk_0_0_north_2"><pose>-180.000 -133.800 0.145 0 0 0.000000000</pose>
+<geometry><box><size>0.760 3.000 0.025</size></box></geometry><material><ambient>0.89 0.89 0.86 1</ambient><diffuse>0.89 0.89 0.86 1</diffuse></material></visual>
+
+<visual name="crosswalk_0_0_north_3"><pose>-178.650 -133.800 0.145 0 0 0.000000000</pose>
+<geometry><box><size>0.760 3.000 0.025</size></box></geometry><material><ambient>0.89 0.89 0.86 1</ambient><diffuse>0.89 0.89 0.86 1</diffuse></material></visual>
+
+<visual name="crosswalk_0_0_north_4"><pose>-177.300 -133.800 0.145 0 0 0.000000000</pose>
+<geometry><box><size>0.760 3.000 0.025</size></box></geometry><material><ambient>0.89 0.89 0.86 1</ambient><diffuse>0.89 0.89 0.86 1</diffuse></material></visual>
+
+<visual name="crosswalk_0_0_west_0"><pose>-186.200 -142.700 0.145 0 0 1.570796327</pose>
+<geometry><box><size>0.760 3.000 0.025</size></box></geometry><material><ambient>0.89 0.89 0.86 1</ambient><diffuse>0.89 0.89 0.86 1</diffuse></material></visual>
+
+<visual name="crosswalk_0_0_west_1"><pose>-186.200 -141.350 0.145 0 0 1.570796327</pose>
+<geometry><box><size>0.760 3.000 0.025</size></box></geometry><material><ambient>0.89 0.89 0.86 1</ambient><diffuse>0.89 0.89 0.86 1</diffuse></material></visual>
+
+<visual name="crosswalk_0_0_west_2"><pose>-186.200 -140.000 0.145 0 0 1.570796327</pose>
+<geometry><box><size>0.760 3.000 0.025</size></box></geometry><material><ambient>0.89 0.89 0.86 1</ambient><diffuse>0.89 0.89 0.86 1</diffuse></material></visual>
+
+<visual name="crosswalk_0_0_west_3"><pose>-186.200 -138.650 0.145 0 0 1.570796327</pose>
+<geometry><box><size>0.760 3.000 0.025</size></box></geometry><material><ambient>0.89 0.89 0.86 1</ambient><diffuse>0.89 0.89 0.86 1</diffuse></material></visual>
+
+<visual name="crosswalk_0_0_west_4"><pose>-186.200 -137.300 0.145 0 0 1.570796327</pose>
+<geometry><box><size>0.760 3.000 0.025</size></box></geometry><material><ambient>0.89 0.89 0.86 1</ambient><diffuse>0.89 0.89 0.86 1</diffuse></material></visual>
+
+<visual name="crosswalk_0_0_east_0"><pose>-173.800 -142.700 0.145 0 0 1.570796327</pose>
+<geometry><box><size>0.760 3.000 0.025</size></box></geometry><material><ambient>0.89 0.89 0.86 1</ambient><diffuse>0.89 0.89 0.86 1</diffuse></material></visual>
+
+<visual name="crosswalk_0_0_east_1"><pose>-173.800 -141.350 0.145 0 0 1.570796327</pose>
+<geometry><box><size>0.760 3.000 0.025</size></box></geometry><material><ambient>0.89 0.89 0.86 1</ambient><diffuse>0.89 0.89 0.86 1</diffuse></material></visual>
+
+<visual name="crosswalk_0_0_east_2"><pose>-173.800 -140.000 0.145 0 0 1.570796327</pose>
+<geometry><box><size>0.760 3.000 0.025</size></box></geometry><material><ambient>0.89 0.89 0.86 1</ambient><diffuse>0.89 0.89 0.86 1</diffuse></material></visual>
+
+<visual name="crosswalk_0_0_east_3"><pose>-173.800 -138.650 0.145 0 0 1.570796327</pose>
+<geometry><box><size>0.760 3.000 0.025</size></box></geometry><material><ambient>0.89 0.89 0.86 1</ambient><diffuse>0.89 0.89 0.86 1</diffuse></material></visual>
+
+<visual name="crosswalk_0_0_east_4"><pose>-173.800 -137.300 0.145 0 0 1.570796327</pose>
+<geometry><box><size>0.760 3.000 0.025</size></box></geometry><material><ambient>0.89 0.89 0.86 1</ambient><diffuse>0.89 0.89 0.86 1</diffuse></material></visual>
+
+<visual name="crosswalk_1_0_south_0"><pose>-92.700 -146.200 0.145 0 0 0.000000000</pose>
+<geometry><box><size>0.760 3.000 0.025</size></box></geometry><material><ambient>0.89 0.89 0.86 1</ambient><diffuse>0.89 0.89 0.86 1</diffuse></material></visual>
+
+<visual name="crosswalk_1_0_south_1"><pose>-91.350 -146.200 0.145 0 0 0.000000000</pose>
+<geometry><box><size>0.760 3.000 0.025</size></box></geometry><material><ambient>0.89 0.89 0.86 1</ambient><diffuse>0.89 0.89 0.86 1</diffuse></material></visual>
+
+<visual name="crosswalk_1_0_south_2"><pose>-90.000 -146.200 0.145 0 0 0.000000000</pose>
+<geometry><box><size>0.760 3.000 0.025</size></box></geometry><material><ambient>0.89 0.89 0.86 1</ambient><diffuse>0.89 0.89 0.86 1</diffuse></material></visual>
+
+<visual name="crosswalk_1_0_south_3"><pose>-88.650 -146.200 0.145 0 0 0.000000000</pose>
+<geometry><box><size>0.760 3.000 0.025</size></box></geometry><material><ambient>0.89 0.89 0.86 1</ambient><diffuse>0.89 0.89 0.86 1</diffuse></material></visual>
+
+<visual name="crosswalk_1_0_south_4"><pose>-87.300 -146.200 0.145 0 0 0.000000000</pose>
+<geometry><box><size>0.760 3.000 0.025</size></box></geometry><material><ambient>0.89 0.89 0.86 1</ambient><diffuse>0.89 0.89 0.86 1</diffuse></material></visual>
+
+<visual name="crosswalk_1_0_north_0"><pose>-92.700 -133.800 0.145 0 0 0.000000000</pose>
+<geometry><box><size>0.760 3.000 0.025</size></box></geometry><material><ambient>0.89 0.89 0.86 1</ambient><diffuse>0.89 0.89 0.86 1</diffuse></material></visual>
+
+<visual name="crosswalk_1_0_north_1"><pose>-91.350 -133.800 0.145 0 0 0.000000000</pose>
+<geometry><box><size>0.760 3.000 0.025</size></box></geometry><material><ambient>0.89 0.89 0.86 1</ambient><diffuse>0.89 0.89 0.86 1</diffuse></material></visual>
+
+<visual name="crosswalk_1_0_north_2"><pose>-90.000 -133.800 0.145 0 0 0.000000000</pose>
+<geometry><box><size>0.760 3.000 0.025</size></box></geometry><material><ambient>0.89 0.89 0.86 1</ambient><diffuse>0.89 0.89 0.86 1</diffuse></material></visual>
+
+<visual name="crosswalk_1_0_north_3"><pose>-88.650 -133.800 0.145 0 0 0.000000000</pose>
+<geometry><box><size>0.760 3.000 0.025</size></box></geometry><material><ambient>0.89 0.89 0.86 1</ambient><diffuse>0.89 0.89 0.86 1</diffuse></material></visual>
+
+<visual name="crosswalk_1_0_north_4"><pose>-87.300 -133.800 0.145 0 0 0.000000000</pose>
+<geometry><box><size>0.760 3.000 0.025</size></box></geometry><material><ambient>0.89 0.89 0.86 1</ambient><diffuse>0.89 0.89 0.86 1</diffuse></material></visual>
+
+<visual name="crosswalk_1_0_west_0"><pose>-96.200 -142.700 0.145 0 0 1.570796327</pose>
+<geometry><box><size>0.760 3.000 0.025</size></box></geometry><material><ambient>0.89 0.89 0.86 1</ambient><diffuse>0.89 0.89 0.86 1</diffuse></material></visual>
+
+<visual name="crosswalk_1_0_west_1"><pose>-96.200 -141.350 0.145 0 0 1.570796327</pose>
+<geometry><box><size>0.760 3.000 0.025</size></box></geometry><material><ambient>0.89 0.89 0.86 1</ambient><diffuse>0.89 0.89 0.86 1</diffuse></material></visual>
+
+<visual name="crosswalk_1_0_west_2"><pose>-96.200 -140.000 0.145 0 0 1.570796327</pose>
+<geometry><box><size>0.760 3.000 0.025</size></box></geometry><material><ambient>0.89 0.89 0.86 1</ambient><diffuse>0.89 0.89 0.86 1</diffuse></material></visual>
+
+<visual name="crosswalk_1_0_west_3"><pose>-96.200 -138.650 0.145 0 0 1.570796327</pose>
+<geometry><box><size>0.760 3.000 0.025</size></box></geometry><material><ambient>0.89 0.89 0.86 1</ambient><diffuse>0.89 0.89 0.86 1</diffuse></material></visual>
+
+<visual name="crosswalk_1_0_west_4"><pose>-96.200 -137.300 0.145 0 0 1.570796327</pose>
+<geometry><box><size>0.760 3.000 0.025</size></box></geometry><material><ambient>0.89 0.89 0.86 1</ambient><diffuse>0.89 0.89 0.86 1</diffuse></material></visual>
+
+<visual name="crosswalk_1_0_east_0"><pose>-83.800 -142.700 0.145 0 0 1.570796327</pose>
+<geometry><box><size>0.760 3.000 0.025</size></box></geometry><material><ambient>0.89 0.89 0.86 1</ambient><diffuse>0.89 0.89 0.86 1</diffuse></material></visual>
+
+<visual name="crosswalk_1_0_east_1"><pose>-83.800 -141.350 0.145 0 0 1.570796327</pose>
+<geometry><box><size>0.760 3.000 0.025</size></box></geometry><material><ambient>0.89 0.89 0.86 1</ambient><diffuse>0.89 0.89 0.86 1</diffuse></material></visual>
+
+<visual name="crosswalk_1_0_east_2"><pose>-83.800 -140.000 0.145 0 0 1.570796327</pose>
+<geometry><box><size>0.760 3.000 0.025</size></box></geometry><material><ambient>0.89 0.89 0.86 1</ambient><diffuse>0.89 0.89 0.86 1</diffuse></material></visual>
+
+<visual name="crosswalk_1_0_east_3"><pose>-83.800 -138.650 0.145 0 0 1.570796327</pose>
+<geometry><box><size>0.760 3.000 0.025</size></box></geometry><material><ambient>0.89 0.89 0.86 1</ambient><diffuse>0.89 0.89 0.86 1</diffuse></material></visual>
+
+<visual name="crosswalk_1_0_east_4"><pose>-83.800 -137.300 0.145 0 0 1.570796327</pose>
+<geometry><box><size>0.760 3.000 0.025</size></box></geometry><material><ambient>0.89 0.89 0.86 1</ambient><diffuse>0.89 0.89 0.86 1</diffuse></material></visual>
+
+<visual name="crosswalk_2_0_south_0"><pose>-2.700 -146.200 0.145 0 0 0.000000000</pose>
+<geometry><box><size>0.760 3.000 0.025</size></box></geometry><material><ambient>0.89 0.89 0.86 1</ambient><diffuse>0.89 0.89 0.86 1</diffuse></material></visual>
+
+<visual name="crosswalk_2_0_south_1"><pose>-1.350 -146.200 0.145 0 0 0.000000000</pose>
+<geometry><box><size>0.760 3.000 0.025</size></box></geometry><material><ambient>0.89 0.89 0.86 1</ambient><diffuse>0.89 0.89 0.86 1</diffuse></material></visual>
+
+<visual name="crosswalk_2_0_south_2"><pose>0.000 -146.200 0.145 0 0 0.000000000</pose>
+<geometry><box><size>0.760 3.000 0.025</size></box></geometry><material><ambient>0.89 0.89 0.86 1</ambient><diffuse>0.89 0.89 0.86 1</diffuse></material></visual>
+
+<visual name="crosswalk_2_0_south_3"><pose>1.350 -146.200 0.145 0 0 0.000000000</pose>
+<geometry><box><size>0.760 3.000 0.025</size></box></geometry><material><ambient>0.89 0.89 0.86 1</ambient><diffuse>0.89 0.89 0.86 1</diffuse></material></visual>
+
+<visual name="crosswalk_2_0_south_4"><pose>2.700 -146.200 0.145 0 0 0.000000000</pose>
+<geometry><box><size>0.760 3.000 0.025</size></box></geometry><material><ambient>0.89 0.89 0.86 1</ambient><diffuse>0.89 0.89 0.86 1</diffuse></material></visual>
+
+<visual name="crosswalk_2_0_north_0"><pose>-2.700 -133.800 0.145 0 0 0.000000000</pose>
+<geometry><box><size>0.760 3.000 0.025</size></box></geometry><material><ambient>0.89 0.89 0.86 1</ambient><diffuse>0.89 0.89 0.86 1</diffuse></material></visual>
+
+<visual name="crosswalk_2_0_north_1"><pose>-1.350 -133.800 0.145 0 0 0.000000000</pose>
+<geometry><box><size>0.760 3.000 0.025</size></box></geometry><material><ambient>0.89 0.89 0.86 1</ambient><diffuse>0.89 0.89 0.86 1</diffuse></material></visual>
+
+<visual name="crosswalk_2_0_north_2"><pose>0.000 -133.800 0.145 0 0 0.000000000</pose>
+<geometry><box><size>0.760 3.000 0.025</size></box></geometry><material><ambient>0.89 0.89 0.86 1</ambient><diffuse>0.89 0.89 0.86 1</diffuse></material></visual>
+
+<visual name="crosswalk_2_0_north_3"><pose>1.350 -133.800 0.145 0 0 0.000000000</pose>
+<geometry><box><size>0.760 3.000 0.025</size></box></geometry><material><ambient>0.89 0.89 0.86 1</ambient><diffuse>0.89 0.89 0.86 1</diffuse></material></visual>
+
+<visual name="crosswalk_2_0_north_4"><pose>2.700 -133.800 0.145 0 0 0.000000000</pose>
+<geometry><box><size>0.760 3.000 0.025</size></box></geometry><material><ambient>0.89 0.89 0.86 1</ambient><diffuse>0.89 0.89 0.86 1</diffuse></material></visual>
+
+<visual name="crosswalk_2_0_west_0"><pose>-6.200 -142.700 0.145 0 0 1.570796327</pose>
+<geometry><box><size>0.760 3.000 0.025</size></box></geometry><material><ambient>0.89 0.89 0.86 1</ambient><diffuse>0.89 0.89 0.86 1</diffuse></material></visual>
+
+<visual name="crosswalk_2_0_west_1"><pose>-6.200 -141.350 0.145 0 0 1.570796327</pose>
+<geometry><box><size>0.760 3.000 0.025</size></box></geometry><material><ambient>0.89 0.89 0.86 1</ambient><diffuse>0.89 0.89 0.86 1</diffuse></material></visual>
+
+<visual name="crosswalk_2_0_west_2"><pose>-6.200 -140.000 0.145 0 0 1.570796327</pose>
+<geometry><box><size>0.760 3.000 0.025</size></box></geometry><material><ambient>0.89 0.89 0.86 1</ambient><diffuse>0.89 0.89 0.86 1</diffuse></material></visual>
+
+<visual name="crosswalk_2_0_west_3"><pose>-6.200 -138.650 0.145 0 0 1.570796327</pose>
+<geometry><box><size>0.760 3.000 0.025</size></box></geometry><material><ambient>0.89 0.89 0.86 1</ambient><diffuse>0.89 0.89 0.86 1</diffuse></material></visual>
+
+<visual name="crosswalk_2_0_west_4"><pose>-6.200 -137.300 0.145 0 0 1.570796327</pose>
+<geometry><box><size>0.760 3.000 0.025</size></box></geometry><material><ambient>0.89 0.89 0.86 1</ambient><diffuse>0.89 0.89 0.86 1</diffuse></material></visual>
+
+<visual name="crosswalk_2_0_east_0"><pose>6.200 -142.700 0.145 0 0 1.570796327</pose>
+<geometry><box><size>0.760 3.000 0.025</size></box></geometry><material><ambient>0.89 0.89 0.86 1</ambient><diffuse>0.89 0.89 0.86 1</diffuse></material></visual>
+
+<visual name="crosswalk_2_0_east_1"><pose>6.200 -141.350 0.145 0 0 1.570796327</pose>
+<geometry><box><size>0.760 3.000 0.025</size></box></geometry><material><ambient>0.89 0.89 0.86 1</ambient><diffuse>0.89 0.89 0.86 1</diffuse></material></visual>
+
+<visual name="crosswalk_2_0_east_2"><pose>6.200 -140.000 0.145 0 0 1.570796327</pose>
+<geometry><box><size>0.760 3.000 0.025</size></box></geometry><material><ambient>0.89 0.89 0.86 1</ambient><diffuse>0.89 0.89 0.86 1</diffuse></material></visual>
+
+<visual name="crosswalk_2_0_east_3"><pose>6.200 -138.650 0.145 0 0 1.570796327</pose>
+<geometry><box><size>0.760 3.000 0.025</size></box></geometry><material><ambient>0.89 0.89 0.86 1</ambient><diffuse>0.89 0.89 0.86 1</diffuse></material></visual>
+
+<visual name="crosswalk_2_0_east_4"><pose>6.200 -137.300 0.145 0 0 1.570796327</pose>
+<geometry><box><size>0.760 3.000 0.025</size></box></geometry><material><ambient>0.89 0.89 0.86 1</ambient><diffuse>0.89 0.89 0.86 1</diffuse></material></visual>
+
+<visual name="crosswalk_3_0_south_0"><pose>87.300 -146.200 0.145 0 0 0.000000000</pose>
+<geometry><box><size>0.760 3.000 0.025</size></box></geometry><material><ambient>0.89 0.89 0.86 1</ambient><diffuse>0.89 0.89 0.86 1</diffuse></material></visual>
+
+<visual name="crosswalk_3_0_south_1"><pose>88.650 -146.200 0.145 0 0 0.000000000</pose>
+<geometry><box><size>0.760 3.000 0.025</size></box></geometry><material><ambient>0.89 0.89 0.86 1</ambient><diffuse>0.89 0.89 0.86 1</diffuse></material></visual>
+
+<visual name="crosswalk_3_0_south_2"><pose>90.000 -146.200 0.145 0 0 0.000000000</pose>
+<geometry><box><size>0.760 3.000 0.025</size></box></geometry><material><ambient>0.89 0.89 0.86 1</ambient><diffuse>0.89 0.89 0.86 1</diffuse></material></visual>
+
+<visual name="crosswalk_3_0_south_3"><pose>91.350 -146.200 0.145 0 0 0.000000000</pose>
+<geometry><box><size>0.760 3.000 0.025</size></box></geometry><material><ambient>0.89 0.89 0.86 1</ambient><diffuse>0.89 0.89 0.86 1</diffuse></material></visual>
+
+<visual name="crosswalk_3_0_south_4"><pose>92.700 -146.200 0.145 0 0 0.000000000</pose>
+<geometry><box><size>0.760 3.000 0.025</size></box></geometry><material><ambient>0.89 0.89 0.86 1</ambient><diffuse>0.89 0.89 0.86 1</diffuse></material></visual>
+
+<visual name="crosswalk_3_0_north_0"><pose>87.300 -133.800 0.145 0 0 0.000000000</pose>
+<geometry><box><size>0.760 3.000 0.025</size></box></geometry><material><ambient>0.89 0.89 0.86 1</ambient><diffuse>0.89 0.89 0.86 1</diffuse></material></visual>
+
+<visual name="crosswalk_3_0_north_1"><pose>88.650 -133.800 0.145 0 0 0.000000000</pose>
+<geometry><box><size>0.760 3.000 0.025</size></box></geometry><material><ambient>0.89 0.89 0.86 1</ambient><diffuse>0.89 0.89 0.86 1</diffuse></material></visual>
+
+<visual name="crosswalk_3_0_north_2"><pose>90.000 -133.800 0.145 0 0 0.000000000</pose>
+<geometry><box><size>0.760 3.000 0.025</size></box></geometry><material><ambient>0.89 0.89 0.86 1</ambient><diffuse>0.89 0.89 0.86 1</diffuse></material></visual>
+
+<visual name="crosswalk_3_0_north_3"><pose>91.350 -133.800 0.145 0 0 0.000000000</pose>
+<geometry><box><size>0.760 3.000 0.025</size></box></geometry><material><ambient>0.89 0.89 0.86 1</ambient><diffuse>0.89 0.89 0.86 1</diffuse></material></visual>
+
+<visual name="crosswalk_3_0_north_4"><pose>92.700 -133.800 0.145 0 0 0.000000000</pose>
+<geometry><box><size>0.760 3.000 0.025</size></box></geometry><material><ambient>0.89 0.89 0.86 1</ambient><diffuse>0.89 0.89 0.86 1</diffuse></material></visual>
+
+<visual name="crosswalk_3_0_west_0"><pose>83.800 -142.700 0.145 0 0 1.570796327</pose>
+<geometry><box><size>0.760 3.000 0.025</size></box></geometry><material><ambient>0.89 0.89 0.86 1</ambient><diffuse>0.89 0.89 0.86 1</diffuse></material></visual>
+
+<visual name="crosswalk_3_0_west_1"><pose>83.800 -141.350 0.145 0 0 1.570796327</pose>
+<geometry><box><size>0.760 3.000 0.025</size></box></geometry><material><ambient>0.89 0.89 0.86 1</ambient><diffuse>0.89 0.89 0.86 1</diffuse></material></visual>
+
+<visual name="crosswalk_3_0_west_2"><pose>83.800 -140.000 0.145 0 0 1.570796327</pose>
+<geometry><box><size>0.760 3.000 0.025</size></box></geometry><material><ambient>0.89 0.89 0.86 1</ambient><diffuse>0.89 0.89 0.86 1</diffuse></material></visual>
+
+<visual name="crosswalk_3_0_west_3"><pose>83.800 -138.650 0.145 0 0 1.570796327</pose>
+<geometry><box><size>0.760 3.000 0.025</size></box></geometry><material><ambient>0.89 0.89 0.86 1</ambient><diffuse>0.89 0.89 0.86 1</diffuse></material></visual>
+
+<visual name="crosswalk_3_0_west_4"><pose>83.800 -137.300 0.145 0 0 1.570796327</pose>
+<geometry><box><size>0.760 3.000 0.025</size></box></geometry><material><ambient>0.89 0.89 0.86 1</ambient><diffuse>0.89 0.89 0.86 1</diffuse></material></visual>
+
+<visual name="crosswalk_3_0_east_0"><pose>96.200 -142.700 0.145 0 0 1.570796327</pose>
+<geometry><box><size>0.760 3.000 0.025</size></box></geometry><material><ambient>0.89 0.89 0.86 1</ambient><diffuse>0.89 0.89 0.86 1</diffuse></material></visual>
+
+<visual name="crosswalk_3_0_east_1"><pose>96.200 -141.350 0.145 0 0 1.570796327</pose>
+<geometry><box><size>0.760 3.000 0.025</size></box></geometry><material><ambient>0.89 0.89 0.86 1</ambient><diffuse>0.89 0.89 0.86 1</diffuse></material></visual>
+
+<visual name="crosswalk_3_0_east_2"><pose>96.200 -140.000 0.145 0 0 1.570796327</pose>
+<geometry><box><size>0.760 3.000 0.025</size></box></geometry><material><ambient>0.89 0.89 0.86 1</ambient><diffuse>0.89 0.89 0.86 1</diffuse></material></visual>
+
+<visual name="crosswalk_3_0_east_3"><pose>96.200 -138.650 0.145 0 0 1.570796327</pose>
+<geometry><box><size>0.760 3.000 0.025</size></box></geometry><material><ambient>0.89 0.89 0.86 1</ambient><diffuse>0.89 0.89 0.86 1</diffuse></material></visual>
+
+<visual name="crosswalk_3_0_east_4"><pose>96.200 -137.300 0.145 0 0 1.570796327</pose>
+<geometry><box><size>0.760 3.000 0.025</size></box></geometry><material><ambient>0.89 0.89 0.86 1</ambient><diffuse>0.89 0.89 0.86 1</diffuse></material></visual>
+
+<visual name="crosswalk_4_0_south_0"><pose>177.300 -146.200 0.145 0 0 0.000000000</pose>
+<geometry><box><size>0.760 3.000 0.025</size></box></geometry><material><ambient>0.89 0.89 0.86 1</ambient><diffuse>0.89 0.89 0.86 1</diffuse></material></visual>
+
+<visual name="crosswalk_4_0_south_1"><pose>178.650 -146.200 0.145 0 0 0.000000000</pose>
+<geometry><box><size>0.760 3.000 0.025</size></box></geometry><material><ambient>0.89 0.89 0.86 1</ambient><diffuse>0.89 0.89 0.86 1</diffuse></material></visual>
+
+<visual name="crosswalk_4_0_south_2"><pose>180.000 -146.200 0.145 0 0 0.000000000</pose>
+<geometry><box><size>0.760 3.000 0.025</size></box></geometry><material><ambient>0.89 0.89 0.86 1</ambient><diffuse>0.89 0.89 0.86 1</diffuse></material></visual>
+
+<visual name="crosswalk_4_0_south_3"><pose>181.350 -146.200 0.145 0 0 0.000000000</pose>
+<geometry><box><size>0.760 3.000 0.025</size></box></geometry><material><ambient>0.89 0.89 0.86 1</ambient><diffuse>0.89 0.89 0.86 1</diffuse></material></visual>
+
+<visual name="crosswalk_4_0_south_4"><pose>182.700 -146.200 0.145 0 0 0.000000000</pose>
+<geometry><box><size>0.760 3.000 0.025</size></box></geometry><material><ambient>0.89 0.89 0.86 1</ambient><diffuse>0.89 0.89 0.86 1</diffuse></material></visual>
+
+<visual name="crosswalk_4_0_north_0"><pose>177.300 -133.800 0.145 0 0 0.000000000</pose>
+<geometry><box><size>0.760 3.000 0.025</size></box></geometry><material><ambient>0.89 0.89 0.86 1</ambient><diffuse>0.89 0.89 0.86 1</diffuse></material></visual>
+
+<visual name="crosswalk_4_0_north_1"><pose>178.650 -133.800 0.145 0 0 0.000000000</pose>
+<geometry><box><size>0.760 3.000 0.025</size></box></geometry><material><ambient>0.89 0.89 0.86 1</ambient><diffuse>0.89 0.89 0.86 1</diffuse></material></visual>
+
+<visual name="crosswalk_4_0_north_2"><pose>180.000 -133.800 0.145 0 0 0.000000000</pose>
+<geometry><box><size>0.760 3.000 0.025</size></box></geometry><material><ambient>0.89 0.89 0.86 1</ambient><diffuse>0.89 0.89 0.86 1</diffuse></material></visual>
+
+<visual name="crosswalk_4_0_north_3"><pose>181.350 -133.800 0.145 0 0 0.000000000</pose>
+<geometry><box><size>0.760 3.000 0.025</size></box></geometry><material><ambient>0.89 0.89 0.86 1</ambient><diffuse>0.89 0.89 0.86 1</diffuse></material></visual>
+
+<visual name="crosswalk_4_0_north_4"><pose>182.700 -133.800 0.145 0 0 0.000000000</pose>
+<geometry><box><size>0.760 3.000 0.025</size></box></geometry><material><ambient>0.89 0.89 0.86 1</ambient><diffuse>0.89 0.89 0.86 1</diffuse></material></visual>
+
+<visual name="crosswalk_4_0_west_0"><pose>173.800 -142.700 0.145 0 0 1.570796327</pose>
+<geometry><box><size>0.760 3.000 0.025</size></box></geometry><material><ambient>0.89 0.89 0.86 1</ambient><diffuse>0.89 0.89 0.86 1</diffuse></material></visual>
+
+<visual name="crosswalk_4_0_west_1"><pose>173.800 -141.350 0.145 0 0 1.570796327</pose>
+<geometry><box><size>0.760 3.000 0.025</size></box></geometry><material><ambient>0.89 0.89 0.86 1</ambient><diffuse>0.89 0.89 0.86 1</diffuse></material></visual>
+
+<visual name="crosswalk_4_0_west_2"><pose>173.800 -140.000 0.145 0 0 1.570796327</pose>
+<geometry><box><size>0.760 3.000 0.025</size></box></geometry><material><ambient>0.89 0.89 0.86 1</ambient><diffuse>0.89 0.89 0.86 1</diffuse></material></visual>
+
+<visual name="crosswalk_4_0_west_3"><pose>173.800 -138.650 0.145 0 0 1.570796327</pose>
+<geometry><box><size>0.760 3.000 0.025</size></box></geometry><material><ambient>0.89 0.89 0.86 1</ambient><diffuse>0.89 0.89 0.86 1</diffuse></material></visual>
+
+<visual name="crosswalk_4_0_west_4"><pose>173.800 -137.300 0.145 0 0 1.570796327</pose>
+<geometry><box><size>0.760 3.000 0.025</size></box></geometry><material><ambient>0.89 0.89 0.86 1</ambient><diffuse>0.89 0.89 0.86 1</diffuse></material></visual>
+
+<visual name="crosswalk_4_0_east_0"><pose>186.200 -142.700 0.145 0 0 1.570796327</pose>
+<geometry><box><size>0.760 3.000 0.025</size></box></geometry><material><ambient>0.89 0.89 0.86 1</ambient><diffuse>0.89 0.89 0.86 1</diffuse></material></visual>
+
+<visual name="crosswalk_4_0_east_1"><pose>186.200 -141.350 0.145 0 0 1.570796327</pose>
+<geometry><box><size>0.760 3.000 0.025</size></box></geometry><material><ambient>0.89 0.89 0.86 1</ambient><diffuse>0.89 0.89 0.86 1</diffuse></material></visual>
+
+<visual name="crosswalk_4_0_east_2"><pose>186.200 -140.000 0.145 0 0 1.570796327</pose>
+<geometry><box><size>0.760 3.000 0.025</size></box></geometry><material><ambient>0.89 0.89 0.86 1</ambient><diffuse>0.89 0.89 0.86 1</diffuse></material></visual>
+
+<visual name="crosswalk_4_0_east_3"><pose>186.200 -138.650 0.145 0 0 1.570796327</pose>
+<geometry><box><size>0.760 3.000 0.025</size></box></geometry><material><ambient>0.89 0.89 0.86 1</ambient><diffuse>0.89 0.89 0.86 1</diffuse></material></visual>
+
+<visual name="crosswalk_4_0_east_4"><pose>186.200 -137.300 0.145 0 0 1.570796327</pose>
+<geometry><box><size>0.760 3.000 0.025</size></box></geometry><material><ambient>0.89 0.89 0.86 1</ambient><diffuse>0.89 0.89 0.86 1</diffuse></material></visual>
+
+  </link></model>
+</sdf>

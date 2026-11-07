@@ -1,0 +1,157 @@
+material VioLowRiseCity/FacadeBrickShop
+{
+  technique
+  {
+    pass
+    {
+      ambient 0.78 0.78 0.78 1
+      diffuse 0.94 0.94 0.94 1
+      texture_unit { texture facade_brick_shop.png filtering anisotropic max_anisotropy 8 }
+    }
+  }
+}
+
+material VioLowRiseCity/FacadeBlueStone
+{
+  technique
+  {
+    pass
+    {
+      ambient 0.78 0.78 0.78 1
+      diffuse 0.94 0.94 0.94 1
+      texture_unit { texture facade_blue_stone.png filtering anisotropic max_anisotropy 8 }
+    }
+  }
+}
+
+material VioLowRiseCity/FacadeTimberStore
+{
+  technique
+  {
+    pass
+    {
+      ambient 0.78 0.78 0.78 1
+      diffuse 0.94 0.94 0.94 1
+      texture_unit { texture facade_timber_store.png filtering anisotropic max_anisotropy 8 }
+    }
+  }
+}
+
+material VioLowRiseCity/FacadeBakeryStucco
+{
+  technique
+  {
+    pass
+    {
+      ambient 0.78 0.78 0.78 1
+      diffuse 0.94 0.94 0.94 1
+      texture_unit { texture facade_bakery_stucco.png filtering anisotropic max_anisotropy 8 }
+    }
+  }
+}
+
+material VioLowRiseCity/FacadeSageClinic
+{
+  technique
+  {
+    pass
+    {
+      ambient 0.78 0.78 0.78 1
+      diffuse 0.94 0.94 0.94 1
+      texture_unit { texture facade_sage_clinic.png filtering anisotropic max_anisotropy 8 }
+    }
+  }
+}
+
+material VioLowRiseCity/FacadeOchreWorkshop
+{
+  technique
+  {
+    pass
+    {
+      ambient 0.78 0.78 0.78 1
+      diffuse 0.94 0.94 0.94 1
+      texture_unit { texture facade_ochre_workshop.png filtering anisotropic max_anisotropy 8 }
+    }
+  }
+}
+
+material VioLowRiseCity/AsphaltNonperiodic
+{
+  technique
+  {
+    pass
+    {
+      ambient 0.78 0.78 0.78 1
+      diffuse 0.94 0.94 0.94 1
+      texture_unit { texture asphalt_nonperiodic.png filtering anisotropic max_anisotropy 8 }
+    }
+  }
+}
+
+material VioLowRiseCity/RoofWeatheredMembrane
+{
+  technique
+  {
+    pass
+    {
+      ambient 0.78 0.78 0.78 1
+      diffuse 0.94 0.94 0.94 1
+      texture_unit { texture roof_weathered_membrane_v2.png filtering anisotropic max_anisotropy 8 }
+    }
+  }
+}
+
+material VioLowRiseCity/TreeMaple
+{
+  technique
+  {
+    pass
+    {
+      ambient 0.78 0.78 0.78 1
+      diffuse 0.94 0.94 0.94 1
+      scene_blend alpha_blend
+      alpha_rejection greater_equal 64
+      depth_write off
+      cull_hardware none
+      cull_software none
+      texture_unit { texture tree_maple.png filtering anisotropic max_anisotropy 8 }
+    }
+  }
+}
+
+material VioLowRiseCity/TreeHornbeam
+{
+  technique
+  {
+    pass
+    {
+      ambient 0.78 0.78 0.78 1
+      diffuse 0.94 0.94 0.94 1
+      scene_blend alpha_blend
+      alpha_rejection greater_equal 64
+      depth_write off
+      cull_hardware none
+      cull_software none
+      texture_unit { texture tree_hornbeam.png filtering anisotropic max_anisotropy 8 }
+    }
+  }
+}
+
+material VioLowRiseCity/TreeCherry
+{
+  technique
+  {
+    pass
+    {
+      ambient 0.78 0.78 0.78 1
+      diffuse 0.94 0.94 0.94 1
+      scene_blend alpha_blend
+      alpha_rejection greater_equal 64
+      depth_write off
+      cull_hardware none
+      cull_software none
+      texture_unit { texture tree_cherry.png filtering anisotropic max_anisotropy 8 }
+    }
+  }
+}

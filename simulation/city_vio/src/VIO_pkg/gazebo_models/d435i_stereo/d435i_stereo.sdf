@@ -1,0 +1,116 @@
+<?xml version='1.0'?>
+<sdf version='1.6'>
+  <model name='d435i_stereo'>
+    <pose>-0.158979 -0.04405 0.045074 0 0 0</pose>
+    <link name='link'>
+      <inertial>
+        <mass>0.072</mass>
+        <inertia>
+          <ixx>2.0e-5</ixx><ixy>0</ixy><ixz>0</ixz>
+          <iyy>6.0e-5</iyy><iyz>0</iyz><izz>6.0e-5</izz>
+        </inertia>
+      </inertial>
+      <collision name='collision'>
+        <geometry><box><size>0.025 0.09 0.025</size></box></geometry>
+      </collision>
+      <visual name='visual'>
+        <geometry><box><size>0.025 0.09 0.025</size></box></geometry>
+        <material><ambient>0.08 0.08 0.08 1</ambient></material>
+      </visual>
+
+      <!-- Gazebo link is FLU.  Camera optical axes are supplied by the ROS
+           camera plugin.  +Y is left, hence infra1 is at +25 mm. -->
+      <sensor name='infra1' type='camera'>
+        <pose>0 0.025 0 0 0 0</pose>
+        <camera name='infra1'>
+          <horizontal_fov>1.392509</horizontal_fov>
+          <image><width>640</width><height>480</height><format>L8</format></image>
+          <clip><near>0.10</near><far>100</far></clip>
+        </camera>
+        <always_on>true</always_on><update_rate>20</update_rate>
+        <visualize>false</visualize>
+        <plugin name='infra1_plugin' filename='libgazebo_ros_camera.so'>
+          <ros>
+            <namespace>/d435i</namespace>
+            <remapping>image_raw:=infra1/image_raw</remapping>
+            <remapping>camera_info:=infra1/camera_info</remapping>
+          </ros>
+          <camera_name>infra1</camera_name>
+          <frame_name>d435i_infra1_optical_frame</frame_name>
+        </plugin>
+      </sensor>
+      <sensor name='infra2' type='camera'>
+        <pose>0 -0.025 0 0 0 0</pose>
+        <camera name='infra2'>
+          <horizontal_fov>1.392509</horizontal_fov>
+          <image><width>640</width><height>480</height><format>L8</format></image>
+          <clip><near>0.10</near><far>100</far></clip>
+        </camera>
+        <always_on>true</always_on><update_rate>20</update_rate>
+        <visualize>false</visualize>
+        <plugin name='infra2_plugin' filename='libgazebo_ros_camera.so'>
+          <ros>
+            <namespace>/d435i</namespace>
+            <remapping>image_raw:=infra2/image_raw</remapping>
+            <remapping>camera_info:=infra2/camera_info</remapping>
+          </ros>
+          <camera_name>infra2</camera_name>
+          <frame_name>d435i_infra2_optical_frame</frame_name>
+        </plugin>
+      </sensor>
+      <!-- Metric depth is rendered from the exact infra1 optical center with
+           identical intrinsics. The Gazebo camera-name namespace yields
+           /d435i/aligned_depth/depth/image_raw, already aligned to the left
+           image. Keep it passive: neither stereo VINS nor the cuVSLAM
+           cross-check subscribes to it. -->
+      <sensor name='aligned_depth' type='depth'>
+        <pose>0 0.025 0 0 0 0</pose>
+        <camera name='aligned_depth'>
+          <horizontal_fov>1.392509</horizontal_fov>
+          <image><width>640</width><height>480</height><format>L8</format></image>
+          <clip><near>0.10</near><far>20</far></clip>
+        </camera>
+        <!-- The D435i depth engine runs below the raw IR sensor cadence.  Keeping
+             this at 10 Hz also prevents the third Gazebo render pass from
+             throttling the two 20 Hz IR streams. -->
+        <always_on>true</always_on><update_rate>10</update_rate>
+        <visualize>false</visualize>
+        <plugin name='aligned_depth_plugin' filename='libgazebo_ros_camera.so'>
+          <ros>
+            <namespace>/d435i</namespace>
+            <remapping>image_raw:=depth/preview</remapping>
+            <remapping>camera_info:=depth/camera_info</remapping>
+            <remapping>depth/image_raw:=depth/image_raw</remapping>
+            <remapping>depth/camera_info:=depth/camera_info</remapping>
+          </ros>
+          <camera_name>aligned_depth</camera_name>
+          <frame_name>d435i_infra1_optical_frame</frame_name>
+        </plugin>
+      </sensor>
+      <sensor name='imu' type='imu'>
+        <always_on>true</always_on><update_rate>200</update_rate>
+        <visualize>false</visualize>
+        <imu>
+          <angular_velocity>
+            <x><noise type='gaussian'><mean>0</mean><stddev>0.0002</stddev></noise></x>
+            <y><noise type='gaussian'><mean>0</mean><stddev>0.0002</stddev></noise></y>
+            <z><noise type='gaussian'><mean>0</mean><stddev>0.0002</stddev></noise></z>
+          </angular_velocity>
+          <linear_acceleration>
+            <x><noise type='gaussian'><mean>0</mean><stddev>0.002</stddev></noise></x>
+            <y><noise type='gaussian'><mean>0</mean><stddev>0.002</stddev></noise></y>
+            <z><noise type='gaussian'><mean>0</mean><stddev>0.002</stddev></noise></z>
+          </linear_acceleration>
+        </imu>
+        <plugin name='imu_plugin' filename='libgazebo_ros_imu_sensor.so'>
+          <ros>
+            <namespace>/d435i</namespace>
+            <remapping>~/out:=imu</remapping>
+          </ros>
+          <frame_name>d435i_imu_link</frame_name>
+          <initial_orientation_as_reference>false</initial_orientation_as_reference>
+        </plugin>
+      </sensor>
+    </link>
+  </model>
+</sdf>

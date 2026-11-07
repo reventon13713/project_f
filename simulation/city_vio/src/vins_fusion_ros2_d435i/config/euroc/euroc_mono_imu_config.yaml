@@ -1,0 +1,130 @@
+%YAML:1.0
+
+# PX4 Gazebo Classic configuration: one monocular camera plus one IMU.
+# `num_of_cam: 1` means image1_topic is ignored; this is not stereo mode.
+imu: 1         
+num_of_cam: 1  
+
+imu_topic: "/vio/imu"
+image0_topic: "/vio/camera/vins_image_raw"
+output_path: "/tmp/vins_output/"
+
+# Downward 1-D lidar.  VINS adds a robust flat-ground range factor between
+# camera keyframes, constraining metric vertical scale and altitude drift.
+# Baseline mono+IMU has passed the metric-scale and 60 s drift checks.  Enable
+# the fixed-ground unary range factor for the combined sensor test.
+use_range: 1
+range_topic: "/vio/range"
+range_noise: 0.10
+# The Gazebo ray produces 5--10 cm self/ground returns while the model is on
+# the spawn pad.  They are physically valid sensor values but not usable
+# downward-ground constraints for the airborne VIO epoch.
+range_min_valid: 0.20
+range_max_age: 0.10
+body_T_range: !!opencv-matrix
+   rows: 4
+   cols: 4
+   dt: d
+   data: [1, 0, 0, 0,
+          0, 1, 0, 0,
+          0, 0, 1, -0.10,
+          0, 0, 0, 1]
+
+# GPS-normal-only metric velocity reference. Keep disabled in production until
+# the 920 m GPS-normal and subsequent 380 m dropout gates both pass.
+use_gps_velocity: 1
+gps_velocity_topic: "/fmu/out/vehicle_gps_position"
+gps_velocity_noise: 0.02
+gps_position_noise: 0.02
+gps_velocity_max_age: 0.50
+# During a GPS outage, do not force a nonzero velocity at waypoint turns.
+# Only penalize horizontal scale expansion above the known 0.9 m/s mission
+# speed plus controller margin.
+gps_dropout_speed_max: 1.10
+gps_dropout_vertical_speed_max: 0.50
+gps_dropout_speed_noise: 0.01
+# Experimental causal yaw-drift protection. The target is the last gyro
+# z-bias estimated while fresh GPS position factors are present. Keep disabled
+# until fixed-bag A/B proves that it improves GPS-denied trajectory accuracy.
+use_gps_dropout_gyro_bias_prior: 0
+gps_dropout_gyro_bias_sigma: 0.00005
+
+# Experimental SP-VIO-style visual measurement that eliminates inverse depth
+# from its residual. Mode 1 replaces conventional feature factors (research
+# failure reproduction); mode 2 keeps them and adds a low-weight auxiliary
+# multi-view constraint. Keep disabled until fixed-bag A/B validation.
+use_pose_only_visual: 0
+pose_only_visual_weight_scale: 0.05
+
+# Experimental GPS-independent horizontal metric constraint. It consumes
+# measured PX4 motor outputs and the identified rotor-drag model, never a
+# waypoint or desired velocity. Keep disabled until fixed-bag A/B validation.
+use_rotor_drag_dynamics: 0
+actuator_motors_topic: "/fmu/out/actuator_motors"
+dynamics_mass_kg: 1.57334
+dynamics_rotor_drag_coefficient: 0.000175
+dynamics_accel_noise: 0.20
+dynamics_max_age: 0.05
+dynamics_motor_constant: 5.84e-6
+dynamics_motor_input_scaling: 1000.0
+dynamics_motor_zero_armed: 100.0
+dynamics_motor_max_speed: 1100.0
+dynamics_motor_time_constant_up: 0.0125
+dynamics_motor_time_constant_down: 0.025
+cam0_calib: "px4_sitl_pinhole.yaml"
+cam1_calib: "cam1_mei.yaml"
+image_width: 320
+image_height: 240
+   
+
+# Extrinsic parameter between IMU and Camera.
+# The Gazebo model fixes this transform exactly.  Do not let online calibration
+# absorb modelling errors and make a run non-reproducible.
+estimate_extrinsic: 0
+
+body_T_cam0: !!opencv-matrix
+   rows: 4
+   cols: 4
+   dt: d
+   # body_T_cam0 maps VINS optical camera coordinates into PX4 IMU/body FLU.
+   # optical(+X right,+Y down,+Z forward) -> body(+X forward,+Y left,+Z up)
+   data: [0, 0, 1, -0.158979,
+          -1, 0, 0, -0.044050,
+          0, -1, 0, 0.025074,
+          0, 0, 0, 1]
+
+#Multiple thread support
+multiple_thread: 0
+
+#feature traker paprameters
+max_cnt: 200            # Keep the historically validated BA problem size.
+min_dist: 15            # Keep enough tracks in the synthetic scene for SfM initialization.
+outlier_rejection_threshold_px: 4.0  # Validated rendered-hover threshold; upstream/default remains 3 px.
+freq: 10                # frequence (Hz) of publish tracking result. At least 10Hz for good estimation. If set 0, the frequence will be same as raw image 
+F_threshold: 1.0        # ransac threshold (pixel)
+show_track: 1           # Publish /image_track: tracked feature points and motion vectors.
+flow_back: 1            # perform forward and backward optical flow to improve feature tracking accuracy
+
+#optimization parameters
+max_solver_time: 0.08  # SITL budget: allow initialization/nonlinear solve to settle.
+max_num_iterations: 12
+keyframe_parallax: 10.0 # keyframe selection threshold (pixel)
+
+#imu parameters       The more accurate parameters you provide, the better performance
+ # Conservative densities for Gazebo.  Values derived from the idealized
+ # per-sample noise alone made the optimizer unrealistically overconfident in
+ # model-perfect IMU data and increased scale error in the flight test.
+acc_n: 0.005
+gyr_n: 0.0005
+acc_w: 0.001
+gyr_w: 0.0001
+g_norm: 9.81007     # gravity magnitude
+
+#unsynchronization parameters
+estimate_td: 0                      # Both VIO sensors come directly from Gazebo /clock.
+td: 0.0                             # Camera-to-IMU offset [s]. Keep fixed for deterministic SITL.
+
+#loop closure parameters
+load_previous_pose_graph: 0        # load and reuse previous pose graph; load from 'pose_graph_save_path'
+pose_graph_save_path: "~/output/pose_graph/" # save and load path
+save_image: 0                   # No loop-closure image dump is needed for the online VIO test.

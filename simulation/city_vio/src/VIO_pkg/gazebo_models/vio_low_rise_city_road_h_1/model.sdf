@@ -1,0 +1,410 @@
+<?xml version="1.0"?>
+<sdf version="1.6">
+  <model name="vio_low_rise_city_road_h_1"><static>true</static><link name="geometry">
+<collision name="road_horizontal_1_collision"><pose>0.000 -70.000 0.035 0 0 0.000000000</pose>
+<geometry><box><size>390.000 10.000 0.070</size></box></geometry></collision>
+
+<visual name="road_horizontal_1_tile_0"><pose>-175.000 -70.000 0.115 0 0 0.000000000</pose>
+<geometry><box><size>40.000 10.000 0.080</size></box></geometry><material><script><uri>model://vio_low_rise_city/materials/scripts</uri><uri>model://vio_low_rise_city/materials/textures</uri><name>VioLowRiseCity/AsphaltNonperiodic</name></script></material></visual>
+
+<visual name="road_horizontal_1_tile_1"><pose>-135.000 -70.000 0.115 0 0 0.000000000</pose>
+<geometry><box><size>40.000 10.000 0.080</size></box></geometry><material><script><uri>model://vio_low_rise_city/materials/scripts</uri><uri>model://vio_low_rise_city/materials/textures</uri><name>VioLowRiseCity/AsphaltNonperiodic</name></script></material></visual>
+
+<visual name="road_horizontal_1_tile_2"><pose>-95.000 -70.000 0.115 0 0 0.000000000</pose>
+<geometry><box><size>40.000 10.000 0.080</size></box></geometry><material><script><uri>model://vio_low_rise_city/materials/scripts</uri><uri>model://vio_low_rise_city/materials/textures</uri><name>VioLowRiseCity/AsphaltNonperiodic</name></script></material></visual>
+
+<visual name="road_horizontal_1_tile_3"><pose>-55.000 -70.000 0.115 0 0 0.000000000</pose>
+<geometry><box><size>40.000 10.000 0.080</size></box></geometry><material><script><uri>model://vio_low_rise_city/materials/scripts</uri><uri>model://vio_low_rise_city/materials/textures</uri><name>VioLowRiseCity/AsphaltNonperiodic</name></script></material></visual>
+
+<visual name="road_horizontal_1_tile_4"><pose>-15.000 -70.000 0.115 0 0 0.000000000</pose>
+<geometry><box><size>40.000 10.000 0.080</size></box></geometry><material><script><uri>model://vio_low_rise_city/materials/scripts</uri><uri>model://vio_low_rise_city/materials/textures</uri><name>VioLowRiseCity/AsphaltNonperiodic</name></script></material></visual>
+
+<visual name="road_horizontal_1_tile_5"><pose>25.000 -70.000 0.115 0 0 0.000000000</pose>
+<geometry><box><size>40.000 10.000 0.080</size></box></geometry><material><script><uri>model://vio_low_rise_city/materials/scripts</uri><uri>model://vio_low_rise_city/materials/textures</uri><name>VioLowRiseCity/AsphaltNonperiodic</name></script></material></visual>
+
+<visual name="road_horizontal_1_tile_6"><pose>65.000 -70.000 0.115 0 0 0.000000000</pose>
+<geometry><box><size>40.000 10.000 0.080</size></box></geometry><material><script><uri>model://vio_low_rise_city/materials/scripts</uri><uri>model://vio_low_rise_city/materials/textures</uri><name>VioLowRiseCity/AsphaltNonperiodic</name></script></material></visual>
+
+<visual name="road_horizontal_1_tile_7"><pose>105.000 -70.000 0.115 0 0 0.000000000</pose>
+<geometry><box><size>40.000 10.000 0.080</size></box></geometry><material><script><uri>model://vio_low_rise_city/materials/scripts</uri><uri>model://vio_low_rise_city/materials/textures</uri><name>VioLowRiseCity/AsphaltNonperiodic</name></script></material></visual>
+
+<visual name="road_horizontal_1_tile_8"><pose>145.000 -70.000 0.115 0 0 0.000000000</pose>
+<geometry><box><size>40.000 10.000 0.080</size></box></geometry><material><script><uri>model://vio_low_rise_city/materials/scripts</uri><uri>model://vio_low_rise_city/materials/textures</uri><name>VioLowRiseCity/AsphaltNonperiodic</name></script></material></visual>
+
+<visual name="road_horizontal_1_tile_9"><pose>175.000 -70.000 0.115 0 0 0.000000000</pose>
+<geometry><box><size>40.000 10.000 0.080</size></box></geometry><material><script><uri>model://vio_low_rise_city/materials/scripts</uri><uri>model://vio_low_rise_city/materials/textures</uri><name>VioLowRiseCity/AsphaltNonperiodic</name></script></material></visual>
+
+<visual name="hline_1_2"><pose>-164.000 -70.000 0.130 0 0 0.000000000</pose>
+<geometry><box><size>5.000 0.200 0.025</size></box></geometry><material><ambient>0.92 0.90 0.74 1</ambient><diffuse>0.92 0.90 0.74 1</diffuse></material></visual>
+
+<visual name="hline_1_3"><pose>-152.000 -70.000 0.130 0 0 0.000000000</pose>
+<geometry><box><size>5.000 0.200 0.025</size></box></geometry><material><ambient>0.92 0.90 0.74 1</ambient><diffuse>0.92 0.90 0.74 1</diffuse></material></visual>
+
+<visual name="hline_1_4"><pose>-140.000 -70.000 0.130 0 0 0.000000000</pose>
+<geometry><box><size>5.000 0.200 0.025</size></box></geometry><material><ambient>0.92 0.90 0.74 1</ambient><diffuse>0.92 0.90 0.74 1</diffuse></material></visual>
+
+<visual name="hline_1_5"><pose>-128.000 -70.000 0.130 0 0 0.000000000</pose>
+<geometry><box><size>5.000 0.200 0.025</size></box></geometry><material><ambient>0.92 0.90 0.74 1</ambient><diffuse>0.92 0.90 0.74 1</diffuse></material></visual>
+
+<visual name="hline_1_6"><pose>-116.000 -70.000 0.130 0 0 0.000000000</pose>
+<geometry><box><size>5.000 0.200 0.025</size></box></geometry><material><ambient>0.92 0.90 0.74 1</ambient><diffuse>0.92 0.90 0.74 1</diffuse></material></visual>
+
+<visual name="hline_1_7"><pose>-104.000 -70.000 0.130 0 0 0.000000000</pose>
+<geometry><box><size>5.000 0.200 0.025</size></box></geometry><material><ambient>0.92 0.90 0.74 1</ambient><diffuse>0.92 0.90 0.74 1</diffuse></material></visual>
+
+<visual name="hline_1_9"><pose>-80.000 -70.000 0.130 0 0 0.000000000</pose>
+<geometry><box><size>5.000 0.200 0.025</size></box></geometry><material><ambient>0.92 0.90 0.74 1</ambient><diffuse>0.92 0.90 0.74 1</diffuse></material></visual>
+
+<visual name="hline_1_10"><pose>-68.000 -70.000 0.130 0 0 0.000000000</pose>
+<geometry><box><size>5.000 0.200 0.025</size></box></geometry><material><ambient>0.92 0.90 0.74 1</ambient><diffuse>0.92 0.90 0.74 1</diffuse></material></visual>
+
+<visual name="hline_1_11"><pose>-56.000 -70.000 0.130 0 0 0.000000000</pose>
+<geometry><box><size>5.000 0.200 0.025</size></box></geometry><material><ambient>0.92 0.90 0.74 1</ambient><diffuse>0.92 0.90 0.74 1</diffuse></material></visual>
+
+<visual name="hline_1_12"><pose>-44.000 -70.000 0.130 0 0 0.000000000</pose>
+<geometry><box><size>5.000 0.200 0.025</size></box></geometry><material><ambient>0.92 0.90 0.74 1</ambient><diffuse>0.92 0.90 0.74 1</diffuse></material></visual>
+
+<visual name="hline_1_13"><pose>-32.000 -70.000 0.130 0 0 0.000000000</pose>
+<geometry><box><size>5.000 0.200 0.025</size></box></geometry><material><ambient>0.92 0.90 0.74 1</ambient><diffuse>0.92 0.90 0.74 1</diffuse></material></visual>
+
+<visual name="hline_1_14"><pose>-20.000 -70.000 0.130 0 0 0.000000000</pose>
+<geometry><box><size>5.000 0.200 0.025</size></box></geometry><material><ambient>0.92 0.90 0.74 1</ambient><diffuse>0.92 0.90 0.74 1</diffuse></material></visual>
+
+<visual name="hline_1_17"><pose>16.000 -70.000 0.130 0 0 0.000000000</pose>
+<geometry><box><size>5.000 0.200 0.025</size></box></geometry><material><ambient>0.92 0.90 0.74 1</ambient><diffuse>0.92 0.90 0.74 1</diffuse></material></visual>
+
+<visual name="hline_1_18"><pose>28.000 -70.000 0.130 0 0 0.000000000</pose>
+<geometry><box><size>5.000 0.200 0.025</size></box></geometry><material><ambient>0.92 0.90 0.74 1</ambient><diffuse>0.92 0.90 0.74 1</diffuse></material></visual>
+
+<visual name="hline_1_19"><pose>40.000 -70.000 0.130 0 0 0.000000000</pose>
+<geometry><box><size>5.000 0.200 0.025</size></box></geometry><material><ambient>0.92 0.90 0.74 1</ambient><diffuse>0.92 0.90 0.74 1</diffuse></material></visual>
+
+<visual name="hline_1_20"><pose>52.000 -70.000 0.130 0 0 0.000000000</pose>
+<geometry><box><size>5.000 0.200 0.025</size></box></geometry><material><ambient>0.92 0.90 0.74 1</ambient><diffuse>0.92 0.90 0.74 1</diffuse></material></visual>
+
+<visual name="hline_1_21"><pose>64.000 -70.000 0.130 0 0 0.000000000</pose>
+<geometry><box><size>5.000 0.200 0.025</size></box></geometry><material><ambient>0.92 0.90 0.74 1</ambient><diffuse>0.92 0.90 0.74 1</diffuse></material></visual>
+
+<visual name="hline_1_22"><pose>76.000 -70.000 0.130 0 0 0.000000000</pose>
+<geometry><box><size>5.000 0.200 0.025</size></box></geometry><material><ambient>0.92 0.90 0.74 1</ambient><diffuse>0.92 0.90 0.74 1</diffuse></material></visual>
+
+<visual name="hline_1_24"><pose>100.000 -70.000 0.130 0 0 0.000000000</pose>
+<geometry><box><size>5.000 0.200 0.025</size></box></geometry><material><ambient>0.92 0.90 0.74 1</ambient><diffuse>0.92 0.90 0.74 1</diffuse></material></visual>
+
+<visual name="hline_1_25"><pose>112.000 -70.000 0.130 0 0 0.000000000</pose>
+<geometry><box><size>5.000 0.200 0.025</size></box></geometry><material><ambient>0.92 0.90 0.74 1</ambient><diffuse>0.92 0.90 0.74 1</diffuse></material></visual>
+
+<visual name="hline_1_26"><pose>124.000 -70.000 0.130 0 0 0.000000000</pose>
+<geometry><box><size>5.000 0.200 0.025</size></box></geometry><material><ambient>0.92 0.90 0.74 1</ambient><diffuse>0.92 0.90 0.74 1</diffuse></material></visual>
+
+<visual name="hline_1_27"><pose>136.000 -70.000 0.130 0 0 0.000000000</pose>
+<geometry><box><size>5.000 0.200 0.025</size></box></geometry><material><ambient>0.92 0.90 0.74 1</ambient><diffuse>0.92 0.90 0.74 1</diffuse></material></visual>
+
+<visual name="hline_1_28"><pose>148.000 -70.000 0.130 0 0 0.000000000</pose>
+<geometry><box><size>5.000 0.200 0.025</size></box></geometry><material><ambient>0.92 0.90 0.74 1</ambient><diffuse>0.92 0.90 0.74 1</diffuse></material></visual>
+
+<visual name="hline_1_29"><pose>160.000 -70.000 0.130 0 0 0.000000000</pose>
+<geometry><box><size>5.000 0.200 0.025</size></box></geometry><material><ambient>0.92 0.90 0.74 1</ambient><diffuse>0.92 0.90 0.74 1</diffuse></material></visual>
+
+<visual name="crosswalk_0_1_south_0"><pose>-182.700 -76.200 0.145 0 0 0.000000000</pose>
+<geometry><box><size>0.760 3.000 0.025</size></box></geometry><material><ambient>0.89 0.89 0.86 1</ambient><diffuse>0.89 0.89 0.86 1</diffuse></material></visual>
+
+<visual name="crosswalk_0_1_south_1"><pose>-181.350 -76.200 0.145 0 0 0.000000000</pose>
+<geometry><box><size>0.760 3.000 0.025</size></box></geometry><material><ambient>0.89 0.89 0.86 1</ambient><diffuse>0.89 0.89 0.86 1</diffuse></material></visual>
+
+<visual name="crosswalk_0_1_south_2"><pose>-180.000 -76.200 0.145 0 0 0.000000000</pose>
+<geometry><box><size>0.760 3.000 0.025</size></box></geometry><material><ambient>0.89 0.89 0.86 1</ambient><diffuse>0.89 0.89 0.86 1</diffuse></material></visual>
+
+<visual name="crosswalk_0_1_south_3"><pose>-178.650 -76.200 0.145 0 0 0.000000000</pose>
+<geometry><box><size>0.760 3.000 0.025</size></box></geometry><material><ambient>0.89 0.89 0.86 1</ambient><diffuse>0.89 0.89 0.86 1</diffuse></material></visual>
+
+<visual name="crosswalk_0_1_south_4"><pose>-177.300 -76.200 0.145 0 0 0.000000000</pose>
+<geometry><box><size>0.760 3.000 0.025</size></box></geometry><material><ambient>0.89 0.89 0.86 1</ambient><diffuse>0.89 0.89 0.86 1</diffuse></material></visual>
+
+<visual name="crosswalk_0_1_north_0"><pose>-182.700 -63.800 0.145 0 0 0.000000000</pose>
+<geometry><box><size>0.760 3.000 0.025</size></box></geometry><material><ambient>0.89 0.89 0.86 1</ambient><diffuse>0.89 0.89 0.86 1</diffuse></material></visual>
+
+<visual name="crosswalk_0_1_north_1"><pose>-181.350 -63.800 0.145 0 0 0.000000000</pose>
+<geometry><box><size>0.760 3.000 0.025</size></box></geometry><material><ambient>0.89 0.89 0.86 1</ambient><diffuse>0.89 0.89 0.86 1</diffuse></material></visual>
+
+<visual name="crosswalk_0_1_north_2"><pose>-180.000 -63.800 0.145 0 0 0.000000000</pose>
+<geometry><box><size>0.760 3.000 0.025</size></box></geometry><material><ambient>0.89 0.89 0.86 1</ambient><diffuse>0.89 0.89 0.86 1</diffuse></material></visual>
+
+<visual name="crosswalk_0_1_north_3"><pose>-178.650 -63.800 0.145 0 0 0.000000000</pose>
+<geometry><box><size>0.760 3.000 0.025</size></box></geometry><material><ambient>0.89 0.89 0.86 1</ambient><diffuse>0.89 0.89 0.86 1</diffuse></material></visual>
+
+<visual name="crosswalk_0_1_north_4"><pose>-177.300 -63.800 0.145 0 0 0.000000000</pose>
+<geometry><box><size>0.760 3.000 0.025</size></box></geometry><material><ambient>0.89 0.89 0.86 1</ambient><diffuse>0.89 0.89 0.86 1</diffuse></material></visual>
+
+<visual name="crosswalk_0_1_west_0"><pose>-186.200 -72.700 0.145 0 0 1.570796327</pose>
+<geometry><box><size>0.760 3.000 0.025</size></box></geometry><material><ambient>0.89 0.89 0.86 1</ambient><diffuse>0.89 0.89 0.86 1</diffuse></material></visual>
+
+<visual name="crosswalk_0_1_west_1"><pose>-186.200 -71.350 0.145 0 0 1.570796327</pose>
+<geometry><box><size>0.760 3.000 0.025</size></box></geometry><material><ambient>0.89 0.89 0.86 1</ambient><diffuse>0.89 0.89 0.86 1</diffuse></material></visual>
+
+<visual name="crosswalk_0_1_west_2"><pose>-186.200 -70.000 0.145 0 0 1.570796327</pose>
+<geometry><box><size>0.760 3.000 0.025</size></box></geometry><material><ambient>0.89 0.89 0.86 1</ambient><diffuse>0.89 0.89 0.86 1</diffuse></material></visual>
+
+<visual name="crosswalk_0_1_west_3"><pose>-186.200 -68.650 0.145 0 0 1.570796327</pose>
+<geometry><box><size>0.760 3.000 0.025</size></box></geometry><material><ambient>0.89 0.89 0.86 1</ambient><diffuse>0.89 0.89 0.86 1</diffuse></material></visual>
+
+<visual name="crosswalk_0_1_west_4"><pose>-186.200 -67.300 0.145 0 0 1.570796327</pose>
+<geometry><box><size>0.760 3.000 0.025</size></box></geometry><material><ambient>0.89 0.89 0.86 1</ambient><diffuse>0.89 0.89 0.86 1</diffuse></material></visual>
+
+<visual name="crosswalk_0_1_east_0"><pose>-173.800 -72.700 0.145 0 0 1.570796327</pose>
+<geometry><box><size>0.760 3.000 0.025</size></box></geometry><material><ambient>0.89 0.89 0.86 1</ambient><diffuse>0.89 0.89 0.86 1</diffuse></material></visual>
+
+<visual name="crosswalk_0_1_east_1"><pose>-173.800 -71.350 0.145 0 0 1.570796327</pose>
+<geometry><box><size>0.760 3.000 0.025</size></box></geometry><material><ambient>0.89 0.89 0.86 1</ambient><diffuse>0.89 0.89 0.86 1</diffuse></material></visual>
+
+<visual name="crosswalk_0_1_east_2"><pose>-173.800 -70.000 0.145 0 0 1.570796327</pose>
+<geometry><box><size>0.760 3.000 0.025</size></box></geometry><material><ambient>0.89 0.89 0.86 1</ambient><diffuse>0.89 0.89 0.86 1</diffuse></material></visual>
+
+<visual name="crosswalk_0_1_east_3"><pose>-173.800 -68.650 0.145 0 0 1.570796327</pose>
+<geometry><box><size>0.760 3.000 0.025</size></box></geometry><material><ambient>0.89 0.89 0.86 1</ambient><diffuse>0.89 0.89 0.86 1</diffuse></material></visual>
+
+<visual name="crosswalk_0_1_east_4"><pose>-173.800 -67.300 0.145 0 0 1.570796327</pose>
+<geometry><box><size>0.760 3.000 0.025</size></box></geometry><material><ambient>0.89 0.89 0.86 1</ambient><diffuse>0.89 0.89 0.86 1</diffuse></material></visual>
+
+<visual name="crosswalk_1_1_south_0"><pose>-92.700 -76.200 0.145 0 0 0.000000000</pose>
+<geometry><box><size>0.760 3.000 0.025</size></box></geometry><material><ambient>0.89 0.89 0.86 1</ambient><diffuse>0.89 0.89 0.86 1</diffuse></material></visual>
+
+<visual name="crosswalk_1_1_south_1"><pose>-91.350 -76.200 0.145 0 0 0.000000000</pose>
+<geometry><box><size>0.760 3.000 0.025</size></box></geometry><material><ambient>0.89 0.89 0.86 1</ambient><diffuse>0.89 0.89 0.86 1</diffuse></material></visual>
+
+<visual name="crosswalk_1_1_south_2"><pose>-90.000 -76.200 0.145 0 0 0.000000000</pose>
+<geometry><box><size>0.760 3.000 0.025</size></box></geometry><material><ambient>0.89 0.89 0.86 1</ambient><diffuse>0.89 0.89 0.86 1</diffuse></material></visual>
+
+<visual name="crosswalk_1_1_south_3"><pose>-88.650 -76.200 0.145 0 0 0.000000000</pose>
+<geometry><box><size>0.760 3.000 0.025</size></box></geometry><material><ambient>0.89 0.89 0.86 1</ambient><diffuse>0.89 0.89 0.86 1</diffuse></material></visual>
+
+<visual name="crosswalk_1_1_south_4"><pose>-87.300 -76.200 0.145 0 0 0.000000000</pose>
+<geometry><box><size>0.760 3.000 0.025</size></box></geometry><material><ambient>0.89 0.89 0.86 1</ambient><diffuse>0.89 0.89 0.86 1</diffuse></material></visual>
+
+<visual name="crosswalk_1_1_north_0"><pose>-92.700 -63.800 0.145 0 0 0.000000000</pose>
+<geometry><box><size>0.760 3.000 0.025</size></box></geometry><material><ambient>0.89 0.89 0.86 1</ambient><diffuse>0.89 0.89 0.86 1</diffuse></material></visual>
+
+<visual name="crosswalk_1_1_north_1"><pose>-91.350 -63.800 0.145 0 0 0.000000000</pose>
+<geometry><box><size>0.760 3.000 0.025</size></box></geometry><material><ambient>0.89 0.89 0.86 1</ambient><diffuse>0.89 0.89 0.86 1</diffuse></material></visual>
+
+<visual name="crosswalk_1_1_north_2"><pose>-90.000 -63.800 0.145 0 0 0.000000000</pose>
+<geometry><box><size>0.760 3.000 0.025</size></box></geometry><material><ambient>0.89 0.89 0.86 1</ambient><diffuse>0.89 0.89 0.86 1</diffuse></material></visual>
+
+<visual name="crosswalk_1_1_north_3"><pose>-88.650 -63.800 0.145 0 0 0.000000000</pose>
+<geometry><box><size>0.760 3.000 0.025</size></box></geometry><material><ambient>0.89 0.89 0.86 1</ambient><diffuse>0.89 0.89 0.86 1</diffuse></material></visual>
+
+<visual name="crosswalk_1_1_north_4"><pose>-87.300 -63.800 0.145 0 0 0.000000000</pose>
+<geometry><box><size>0.760 3.000 0.025</size></box></geometry><material><ambient>0.89 0.89 0.86 1</ambient><diffuse>0.89 0.89 0.86 1</diffuse></material></visual>
+
+<visual name="crosswalk_1_1_west_0"><pose>-96.200 -72.700 0.145 0 0 1.570796327</pose>
+<geometry><box><size>0.760 3.000 0.025</size></box></geometry><material><ambient>0.89 0.89 0.86 1</ambient><diffuse>0.89 0.89 0.86 1</diffuse></material></visual>
+
+<visual name="crosswalk_1_1_west_1"><pose>-96.200 -71.350 0.145 0 0 1.570796327</pose>
+<geometry><box><size>0.760 3.000 0.025</size></box></geometry><material><ambient>0.89 0.89 0.86 1</ambient><diffuse>0.89 0.89 0.86 1</diffuse></material></visual>
+
+<visual name="crosswalk_1_1_west_2"><pose>-96.200 -70.000 0.145 0 0 1.570796327</pose>
+<geometry><box><size>0.760 3.000 0.025</size></box></geometry><material><ambient>0.89 0.89 0.86 1</ambient><diffuse>0.89 0.89 0.86 1</diffuse></material></visual>
+
+<visual name="crosswalk_1_1_west_3"><pose>-96.200 -68.650 0.145 0 0 1.570796327</pose>
+<geometry><box><size>0.760 3.000 0.025</size></box></geometry><material><ambient>0.89 0.89 0.86 1</ambient><diffuse>0.89 0.89 0.86 1</diffuse></material></visual>
+
+<visual name="crosswalk_1_1_west_4"><pose>-96.200 -67.300 0.145 0 0 1.570796327</pose>
+<geometry><box><size>0.760 3.000 0.025</size></box></geometry><material><ambient>0.89 0.89 0.86 1</ambient><diffuse>0.89 0.89 0.86 1</diffuse></material></visual>
+
+<visual name="crosswalk_1_1_east_0"><pose>-83.800 -72.700 0.145 0 0 1.570796327</pose>
+<geometry><box><size>0.760 3.000 0.025</size></box></geometry><material><ambient>0.89 0.89 0.86 1</ambient><diffuse>0.89 0.89 0.86 1</diffuse></material></visual>
+
+<visual name="crosswalk_1_1_east_1"><pose>-83.800 -71.350 0.145 0 0 1.570796327</pose>
+<geometry><box><size>0.760 3.000 0.025</size></box></geometry><material><ambient>0.89 0.89 0.86 1</ambient><diffuse>0.89 0.89 0.86 1</diffuse></material></visual>
+
+<visual name="crosswalk_1_1_east_2"><pose>-83.800 -70.000 0.145 0 0 1.570796327</pose>
+<geometry><box><size>0.760 3.000 0.025</size></box></geometry><material><ambient>0.89 0.89 0.86 1</ambient><diffuse>0.89 0.89 0.86 1</diffuse></material></visual>
+
+<visual name="crosswalk_1_1_east_3"><pose>-83.800 -68.650 0.145 0 0 1.570796327</pose>
+<geometry><box><size>0.760 3.000 0.025</size></box></geometry><material><ambient>0.89 0.89 0.86 1</ambient><diffuse>0.89 0.89 0.86 1</diffuse></material></visual>
+
+<visual name="crosswalk_1_1_east_4"><pose>-83.800 -67.300 0.145 0 0 1.570796327</pose>
+<geometry><box><size>0.760 3.000 0.025</size></box></geometry><material><ambient>0.89 0.89 0.86 1</ambient><diffuse>0.89 0.89 0.86 1</diffuse></material></visual>
+
+<visual name="crosswalk_2_1_south_0"><pose>-2.700 -76.200 0.145 0 0 0.000000000</pose>
+<geometry><box><size>0.760 3.000 0.025</size></box></geometry><material><ambient>0.89 0.89 0.86 1</ambient><diffuse>0.89 0.89 0.86 1</diffuse></material></visual>
+
+<visual name="crosswalk_2_1_south_1"><pose>-1.350 -76.200 0.145 0 0 0.000000000</pose>
+<geometry><box><size>0.760 3.000 0.025</size></box></geometry><material><ambient>0.89 0.89 0.86 1</ambient><diffuse>0.89 0.89 0.86 1</diffuse></material></visual>
+
+<visual name="crosswalk_2_1_south_2"><pose>0.000 -76.200 0.145 0 0 0.000000000</pose>
+<geometry><box><size>0.760 3.000 0.025</size></box></geometry><material><ambient>0.89 0.89 0.86 1</ambient><diffuse>0.89 0.89 0.86 1</diffuse></material></visual>
+
+<visual name="crosswalk_2_1_south_3"><pose>1.350 -76.200 0.145 0 0 0.000000000</pose>
+<geometry><box><size>0.760 3.000 0.025</size></box></geometry><material><ambient>0.89 0.89 0.86 1</ambient><diffuse>0.89 0.89 0.86 1</diffuse></material></visual>
+
+<visual name="crosswalk_2_1_south_4"><pose>2.700 -76.200 0.145 0 0 0.000000000</pose>
+<geometry><box><size>0.760 3.000 0.025</size></box></geometry><material><ambient>0.89 0.89 0.86 1</ambient><diffuse>0.89 0.89 0.86 1</diffuse></material></visual>
+
+<visual name="crosswalk_2_1_north_0"><pose>-2.700 -63.800 0.145 0 0 0.000000000</pose>
+<geometry><box><size>0.760 3.000 0.025</size></box></geometry><material><ambient>0.89 0.89 0.86 1</ambient><diffuse>0.89 0.89 0.86 1</diffuse></material></visual>
+
+<visual name="crosswalk_2_1_north_1"><pose>-1.350 -63.800 0.145 0 0 0.000000000</pose>
+<geometry><box><size>0.760 3.000 0.025</size></box></geometry><material><ambient>0.89 0.89 0.86 1</ambient><diffuse>0.89 0.89 0.86 1</diffuse></material></visual>
+
+<visual name="crosswalk_2_1_north_2"><pose>0.000 -63.800 0.145 0 0 0.000000000</pose>
+<geometry><box><size>0.760 3.000 0.025</size></box></geometry><material><ambient>0.89 0.89 0.86 1</ambient><diffuse>0.89 0.89 0.86 1</diffuse></material></visual>
+
+<visual name="crosswalk_2_1_north_3"><pose>1.350 -63.800 0.145 0 0 0.000000000</pose>
+<geometry><box><size>0.760 3.000 0.025</size></box></geometry><material><ambient>0.89 0.89 0.86 1</ambient><diffuse>0.89 0.89 0.86 1</diffuse></material></visual>
+
+<visual name="crosswalk_2_1_north_4"><pose>2.700 -63.800 0.145 0 0 0.000000000</pose>
+<geometry><box><size>0.760 3.000 0.025</size></box></geometry><material><ambient>0.89 0.89 0.86 1</ambient><diffuse>0.89 0.89 0.86 1</diffuse></material></visual>
+
+<visual name="crosswalk_2_1_west_0"><pose>-6.200 -72.700 0.145 0 0 1.570796327</pose>
+<geometry><box><size>0.760 3.000 0.025</size></box></geometry><material><ambient>0.89 0.89 0.86 1</ambient><diffuse>0.89 0.89 0.86 1</diffuse></material></visual>
+
+<visual name="crosswalk_2_1_west_1"><pose>-6.200 -71.350 0.145 0 0 1.570796327</pose>
+<geometry><box><size>0.760 3.000 0.025</size></box></geometry><material><ambient>0.89 0.89 0.86 1</ambient><diffuse>0.89 0.89 0.86 1</diffuse></material></visual>
+
+<visual name="crosswalk_2_1_west_2"><pose>-6.200 -70.000 0.145 0 0 1.570796327</pose>
+<geometry><box><size>0.760 3.000 0.025</size></box></geometry><material><ambient>0.89 0.89 0.86 1</ambient><diffuse>0.89 0.89 0.86 1</diffuse></material></visual>
+
+<visual name="crosswalk_2_1_west_3"><pose>-6.200 -68.650 0.145 0 0 1.570796327</pose>
+<geometry><box><size>0.760 3.000 0.025</size></box></geometry><material><ambient>0.89 0.89 0.86 1</ambient><diffuse>0.89 0.89 0.86 1</diffuse></material></visual>
+
+<visual name="crosswalk_2_1_west_4"><pose>-6.200 -67.300 0.145 0 0 1.570796327</pose>
+<geometry><box><size>0.760 3.000 0.025</size></box></geometry><material><ambient>0.89 0.89 0.86 1</ambient><diffuse>0.89 0.89 0.86 1</diffuse></material></visual>
+
+<visual name="crosswalk_2_1_east_0"><pose>6.200 -72.700 0.145 0 0 1.570796327</pose>
+<geometry><box><size>0.760 3.000 0.025</size></box></geometry><material><ambient>0.89 0.89 0.86 1</ambient><diffuse>0.89 0.89 0.86 1</diffuse></material></visual>
+
+<visual name="crosswalk_2_1_east_1"><pose>6.200 -71.350 0.145 0 0 1.570796327</pose>
+<geometry><box><size>0.760 3.000 0.025</size></box></geometry><material><ambient>0.89 0.89 0.86 1</ambient><diffuse>0.89 0.89 0.86 1</diffuse></material></visual>
+
+<visual name="crosswalk_2_1_east_2"><pose>6.200 -70.000 0.145 0 0 1.570796327</pose>
+<geometry><box><size>0.760 3.000 0.025</size></box></geometry><material><ambient>0.89 0.89 0.86 1</ambient><diffuse>0.89 0.89 0.86 1</diffuse></material></visual>
+
+<visual name="crosswalk_2_1_east_3"><pose>6.200 -68.650 0.145 0 0 1.570796327</pose>
+<geometry><box><size>0.760 3.000 0.025</size></box></geometry><material><ambient>0.89 0.89 0.86 1</ambient><diffuse>0.89 0.89 0.86 1</diffuse></material></visual>
+
+<visual name="crosswalk_2_1_east_4"><pose>6.200 -67.300 0.145 0 0 1.570796327</pose>
+<geometry><box><size>0.760 3.000 0.025</size></box></geometry><material><ambient>0.89 0.89 0.86 1</ambient><diffuse>0.89 0.89 0.86 1</diffuse></material></visual>
+
+<visual name="crosswalk_3_1_south_0"><pose>87.300 -76.200 0.145 0 0 0.000000000</pose>
+<geometry><box><size>0.760 3.000 0.025</size></box></geometry><material><ambient>0.89 0.89 0.86 1</ambient><diffuse>0.89 0.89 0.86 1</diffuse></material></visual>
+
+<visual name="crosswalk_3_1_south_1"><pose>88.650 -76.200 0.145 0 0 0.000000000</pose>
+<geometry><box><size>0.760 3.000 0.025</size></box></geometry><material><ambient>0.89 0.89 0.86 1</ambient><diffuse>0.89 0.89 0.86 1</diffuse></material></visual>
+
+<visual name="crosswalk_3_1_south_2"><pose>90.000 -76.200 0.145 0 0 0.000000000</pose>
+<geometry><box><size>0.760 3.000 0.025</size></box></geometry><material><ambient>0.89 0.89 0.86 1</ambient><diffuse>0.89 0.89 0.86 1</diffuse></material></visual>
+
+<visual name="crosswalk_3_1_south_3"><pose>91.350 -76.200 0.145 0 0 0.000000000</pose>
+<geometry><box><size>0.760 3.000 0.025</size></box></geometry><material><ambient>0.89 0.89 0.86 1</ambient><diffuse>0.89 0.89 0.86 1</diffuse></material></visual>
+
+<visual name="crosswalk_3_1_south_4"><pose>92.700 -76.200 0.145 0 0 0.000000000</pose>
+<geometry><box><size>0.760 3.000 0.025</size></box></geometry><material><ambient>0.89 0.89 0.86 1</ambient><diffuse>0.89 0.89 0.86 1</diffuse></material></visual>
+
+<visual name="crosswalk_3_1_north_0"><pose>87.300 -63.800 0.145 0 0 0.000000000</pose>
+<geometry><box><size>0.760 3.000 0.025</size></box></geometry><material><ambient>0.89 0.89 0.86 1</ambient><diffuse>0.89 0.89 0.86 1</diffuse></material></visual>
+
+<visual name="crosswalk_3_1_north_1"><pose>88.650 -63.800 0.145 0 0 0.000000000</pose>
+<geometry><box><size>0.760 3.000 0.025</size></box></geometry><material><ambient>0.89 0.89 0.86 1</ambient><diffuse>0.89 0.89 0.86 1</diffuse></material></visual>
+
+<visual name="crosswalk_3_1_north_2"><pose>90.000 -63.800 0.145 0 0 0.000000000</pose>
+<geometry><box><size>0.760 3.000 0.025</size></box></geometry><material><ambient>0.89 0.89 0.86 1</ambient><diffuse>0.89 0.89 0.86 1</diffuse></material></visual>
+
+<visual name="crosswalk_3_1_north_3"><pose>91.350 -63.800 0.145 0 0 0.000000000</pose>
+<geometry><box><size>0.760 3.000 0.025</size></box></geometry><material><ambient>0.89 0.89 0.86 1</ambient><diffuse>0.89 0.89 0.86 1</diffuse></material></visual>
+
+<visual name="crosswalk_3_1_north_4"><pose>92.700 -63.800 0.145 0 0 0.000000000</pose>
+<geometry><box><size>0.760 3.000 0.025</size></box></geometry><material><ambient>0.89 0.89 0.86 1</ambient><diffuse>0.89 0.89 0.86 1</diffuse></material></visual>
+
+<visual name="crosswalk_3_1_west_0"><pose>83.800 -72.700 0.145 0 0 1.570796327</pose>
+<geometry><box><size>0.760 3.000 0.025</size></box></geometry><material><ambient>0.89 0.89 0.86 1</ambient><diffuse>0.89 0.89 0.86 1</diffuse></material></visual>
+
+<visual name="crosswalk_3_1_west_1"><pose>83.800 -71.350 0.145 0 0 1.570796327</pose>
+<geometry><box><size>0.760 3.000 0.025</size></box></geometry><material><ambient>0.89 0.89 0.86 1</ambient><diffuse>0.89 0.89 0.86 1</diffuse></material></visual>
+
+<visual name="crosswalk_3_1_west_2"><pose>83.800 -70.000 0.145 0 0 1.570796327</pose>
+<geometry><box><size>0.760 3.000 0.025</size></box></geometry><material><ambient>0.89 0.89 0.86 1</ambient><diffuse>0.89 0.89 0.86 1</diffuse></material></visual>
+
+<visual name="crosswalk_3_1_west_3"><pose>83.800 -68.650 0.145 0 0 1.570796327</pose>
+<geometry><box><size>0.760 3.000 0.025</size></box></geometry><material><ambient>0.89 0.89 0.86 1</ambient><diffuse>0.89 0.89 0.86 1</diffuse></material></visual>
+
+<visual name="crosswalk_3_1_west_4"><pose>83.800 -67.300 0.145 0 0 1.570796327</pose>
+<geometry><box><size>0.760 3.000 0.025</size></box></geometry><material><ambient>0.89 0.89 0.86 1</ambient><diffuse>0.89 0.89 0.86 1</diffuse></material></visual>
+
+<visual name="crosswalk_3_1_east_0"><pose>96.200 -72.700 0.145 0 0 1.570796327</pose>
+<geometry><box><size>0.760 3.000 0.025</size></box></geometry><material><ambient>0.89 0.89 0.86 1</ambient><diffuse>0.89 0.89 0.86 1</diffuse></material></visual>
+
+<visual name="crosswalk_3_1_east_1"><pose>96.200 -71.350 0.145 0 0 1.570796327</pose>
+<geometry><box><size>0.760 3.000 0.025</size></box></geometry><material><ambient>0.89 0.89 0.86 1</ambient><diffuse>0.89 0.89 0.86 1</diffuse></material></visual>
+
+<visual name="crosswalk_3_1_east_2"><pose>96.200 -70.000 0.145 0 0 1.570796327</pose>
+<geometry><box><size>0.760 3.000 0.025</size></box></geometry><material><ambient>0.89 0.89 0.86 1</ambient><diffuse>0.89 0.89 0.86 1</diffuse></material></visual>
+
+<visual name="crosswalk_3_1_east_3"><pose>96.200 -68.650 0.145 0 0 1.570796327</pose>
+<geometry><box><size>0.760 3.000 0.025</size></box></geometry><material><ambient>0.89 0.89 0.86 1</ambient><diffuse>0.89 0.89 0.86 1</diffuse></material></visual>
+
+<visual name="crosswalk_3_1_east_4"><pose>96.200 -67.300 0.145 0 0 1.570796327</pose>
+<geometry><box><size>0.760 3.000 0.025</size></box></geometry><material><ambient>0.89 0.89 0.86 1</ambient><diffuse>0.89 0.89 0.86 1</diffuse></material></visual>
+
+<visual name="crosswalk_4_1_south_0"><pose>177.300 -76.200 0.145 0 0 0.000000000</pose>
+<geometry><box><size>0.760 3.000 0.025</size></box></geometry><material><ambient>0.89 0.89 0.86 1</ambient><diffuse>0.89 0.89 0.86 1</diffuse></material></visual>
+
+<visual name="crosswalk_4_1_south_1"><pose>178.650 -76.200 0.145 0 0 0.000000000</pose>
+<geometry><box><size>0.760 3.000 0.025</size></box></geometry><material><ambient>0.89 0.89 0.86 1</ambient><diffuse>0.89 0.89 0.86 1</diffuse></material></visual>
+
+<visual name="crosswalk_4_1_south_2"><pose>180.000 -76.200 0.145 0 0 0.000000000</pose>
+<geometry><box><size>0.760 3.000 0.025</size></box></geometry><material><ambient>0.89 0.89 0.86 1</ambient><diffuse>0.89 0.89 0.86 1</diffuse></material></visual>
+
+<visual name="crosswalk_4_1_south_3"><pose>181.350 -76.200 0.145 0 0 0.000000000</pose>
+<geometry><box><size>0.760 3.000 0.025</size></box></geometry><material><ambient>0.89 0.89 0.86 1</ambient><diffuse>0.89 0.89 0.86 1</diffuse></material></visual>
+
+<visual name="crosswalk_4_1_south_4"><pose>182.700 -76.200 0.145 0 0 0.000000000</pose>
+<geometry><box><size>0.760 3.000 0.025</size></box></geometry><material><ambient>0.89 0.89 0.86 1</ambient><diffuse>0.89 0.89 0.86 1</diffuse></material></visual>
+
+<visual name="crosswalk_4_1_north_0"><pose>177.300 -63.800 0.145 0 0 0.000000000</pose>
+<geometry><box><size>0.760 3.000 0.025</size></box></geometry><material><ambient>0.89 0.89 0.86 1</ambient><diffuse>0.89 0.89 0.86 1</diffuse></material></visual>
+
+<visual name="crosswalk_4_1_north_1"><pose>178.650 -63.800 0.145 0 0 0.000000000</pose>
+<geometry><box><size>0.760 3.000 0.025</size></box></geometry><material><ambient>0.89 0.89 0.86 1</ambient><diffuse>0.89 0.89 0.86 1</diffuse></material></visual>
+
+<visual name="crosswalk_4_1_north_2"><pose>180.000 -63.800 0.145 0 0 0.000000000</pose>
+<geometry><box><size>0.760 3.000 0.025</size></box></geometry><material><ambient>0.89 0.89 0.86 1</ambient><diffuse>0.89 0.89 0.86 1</diffuse></material></visual>
+
+<visual name="crosswalk_4_1_north_3"><pose>181.350 -63.800 0.145 0 0 0.000000000</pose>
+<geometry><box><size>0.760 3.000 0.025</size></box></geometry><material><ambient>0.89 0.89 0.86 1</ambient><diffuse>0.89 0.89 0.86 1</diffuse></material></visual>
+
+<visual name="crosswalk_4_1_north_4"><pose>182.700 -63.800 0.145 0 0 0.000000000</pose>
+<geometry><box><size>0.760 3.000 0.025</size></box></geometry><material><ambient>0.89 0.89 0.86 1</ambient><diffuse>0.89 0.89 0.86 1</diffuse></material></visual>
+
+<visual name="crosswalk_4_1_west_0"><pose>173.800 -72.700 0.145 0 0 1.570796327</pose>
+<geometry><box><size>0.760 3.000 0.025</size></box></geometry><material><ambient>0.89 0.89 0.86 1</ambient><diffuse>0.89 0.89 0.86 1</diffuse></material></visual>
+
+<visual name="crosswalk_4_1_west_1"><pose>173.800 -71.350 0.145 0 0 1.570796327</pose>
+<geometry><box><size>0.760 3.000 0.025</size></box></geometry><material><ambient>0.89 0.89 0.86 1</ambient><diffuse>0.89 0.89 0.86 1</diffuse></material></visual>
+
+<visual name="crosswalk_4_1_west_2"><pose>173.800 -70.000 0.145 0 0 1.570796327</pose>
+<geometry><box><size>0.760 3.000 0.025</size></box></geometry><material><ambient>0.89 0.89 0.86 1</ambient><diffuse>0.89 0.89 0.86 1</diffuse></material></visual>
+
+<visual name="crosswalk_4_1_west_3"><pose>173.800 -68.650 0.145 0 0 1.570796327</pose>
+<geometry><box><size>0.760 3.000 0.025</size></box></geometry><material><ambient>0.89 0.89 0.86 1</ambient><diffuse>0.89 0.89 0.86 1</diffuse></material></visual>
+
+<visual name="crosswalk_4_1_west_4"><pose>173.800 -67.300 0.145 0 0 1.570796327</pose>
+<geometry><box><size>0.760 3.000 0.025</size></box></geometry><material><ambient>0.89 0.89 0.86 1</ambient><diffuse>0.89 0.89 0.86 1</diffuse></material></visual>
+
+<visual name="crosswalk_4_1_east_0"><pose>186.200 -72.700 0.145 0 0 1.570796327</pose>
+<geometry><box><size>0.760 3.000 0.025</size></box></geometry><material><ambient>0.89 0.89 0.86 1</ambient><diffuse>0.89 0.89 0.86 1</diffuse></material></visual>
+
+<visual name="crosswalk_4_1_east_1"><pose>186.200 -71.350 0.145 0 0 1.570796327</pose>
+<geometry><box><size>0.760 3.000 0.025</size></box></geometry><material><ambient>0.89 0.89 0.86 1</ambient><diffuse>0.89 0.89 0.86 1</diffuse></material></visual>
+
+<visual name="crosswalk_4_1_east_2"><pose>186.200 -70.000 0.145 0 0 1.570796327</pose>
+<geometry><box><size>0.760 3.000 0.025</size></box></geometry><material><ambient>0.89 0.89 0.86 1</ambient><diffuse>0.89 0.89 0.86 1</diffuse></material></visual>
+
+<visual name="crosswalk_4_1_east_3"><pose>186.200 -68.650 0.145 0 0 1.570796327</pose>
+<geometry><box><size>0.760 3.000 0.025</size></box></geometry><material><ambient>0.89 0.89 0.86 1</ambient><diffuse>0.89 0.89 0.86 1</diffuse></material></visual>
+
+<visual name="crosswalk_4_1_east_4"><pose>186.200 -67.300 0.145 0 0 1.570796327</pose>
+<geometry><box><size>0.760 3.000 0.025</size></box></geometry><material><ambient>0.89 0.89 0.86 1</ambient><diffuse>0.89 0.89 0.86 1</diffuse></material></visual>
+
+  </link></model>
+</sdf>

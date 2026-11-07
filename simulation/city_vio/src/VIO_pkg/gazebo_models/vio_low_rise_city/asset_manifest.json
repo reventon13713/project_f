@@ -1,0 +1,60 @@
+{
+  "assets": [
+    {
+      "path": "materials/textures/asphalt_nonperiodic.png",
+      "sha256": "0ede3051fd31b986e19bd5ce59af321d707c9da6d3d3d2cf6279a38825c7774a",
+      "source": "project-owned asphalt low-pass derivative"
+    },
+    {
+      "path": "materials/textures/facade_bakery_stucco.png",
+      "sha256": "133f80627746c7c5d3e31f22219259367df2e5fc9ce14bfa0d20bb17442a32a8",
+      "source": "OpenAI built-in image generation"
+    },
+    {
+      "path": "materials/textures/facade_blue_stone.png",
+      "sha256": "71fd5df9748be7fdc82c249c9db0009cd738b55601904f819be129fd8828a4ce",
+      "source": "reused project-owned low-rise audition asset"
+    },
+    {
+      "path": "materials/textures/facade_brick_shop.png",
+      "sha256": "ccd91699051b41379a7489ca945b78db0a448f3c34d23ee1b95590dd0ba1ad32",
+      "source": "reused project-owned low-rise audition asset"
+    },
+    {
+      "path": "materials/textures/facade_ochre_workshop.png",
+      "sha256": "dfd05ba3d3f3728172d996a92530e74beb3e03193d031e0f4a09fa016388b853",
+      "source": "OpenAI built-in image generation"
+    },
+    {
+      "path": "materials/textures/facade_sage_clinic.png",
+      "sha256": "52d6fb159a579733476e8ed841f6e8a5b0686cb0b7431399ec77d8b6ddad3e42",
+      "source": "OpenAI built-in image generation"
+    },
+    {
+      "path": "materials/textures/facade_timber_store.png",
+      "sha256": "232fc98f2c352a1fdc7f60115ff9ddb7ba7117a6271941fd864b03760be7c194",
+      "source": "reused project-owned low-rise audition asset"
+    },
+    {
+      "path": "materials/textures/roof_weathered_membrane_v2.png",
+      "sha256": "8ba2e7ed61d5ce035d44148a84f13235b510945da78187a527df44ccf7782b0f",
+      "source": "OpenAI built-in image generation"
+    },
+    {
+      "path": "materials/textures/tree_cherry.png",
+      "sha256": "95c928fd3f4e09efde38e566fcf72db2fa5cbae00dc2e39d71598db1e575ed71",
+      "source": "OpenAI built-in image generation"
+    },
+    {
+      "path": "materials/textures/tree_hornbeam.png",
+      "sha256": "c874eaf2306d95bbada0d59ca51e80dd2169d834a0366f82891df5a996d2a0f8",
+      "source": "OpenAI built-in image generation"
+    },
+    {
+      "path": "materials/textures/tree_maple.png",
+      "sha256": "6689be907f0f228298642b47decb021614857c60b1f36308cbd1c6250d535324",
+      "source": "OpenAI built-in image generation"
+    }
+  ],
+  "schema": "project_f.vio_low_rise_city_assets.v1"
+}

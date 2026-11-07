@@ -1,0 +1,440 @@
+<?xml version="1.0"?>
+<sdf version="1.6">
+  <model name="vio_low_rise_city_block_10"><static>true</static><link name="geometry">
+<visual name="block_10_pavement"><pose>45.000 35.000 0.120 0 0 0.000000000</pose>
+<geometry><box><size>80.000 60.000 0.240</size></box></geometry><material><ambient>0.58 0.57 0.53 1</ambient><diffuse>0.58 0.57 0.53 1</diffuse></material></visual>
+
+<collision name="block_10_pavement_collision"><pose>45.000 35.000 0.120 0 0 0.000000000</pose>
+<geometry><box><size>80.000 60.000 0.240</size></box></geometry></collision>
+
+<visual name="block_10_curb_south"><pose>45.000 5.000 0.300 0 0 0.000000000</pose>
+<geometry><box><size>80.000 0.280 0.360</size></box></geometry><material><ambient>0.69 0.68 0.64 1</ambient><diffuse>0.69 0.68 0.64 1</diffuse></material></visual>
+
+<collision name="block_10_curb_south_collision"><pose>45.000 5.000 0.300 0 0 0.000000000</pose>
+<geometry><box><size>80.000 0.280 0.360</size></box></geometry></collision>
+
+<visual name="block_10_curb_north"><pose>45.000 65.000 0.300 0 0 0.000000000</pose>
+<geometry><box><size>80.000 0.280 0.360</size></box></geometry><material><ambient>0.69 0.68 0.64 1</ambient><diffuse>0.69 0.68 0.64 1</diffuse></material></visual>
+
+<collision name="block_10_curb_north_collision"><pose>45.000 65.000 0.300 0 0 0.000000000</pose>
+<geometry><box><size>80.000 0.280 0.360</size></box></geometry></collision>
+
+<visual name="block_10_curb_west"><pose>5.000 35.000 0.300 0 0 0.000000000</pose>
+<geometry><box><size>0.280 60.000 0.360</size></box></geometry><material><ambient>0.69 0.68 0.64 1</ambient><diffuse>0.69 0.68 0.64 1</diffuse></material></visual>
+
+<collision name="block_10_curb_west_collision"><pose>5.000 35.000 0.300 0 0 0.000000000</pose>
+<geometry><box><size>0.280 60.000 0.360</size></box></geometry></collision>
+
+<visual name="block_10_curb_east"><pose>85.000 35.000 0.300 0 0 0.000000000</pose>
+<geometry><box><size>0.280 60.000 0.360</size></box></geometry><material><ambient>0.69 0.68 0.64 1</ambient><diffuse>0.69 0.68 0.64 1</diffuse></material></visual>
+
+<collision name="block_10_curb_east_collision"><pose>85.000 35.000 0.300 0 0 0.000000000</pose>
+<geometry><box><size>0.280 60.000 0.360</size></box></geometry></collision>
+
+<visual name="b10_0_north_body"><pose>23.000 57.700 3.600 0 0 0.000000000</pose>
+<geometry><box><size>24.000 11.600 7.200</size></box></geometry><material><ambient>0.67 0.48 0.34 1</ambient><diffuse>0.67 0.48 0.34 1</diffuse></material></visual>
+
+<collision name="b10_0_north_body_collision"><pose>23.000 57.700 3.600 0 0 0.000000000</pose>
+<geometry><box><size>24.000 11.600 7.200</size></box></geometry></collision>
+
+<visual name="b10_0_north_roof"><pose>23.000 57.700 7.360 0 0 0.000000000</pose>
+<geometry><box><size>24.350 11.950 0.320</size></box></geometry><material><script><uri>model://vio_low_rise_city/materials/scripts</uri><uri>model://vio_low_rise_city/materials/textures</uri><name>VioLowRiseCity/RoofWeatheredMembrane</name></script></material></visual>
+
+<visual name="b10_0_north_rooftop_unit"><pose>20.000 59.788 7.710 0 0 0.000000000</pose>
+<geometry><box><size>2.000 1.350 0.380</size></box></geometry><material><ambient>0.19 0.23 0.24 1</ambient><diffuse>0.19 0.23 0.24 1</diffuse></material></visual>
+
+<collision name="b10_0_north_rooftop_unit_collision"><pose>20.000 59.788 7.710 0 0 0.000000000</pose>
+<geometry><box><size>2.000 1.350 0.380</size></box></geometry></collision>
+
+<visual name="b10_0_north_skylight"><pose>24.650 56.552 7.590 0 0 0.000000000</pose>
+<geometry><box><size>2.800 0.900 0.140</size></box></geometry><material><ambient>0.20 0.34 0.42 1</ambient><diffuse>0.20 0.34 0.42 1</diffuse></material></visual>
+
+<visual name="b10_0_north_facade"><pose>23.000 63.525 3.600 0 0 0.000000000</pose>
+<geometry><box><size>23.300 0.050 6.750</size></box></geometry><material><script><uri>model://vio_low_rise_city/materials/scripts</uri><uri>model://vio_low_rise_city/materials/textures</uri><name>VioLowRiseCity/FacadeBrickShop</name></script></material></visual>
+
+<visual name="b10_0_north_awning"><pose>23.000 63.875 3.150 0 0 0.000000000</pose>
+<geometry><box><size>13.200 0.750 0.160</size></box></geometry><material><ambient>0.18 0.31 0.45 1</ambient><diffuse>0.18 0.31 0.45 1</diffuse></material></visual>
+
+<visual name="b10_0_north_corner_return_0"><pose>11.280 63.650 3.600 0 0 0.000000000</pose>
+<geometry><box><size>0.340 0.220 6.900</size></box></geometry><material><ambient>0.43 0.39 0.34 1</ambient><diffuse>0.43 0.39 0.34 1</diffuse></material></visual>
+
+<visual name="b10_0_north_corner_return_1"><pose>34.720 63.650 3.600 0 0 0.000000000</pose>
+<geometry><box><size>0.340 0.220 6.900</size></box></geometry><material><ambient>0.43 0.39 0.34 1</ambient><diffuse>0.43 0.39 0.34 1</diffuse></material></visual>
+
+<visual name="b10_0_north_entry_door"><pose>30.200 63.600 1.250 0 0 0.000000000</pose>
+<geometry><box><size>1.150 0.120 2.300</size></box></geometry><material><ambient>0.12 0.24 0.29 1</ambient><diffuse>0.12 0.24 0.29 1</diffuse></material></visual>
+
+<visual name="b10_0_north_shop_window_0"><pose>17.000 63.590 1.450 0 0 0.000000000</pose>
+<geometry><box><size>3.000 0.100 1.650</size></box></geometry><material><ambient>0.08 0.12 0.14 1</ambient><diffuse>0.08 0.12 0.14 1</diffuse></material></visual>
+
+<visual name="b10_0_north_shop_window_1"><pose>23.480 63.590 1.450 0 0 0.000000000</pose>
+<geometry><box><size>3.000 0.100 1.650</size></box></geometry><material><ambient>0.08 0.12 0.14 1</ambient><diffuse>0.08 0.12 0.14 1</diffuse></material></visual>
+
+<visual name="b10_0_north_ground_lintel"><pose>22.280 63.620 2.480 0 0 0.000000000</pose>
+<geometry><box><size>18.720 0.160 0.200</size></box></geometry><material><ambient>0.43 0.39 0.34 1</ambient><diffuse>0.43 0.39 0.34 1</diffuse></material></visual>
+
+<visual name="b10_0_north_upper_window_0"><pose>15.800 63.595 4.850 0 0 0.000000000</pose>
+<geometry><box><size>2.250 0.110 1.480</size></box></geometry><material><ambient>0.08 0.12 0.14 1</ambient><diffuse>0.08 0.12 0.14 1</diffuse></material></visual>
+
+<visual name="b10_0_north_upper_sill_0"><pose>15.800 63.660 4.030 0 0 0.000000000</pose>
+<geometry><box><size>2.530 0.240 0.130</size></box></geometry><material><ambient>0.43 0.39 0.34 1</ambient><diffuse>0.43 0.39 0.34 1</diffuse></material></visual>
+
+<visual name="b10_0_north_upper_window_1"><pose>23.000 63.595 4.850 0 0 0.000000000</pose>
+<geometry><box><size>2.250 0.110 1.480</size></box></geometry><material><ambient>0.08 0.12 0.14 1</ambient><diffuse>0.08 0.12 0.14 1</diffuse></material></visual>
+
+<visual name="b10_0_north_upper_sill_1"><pose>23.000 63.660 4.030 0 0 0.000000000</pose>
+<geometry><box><size>2.530 0.240 0.130</size></box></geometry><material><ambient>0.43 0.39 0.34 1</ambient><diffuse>0.43 0.39 0.34 1</diffuse></material></visual>
+
+<visual name="b10_0_north_upper_window_2"><pose>30.200 63.595 4.850 0 0 0.000000000</pose>
+<geometry><box><size>2.250 0.110 1.480</size></box></geometry><material><ambient>0.08 0.12 0.14 1</ambient><diffuse>0.08 0.12 0.14 1</diffuse></material></visual>
+
+<visual name="b10_0_north_upper_sill_2"><pose>30.200 63.660 4.030 0 0 0.000000000</pose>
+<geometry><box><size>2.530 0.240 0.130</size></box></geometry><material><ambient>0.43 0.39 0.34 1</ambient><diffuse>0.43 0.39 0.34 1</diffuse></material></visual>
+
+<visual name="b10_0_north_balcony_slab"><pose>23.000 64.280 3.620 0 0 0.000000000</pose>
+<geometry><box><size>4.800 0.920 0.160</size></box></geometry><material><ambient>0.43 0.39 0.34 1</ambient><diffuse>0.43 0.39 0.34 1</diffuse></material></visual>
+
+<visual name="b10_0_north_balcony_rail"><pose>23.000 64.370 4.040 0 0 0.000000000</pose>
+<geometry><box><size>4.600 0.100 0.720</size></box></geometry><material><ambient>0.16 0.18 0.18 1</ambient><diffuse>0.16 0.18 0.18 1</diffuse></material></visual>
+
+<visual name="b10_1_north_body"><pose>67.000 57.700 2.150 0 0 0.000000000</pose>
+<geometry><box><size>24.000 11.600 4.300</size></box></geometry><material><ambient>0.48 0.58 0.55 1</ambient><diffuse>0.48 0.58 0.55 1</diffuse></material></visual>
+
+<collision name="b10_1_north_body_collision"><pose>67.000 57.700 2.150 0 0 0.000000000</pose>
+<geometry><box><size>24.000 11.600 4.300</size></box></geometry></collision>
+
+<visual name="b10_1_north_roof"><pose>67.000 57.700 4.460 0 0 0.000000000</pose>
+<geometry><box><size>24.350 11.950 0.320</size></box></geometry><material><script><uri>model://vio_low_rise_city/materials/scripts</uri><uri>model://vio_low_rise_city/materials/textures</uri><name>VioLowRiseCity/RoofWeatheredMembrane</name></script></material></visual>
+
+<visual name="b10_1_north_rooftop_unit"><pose>67.000 59.788 4.860 0 0 0.000000000</pose>
+<geometry><box><size>2.350 1.350 0.480</size></box></geometry><material><ambient>0.76 0.77 0.72 1</ambient><diffuse>0.76 0.77 0.72 1</diffuse></material></visual>
+
+<collision name="b10_1_north_rooftop_unit_collision"><pose>67.000 59.788 4.860 0 0 0.000000000</pose>
+<geometry><box><size>2.350 1.350 0.480</size></box></geometry></collision>
+
+<visual name="b10_1_north_skylight"><pose>67.000 56.552 4.690 0 0 0.000000000</pose>
+<geometry><box><size>2.800 0.900 0.140</size></box></geometry><material><ambient>0.20 0.34 0.42 1</ambient><diffuse>0.20 0.34 0.42 1</diffuse></material></visual>
+
+<visual name="b10_1_north_facade"><pose>67.000 63.525 2.150 0 0 0.000000000</pose>
+<geometry><box><size>23.300 0.050 3.850</size></box></geometry><material><script><uri>model://vio_low_rise_city/materials/scripts</uri><uri>model://vio_low_rise_city/materials/textures</uri><name>VioLowRiseCity/FacadeBlueStone</name></script></material></visual>
+
+<visual name="b10_1_north_awning"><pose>67.000 63.875 2.494 0 0 0.000000000</pose>
+<geometry><box><size>13.200 0.750 0.160</size></box></geometry><material><ambient>0.53 0.24 0.20 1</ambient><diffuse>0.53 0.24 0.20 1</diffuse></material></visual>
+
+<visual name="b10_1_north_corner_return_0"><pose>55.280 63.650 2.150 0 0 0.000000000</pose>
+<geometry><box><size>0.340 0.220 4.000</size></box></geometry><material><ambient>0.73 0.70 0.63 1</ambient><diffuse>0.73 0.70 0.63 1</diffuse></material></visual>
+
+<visual name="b10_1_north_corner_return_1"><pose>78.720 63.650 2.150 0 0 0.000000000</pose>
+<geometry><box><size>0.340 0.220 4.000</size></box></geometry><material><ambient>0.73 0.70 0.63 1</ambient><diffuse>0.73 0.70 0.63 1</diffuse></material></visual>
+
+<visual name="b10_1_north_entry_door"><pose>74.200 63.600 1.250 0 0 0.000000000</pose>
+<geometry><box><size>1.150 0.120 2.300</size></box></geometry><material><ambient>0.20 0.16 0.12 1</ambient><diffuse>0.20 0.16 0.12 1</diffuse></material></visual>
+
+<visual name="b10_1_north_shop_window_0"><pose>61.000 63.590 1.450 0 0 0.000000000</pose>
+<geometry><box><size>3.000 0.100 1.650</size></box></geometry><material><ambient>0.08 0.12 0.14 1</ambient><diffuse>0.08 0.12 0.14 1</diffuse></material></visual>
+
+<visual name="b10_1_north_shop_window_1"><pose>67.480 63.590 1.450 0 0 0.000000000</pose>
+<geometry><box><size>3.000 0.100 1.650</size></box></geometry><material><ambient>0.08 0.12 0.14 1</ambient><diffuse>0.08 0.12 0.14 1</diffuse></material></visual>
+
+<visual name="b10_1_north_ground_lintel"><pose>66.280 63.620 2.480 0 0 0.000000000</pose>
+<geometry><box><size>18.720 0.160 0.200</size></box></geometry><material><ambient>0.73 0.70 0.63 1</ambient><diffuse>0.73 0.70 0.63 1</diffuse></material></visual>
+
+<visual name="b10_2_south_body"><pose>23.000 12.300 2.200 0 0 0.000000000</pose>
+<geometry><box><size>24.000 11.600 4.400</size></box></geometry><material><ambient>0.72 0.65 0.50 1</ambient><diffuse>0.72 0.65 0.50 1</diffuse></material></visual>
+
+<collision name="b10_2_south_body_collision"><pose>23.000 12.300 2.200 0 0 0.000000000</pose>
+<geometry><box><size>24.000 11.600 4.400</size></box></geometry></collision>
+
+<visual name="b10_2_south_roof"><pose>23.000 12.300 4.560 0 0 0.000000000</pose>
+<geometry><box><size>24.350 11.950 0.320</size></box></geometry><material><script><uri>model://vio_low_rise_city/materials/scripts</uri><uri>model://vio_low_rise_city/materials/textures</uri><name>VioLowRiseCity/RoofWeatheredMembrane</name></script></material></visual>
+
+<visual name="b10_2_south_rooftop_unit"><pose>26.000 14.388 5.010 0 0 0.000000000</pose>
+<geometry><box><size>2.000 1.600 0.580</size></box></geometry><material><ambient>0.19 0.23 0.24 1</ambient><diffuse>0.19 0.23 0.24 1</diffuse></material></visual>
+
+<collision name="b10_2_south_rooftop_unit_collision"><pose>26.000 14.388 5.010 0 0 0.000000000</pose>
+<geometry><box><size>2.000 1.600 0.580</size></box></geometry></collision>
+
+<visual name="b10_2_south_skylight"><pose>21.350 11.152 4.790 0 0 0.000000000</pose>
+<geometry><box><size>2.800 0.900 0.140</size></box></geometry><material><ambient>0.20 0.34 0.42 1</ambient><diffuse>0.20 0.34 0.42 1</diffuse></material></visual>
+
+<visual name="b10_2_south_facade"><pose>23.000 6.475 2.200 0 0 0.000000000</pose>
+<geometry><box><size>23.300 0.050 3.950</size></box></geometry><material><script><uri>model://vio_low_rise_city/materials/scripts</uri><uri>model://vio_low_rise_city/materials/textures</uri><name>VioLowRiseCity/FacadeTimberStore</name></script></material></visual>
+
+<visual name="b10_2_south_awning"><pose>23.000 6.125 2.552 0 0 0.000000000</pose>
+<geometry><box><size>13.200 0.750 0.160</size></box></geometry><material><ambient>0.18 0.31 0.45 1</ambient><diffuse>0.18 0.31 0.45 1</diffuse></material></visual>
+
+<visual name="b10_2_south_corner_return_0"><pose>11.280 6.350 2.200 0 0 0.000000000</pose>
+<geometry><box><size>0.340 0.220 4.100</size></box></geometry><material><ambient>0.43 0.39 0.34 1</ambient><diffuse>0.43 0.39 0.34 1</diffuse></material></visual>
+
+<visual name="b10_2_south_corner_return_1"><pose>34.720 6.350 2.200 0 0 0.000000000</pose>
+<geometry><box><size>0.340 0.220 4.100</size></box></geometry><material><ambient>0.43 0.39 0.34 1</ambient><diffuse>0.43 0.39 0.34 1</diffuse></material></visual>
+
+<visual name="b10_2_south_entry_door"><pose>30.200 6.400 1.250 0 0 0.000000000</pose>
+<geometry><box><size>1.150 0.120 2.300</size></box></geometry><material><ambient>0.12 0.24 0.29 1</ambient><diffuse>0.12 0.24 0.29 1</diffuse></material></visual>
+
+<visual name="b10_2_south_shop_window_0"><pose>17.000 6.410 1.450 0 0 0.000000000</pose>
+<geometry><box><size>3.000 0.100 1.650</size></box></geometry><material><ambient>0.08 0.12 0.14 1</ambient><diffuse>0.08 0.12 0.14 1</diffuse></material></visual>
+
+<visual name="b10_2_south_shop_window_1"><pose>23.480 6.410 1.450 0 0 0.000000000</pose>
+<geometry><box><size>3.000 0.100 1.650</size></box></geometry><material><ambient>0.08 0.12 0.14 1</ambient><diffuse>0.08 0.12 0.14 1</diffuse></material></visual>
+
+<visual name="b10_2_south_ground_lintel"><pose>22.280 6.380 2.480 0 0 0.000000000</pose>
+<geometry><box><size>18.720 0.160 0.200</size></box></geometry><material><ambient>0.43 0.39 0.34 1</ambient><diffuse>0.43 0.39 0.34 1</diffuse></material></visual>
+
+<visual name="b10_3_south_body"><pose>67.000 12.300 3.500 0 0 0.000000000</pose>
+<geometry><box><size>24.000 11.600 7.000</size></box></geometry><material><ambient>0.54 0.49 0.45 1</ambient><diffuse>0.54 0.49 0.45 1</diffuse></material></visual>
+
+<collision name="b10_3_south_body_collision"><pose>67.000 12.300 3.500 0 0 0.000000000</pose>
+<geometry><box><size>24.000 11.600 7.000</size></box></geometry></collision>
+
+<visual name="b10_3_south_roof"><pose>67.000 12.300 7.160 0 0 0.000000000</pose>
+<geometry><box><size>24.350 11.950 0.320</size></box></geometry><material><script><uri>model://vio_low_rise_city/materials/scripts</uri><uri>model://vio_low_rise_city/materials/textures</uri><name>VioLowRiseCity/RoofWeatheredMembrane</name></script></material></visual>
+
+<visual name="b10_3_south_rooftop_unit"><pose>64.000 10.212 7.510 0 0 0.000000000</pose>
+<geometry><box><size>2.350 1.600 0.380</size></box></geometry><material><ambient>0.76 0.77 0.72 1</ambient><diffuse>0.76 0.77 0.72 1</diffuse></material></visual>
+
+<collision name="b10_3_south_rooftop_unit_collision"><pose>64.000 10.212 7.510 0 0 0.000000000</pose>
+<geometry><box><size>2.350 1.600 0.380</size></box></geometry></collision>
+
+<visual name="b10_3_south_skylight"><pose>68.650 13.448 7.390 0 0 0.000000000</pose>
+<geometry><box><size>2.800 0.900 0.140</size></box></geometry><material><ambient>0.20 0.34 0.42 1</ambient><diffuse>0.20 0.34 0.42 1</diffuse></material></visual>
+
+<visual name="b10_3_south_facade"><pose>67.000 6.475 3.500 0 0 0.000000000</pose>
+<geometry><box><size>23.300 0.050 6.550</size></box></geometry><material><script><uri>model://vio_low_rise_city/materials/scripts</uri><uri>model://vio_low_rise_city/materials/textures</uri><name>VioLowRiseCity/FacadeBakeryStucco</name></script></material></visual>
+
+<visual name="b10_3_south_awning"><pose>67.000 6.125 3.150 0 0 0.000000000</pose>
+<geometry><box><size>13.200 0.750 0.160</size></box></geometry><material><ambient>0.53 0.24 0.20 1</ambient><diffuse>0.53 0.24 0.20 1</diffuse></material></visual>
+
+<visual name="b10_3_south_corner_return_0"><pose>55.280 6.350 3.500 0 0 0.000000000</pose>
+<geometry><box><size>0.340 0.220 6.700</size></box></geometry><material><ambient>0.73 0.70 0.63 1</ambient><diffuse>0.73 0.70 0.63 1</diffuse></material></visual>
+
+<visual name="b10_3_south_corner_return_1"><pose>78.720 6.350 3.500 0 0 0.000000000</pose>
+<geometry><box><size>0.340 0.220 6.700</size></box></geometry><material><ambient>0.73 0.70 0.63 1</ambient><diffuse>0.73 0.70 0.63 1</diffuse></material></visual>
+
+<visual name="b10_3_south_entry_door"><pose>74.200 6.400 1.250 0 0 0.000000000</pose>
+<geometry><box><size>1.150 0.120 2.300</size></box></geometry><material><ambient>0.20 0.16 0.12 1</ambient><diffuse>0.20 0.16 0.12 1</diffuse></material></visual>
+
+<visual name="b10_3_south_shop_window_0"><pose>61.000 6.410 1.450 0 0 0.000000000</pose>
+<geometry><box><size>3.000 0.100 1.650</size></box></geometry><material><ambient>0.08 0.12 0.14 1</ambient><diffuse>0.08 0.12 0.14 1</diffuse></material></visual>
+
+<visual name="b10_3_south_shop_window_1"><pose>67.480 6.410 1.450 0 0 0.000000000</pose>
+<geometry><box><size>3.000 0.100 1.650</size></box></geometry><material><ambient>0.08 0.12 0.14 1</ambient><diffuse>0.08 0.12 0.14 1</diffuse></material></visual>
+
+<visual name="b10_3_south_ground_lintel"><pose>66.280 6.380 2.480 0 0 0.000000000</pose>
+<geometry><box><size>18.720 0.160 0.200</size></box></geometry><material><ambient>0.73 0.70 0.63 1</ambient><diffuse>0.73 0.70 0.63 1</diffuse></material></visual>
+
+<visual name="b10_3_south_upper_window_0"><pose>59.800 6.405 4.850 0 0 0.000000000</pose>
+<geometry><box><size>2.250 0.110 1.480</size></box></geometry><material><ambient>0.08 0.12 0.14 1</ambient><diffuse>0.08 0.12 0.14 1</diffuse></material></visual>
+
+<visual name="b10_3_south_upper_sill_0"><pose>59.800 6.340 4.030 0 0 0.000000000</pose>
+<geometry><box><size>2.530 0.240 0.130</size></box></geometry><material><ambient>0.73 0.70 0.63 1</ambient><diffuse>0.73 0.70 0.63 1</diffuse></material></visual>
+
+<visual name="b10_3_south_upper_window_1"><pose>67.000 6.405 4.850 0 0 0.000000000</pose>
+<geometry><box><size>2.250 0.110 1.480</size></box></geometry><material><ambient>0.08 0.12 0.14 1</ambient><diffuse>0.08 0.12 0.14 1</diffuse></material></visual>
+
+<visual name="b10_3_south_upper_sill_1"><pose>67.000 6.340 4.030 0 0 0.000000000</pose>
+<geometry><box><size>2.530 0.240 0.130</size></box></geometry><material><ambient>0.73 0.70 0.63 1</ambient><diffuse>0.73 0.70 0.63 1</diffuse></material></visual>
+
+<visual name="b10_3_south_upper_window_2"><pose>74.200 6.405 4.850 0 0 0.000000000</pose>
+<geometry><box><size>2.250 0.110 1.480</size></box></geometry><material><ambient>0.08 0.12 0.14 1</ambient><diffuse>0.08 0.12 0.14 1</diffuse></material></visual>
+
+<visual name="b10_3_south_upper_sill_2"><pose>74.200 6.340 4.030 0 0 0.000000000</pose>
+<geometry><box><size>2.530 0.240 0.130</size></box></geometry><material><ambient>0.73 0.70 0.63 1</ambient><diffuse>0.73 0.70 0.63 1</diffuse></material></visual>
+
+<visual name="b10_3_south_balcony_slab"><pose>67.000 5.720 3.620 0 0 0.000000000</pose>
+<geometry><box><size>4.800 0.920 0.160</size></box></geometry><material><ambient>0.73 0.70 0.63 1</ambient><diffuse>0.73 0.70 0.63 1</diffuse></material></visual>
+
+<visual name="b10_3_south_balcony_rail"><pose>67.000 5.630 4.040 0 0 0.000000000</pose>
+<geometry><box><size>4.600 0.100 0.720</size></box></geometry><material><ambient>0.16 0.18 0.18 1</ambient><diffuse>0.16 0.18 0.18 1</diffuse></material></visual>
+
+<visual name="b10_4_west_body"><pose>12.200 35.000 3.400 0 0 0.000000000</pose>
+<geometry><box><size>11.400 17.000 6.800</size></box></geometry><material><ambient>0.70 0.56 0.52 1</ambient><diffuse>0.70 0.56 0.52 1</diffuse></material></visual>
+
+<collision name="b10_4_west_body_collision"><pose>12.200 35.000 3.400 0 0 0.000000000</pose>
+<geometry><box><size>11.400 17.000 6.800</size></box></geometry></collision>
+
+<visual name="b10_4_west_roof"><pose>12.200 35.000 6.960 0 0 0.000000000</pose>
+<geometry><box><size>11.750 17.350 0.320</size></box></geometry><material><script><uri>model://vio_low_rise_city/materials/scripts</uri><uri>model://vio_low_rise_city/materials/textures</uri><name>VioLowRiseCity/RoofWeatheredMembrane</name></script></material></visual>
+
+<visual name="b10_4_west_rooftop_unit"><pose>12.200 32.800 7.360 0 0 0.000000000</pose>
+<geometry><box><size>2.000 1.350 0.480</size></box></geometry><material><ambient>0.19 0.23 0.24 1</ambient><diffuse>0.19 0.23 0.24 1</diffuse></material></visual>
+
+<collision name="b10_4_west_rooftop_unit_collision"><pose>12.200 32.800 7.360 0 0 0.000000000</pose>
+<geometry><box><size>2.000 1.350 0.480</size></box></geometry></collision>
+
+<visual name="b10_4_west_skylight"><pose>12.200 36.210 7.190 0 0 0.000000000</pose>
+<geometry><box><size>2.800 0.900 0.140</size></box></geometry><material><ambient>0.20 0.34 0.42 1</ambient><diffuse>0.20 0.34 0.42 1</diffuse></material></visual>
+
+<visual name="b10_4_west_facade"><pose>6.475 35.000 3.400 0 0 0.000000000</pose>
+<geometry><box><size>0.050 16.300 6.350</size></box></geometry><material><script><uri>model://vio_low_rise_city/materials/scripts</uri><uri>model://vio_low_rise_city/materials/textures</uri><name>VioLowRiseCity/FacadeSageClinic</name></script></material></visual>
+
+<visual name="b10_4_west_awning"><pose>6.125 35.000 3.150 0 0 0.000000000</pose>
+<geometry><box><size>0.750 9.350 0.160</size></box></geometry><material><ambient>0.18 0.31 0.45 1</ambient><diffuse>0.18 0.31 0.45 1</diffuse></material></visual>
+
+<visual name="b10_4_west_corner_return_0"><pose>6.350 26.780 3.400 0 0 0.000000000</pose>
+<geometry><box><size>0.220 0.340 6.500</size></box></geometry><material><ambient>0.43 0.39 0.34 1</ambient><diffuse>0.43 0.39 0.34 1</diffuse></material></visual>
+
+<visual name="b10_4_west_corner_return_1"><pose>6.350 43.220 3.400 0 0 0.000000000</pose>
+<geometry><box><size>0.220 0.340 6.500</size></box></geometry><material><ambient>0.43 0.39 0.34 1</ambient><diffuse>0.43 0.39 0.34 1</diffuse></material></visual>
+
+<visual name="b10_4_west_entry_door"><pose>6.400 40.100 1.250 0 0 0.000000000</pose>
+<geometry><box><size>0.120 1.150 2.300</size></box></geometry><material><ambient>0.12 0.24 0.29 1</ambient><diffuse>0.12 0.24 0.29 1</diffuse></material></visual>
+
+<visual name="b10_4_west_shop_window_0"><pose>6.410 30.750 1.450 0 0 0.000000000</pose>
+<geometry><box><size>0.100 3.000 1.650</size></box></geometry><material><ambient>0.08 0.12 0.14 1</ambient><diffuse>0.08 0.12 0.14 1</diffuse></material></visual>
+
+<visual name="b10_4_west_shop_window_1"><pose>6.410 35.340 1.450 0 0 0.000000000</pose>
+<geometry><box><size>0.100 3.000 1.650</size></box></geometry><material><ambient>0.08 0.12 0.14 1</ambient><diffuse>0.08 0.12 0.14 1</diffuse></material></visual>
+
+<visual name="b10_4_west_ground_lintel"><pose>6.380 34.490 2.480 0 0 0.000000000</pose>
+<geometry><box><size>0.160 13.260 0.200</size></box></geometry><material><ambient>0.43 0.39 0.34 1</ambient><diffuse>0.43 0.39 0.34 1</diffuse></material></visual>
+
+<visual name="b10_4_west_upper_window_0"><pose>6.405 29.900 4.850 0 0 0.000000000</pose>
+<geometry><box><size>0.110 2.250 1.480</size></box></geometry><material><ambient>0.08 0.12 0.14 1</ambient><diffuse>0.08 0.12 0.14 1</diffuse></material></visual>
+
+<visual name="b10_4_west_upper_sill_0"><pose>6.340 29.900 4.030 0 0 0.000000000</pose>
+<geometry><box><size>0.240 2.530 0.130</size></box></geometry><material><ambient>0.43 0.39 0.34 1</ambient><diffuse>0.43 0.39 0.34 1</diffuse></material></visual>
+
+<visual name="b10_4_west_upper_window_1"><pose>6.405 35.000 4.850 0 0 0.000000000</pose>
+<geometry><box><size>0.110 2.250 1.480</size></box></geometry><material><ambient>0.08 0.12 0.14 1</ambient><diffuse>0.08 0.12 0.14 1</diffuse></material></visual>
+
+<visual name="b10_4_west_upper_sill_1"><pose>6.340 35.000 4.030 0 0 0.000000000</pose>
+<geometry><box><size>0.240 2.530 0.130</size></box></geometry><material><ambient>0.43 0.39 0.34 1</ambient><diffuse>0.43 0.39 0.34 1</diffuse></material></visual>
+
+<visual name="b10_4_west_upper_window_2"><pose>6.405 40.100 4.850 0 0 0.000000000</pose>
+<geometry><box><size>0.110 2.250 1.480</size></box></geometry><material><ambient>0.08 0.12 0.14 1</ambient><diffuse>0.08 0.12 0.14 1</diffuse></material></visual>
+
+<visual name="b10_4_west_upper_sill_2"><pose>6.340 40.100 4.030 0 0 0.000000000</pose>
+<geometry><box><size>0.240 2.530 0.130</size></box></geometry><material><ambient>0.43 0.39 0.34 1</ambient><diffuse>0.43 0.39 0.34 1</diffuse></material></visual>
+
+<visual name="b10_5_east_body"><pose>77.800 35.000 2.300 0 0 0.000000000</pose>
+<geometry><box><size>11.400 17.000 4.600</size></box></geometry><material><ambient>0.50 0.56 0.67 1</ambient><diffuse>0.50 0.56 0.67 1</diffuse></material></visual>
+
+<collision name="b10_5_east_body_collision"><pose>77.800 35.000 2.300 0 0 0.000000000</pose>
+<geometry><box><size>11.400 17.000 4.600</size></box></geometry></collision>
+
+<visual name="b10_5_east_roof"><pose>77.800 35.000 4.760 0 0 0.000000000</pose>
+<geometry><box><size>11.750 17.350 0.320</size></box></geometry><material><script><uri>model://vio_low_rise_city/materials/scripts</uri><uri>model://vio_low_rise_city/materials/textures</uri><name>VioLowRiseCity/RoofWeatheredMembrane</name></script></material></visual>
+
+<visual name="b10_5_east_rooftop_unit"><pose>79.852 32.800 5.210 0 0 0.000000000</pose>
+<geometry><box><size>2.350 1.350 0.580</size></box></geometry><material><ambient>0.76 0.77 0.72 1</ambient><diffuse>0.76 0.77 0.72 1</diffuse></material></visual>
+
+<collision name="b10_5_east_rooftop_unit_collision"><pose>79.852 32.800 5.210 0 0 0.000000000</pose>
+<geometry><box><size>2.350 1.350 0.580</size></box></geometry></collision>
+
+<visual name="b10_5_east_skylight"><pose>76.671 36.210 4.990 0 0 0.000000000</pose>
+<geometry><box><size>2.800 0.900 0.140</size></box></geometry><material><ambient>0.20 0.34 0.42 1</ambient><diffuse>0.20 0.34 0.42 1</diffuse></material></visual>
+
+<visual name="b10_5_east_facade"><pose>83.525 35.000 2.300 0 0 0.000000000</pose>
+<geometry><box><size>0.050 16.300 4.150</size></box></geometry><material><script><uri>model://vio_low_rise_city/materials/scripts</uri><uri>model://vio_low_rise_city/materials/textures</uri><name>VioLowRiseCity/FacadeOchreWorkshop</name></script></material></visual>
+
+<visual name="b10_5_east_awning"><pose>83.875 35.000 2.668 0 0 0.000000000</pose>
+<geometry><box><size>0.750 9.350 0.160</size></box></geometry><material><ambient>0.53 0.24 0.20 1</ambient><diffuse>0.53 0.24 0.20 1</diffuse></material></visual>
+
+<visual name="b10_5_east_corner_return_0"><pose>83.650 26.780 2.300 0 0 0.000000000</pose>
+<geometry><box><size>0.220 0.340 4.300</size></box></geometry><material><ambient>0.73 0.70 0.63 1</ambient><diffuse>0.73 0.70 0.63 1</diffuse></material></visual>
+
+<visual name="b10_5_east_corner_return_1"><pose>83.650 43.220 2.300 0 0 0.000000000</pose>
+<geometry><box><size>0.220 0.340 4.300</size></box></geometry><material><ambient>0.73 0.70 0.63 1</ambient><diffuse>0.73 0.70 0.63 1</diffuse></material></visual>
+
+<visual name="b10_5_east_entry_door"><pose>83.600 40.100 1.250 0 0 0.000000000</pose>
+<geometry><box><size>0.120 1.150 2.300</size></box></geometry><material><ambient>0.20 0.16 0.12 1</ambient><diffuse>0.20 0.16 0.12 1</diffuse></material></visual>
+
+<visual name="b10_5_east_shop_window_0"><pose>83.590 30.750 1.450 0 0 0.000000000</pose>
+<geometry><box><size>0.100 3.000 1.650</size></box></geometry><material><ambient>0.08 0.12 0.14 1</ambient><diffuse>0.08 0.12 0.14 1</diffuse></material></visual>
+
+<visual name="b10_5_east_shop_window_1"><pose>83.590 35.340 1.450 0 0 0.000000000</pose>
+<geometry><box><size>0.100 3.000 1.650</size></box></geometry><material><ambient>0.08 0.12 0.14 1</ambient><diffuse>0.08 0.12 0.14 1</diffuse></material></visual>
+
+<visual name="b10_5_east_ground_lintel"><pose>83.620 34.490 2.480 0 0 0.000000000</pose>
+<geometry><box><size>0.160 13.260 0.200</size></box></geometry><material><ambient>0.73 0.70 0.63 1</ambient><diffuse>0.73 0.70 0.63 1</diffuse></material></visual>
+
+<visual name="block_10_courtyard"><pose>45.000 35.000 0.270 0 0 0.000000000</pose>
+<geometry><box><size>20.000 12.000 0.060</size></box></geometry><material><ambient>0.43 0.42 0.38 1</ambient><diffuse>0.43 0.42 0.38 1</diffuse></material></visual>
+
+<visual name="block_10_corner_kiosk_southwest_shop"><pose>9.000 9.000 1.775 0 0 0.000000000</pose>
+<geometry><box><size>2.400 2.400 3.550</size></box></geometry><material><script><uri>model://vio_low_rise_city/materials/scripts</uri><uri>model://vio_low_rise_city/materials/textures</uri><name>VioLowRiseCity/FacadeSageClinic</name></script></material></visual>
+
+<collision name="block_10_corner_kiosk_southwest_shop_collision"><pose>9.000 9.000 1.775 0 0 0.000000000</pose>
+<geometry><box><size>2.400 2.400 3.550</size></box></geometry></collision>
+
+<visual name="block_10_corner_kiosk_southwest_canopy"><pose>9.000 9.000 3.680 0 0 0.000000000</pose>
+<geometry><box><size>3.250 3.250 0.260</size></box></geometry><material><ambient>0.34 0.25 0.20 1</ambient><diffuse>0.34 0.25 0.20 1</diffuse></material></visual>
+
+<visual name="block_10_corner_kiosk_southwest_sign"><pose>7.720 9.000 2.850 0 0 0.000000000</pose>
+<geometry><box><size>0.160 2.050 0.720</size></box></geometry><material><ambient>0.18 0.49 0.65 1</ambient><diffuse>0.18 0.49 0.65 1</diffuse></material></visual>
+
+<visual name="block_10_corner_kiosk_southeast_shop"><pose>81.000 9.000 1.775 0 0 0.000000000</pose>
+<geometry><box><size>2.400 2.400 3.550</size></box></geometry><material><script><uri>model://vio_low_rise_city/materials/scripts</uri><uri>model://vio_low_rise_city/materials/textures</uri><name>VioLowRiseCity/FacadeOchreWorkshop</name></script></material></visual>
+
+<collision name="block_10_corner_kiosk_southeast_shop_collision"><pose>81.000 9.000 1.775 0 0 0.000000000</pose>
+<geometry><box><size>2.400 2.400 3.550</size></box></geometry></collision>
+
+<visual name="block_10_corner_kiosk_southeast_canopy"><pose>81.000 9.000 3.680 0 0 0.000000000</pose>
+<geometry><box><size>3.250 3.250 0.260</size></box></geometry><material><ambient>0.28 0.31 0.28 1</ambient><diffuse>0.28 0.31 0.28 1</diffuse></material></visual>
+
+<visual name="block_10_corner_kiosk_southeast_sign"><pose>82.280 9.000 2.850 0 0 0.000000000</pose>
+<geometry><box><size>0.160 2.050 0.720</size></box></geometry><material><ambient>0.88 0.72 0.19 1</ambient><diffuse>0.88 0.72 0.19 1</diffuse></material></visual>
+
+<visual name="block_10_corner_kiosk_northwest_shop"><pose>9.000 61.000 1.775 0 0 0.000000000</pose>
+<geometry><box><size>2.400 2.400 3.550</size></box></geometry><material><script><uri>model://vio_low_rise_city/materials/scripts</uri><uri>model://vio_low_rise_city/materials/textures</uri><name>VioLowRiseCity/FacadeBrickShop</name></script></material></visual>
+
+<collision name="block_10_corner_kiosk_northwest_shop_collision"><pose>9.000 61.000 1.775 0 0 0.000000000</pose>
+<geometry><box><size>2.400 2.400 3.550</size></box></geometry></collision>
+
+<visual name="block_10_corner_kiosk_northwest_canopy"><pose>9.000 61.000 3.680 0 0 0.000000000</pose>
+<geometry><box><size>3.250 3.250 0.260</size></box></geometry><material><ambient>0.22 0.24 0.25 1</ambient><diffuse>0.22 0.24 0.25 1</diffuse></material></visual>
+
+<visual name="block_10_corner_kiosk_northwest_sign"><pose>7.720 61.000 2.850 0 0 0.000000000</pose>
+<geometry><box><size>0.160 2.050 0.720</size></box></geometry><material><ambient>0.18 0.49 0.65 1</ambient><diffuse>0.18 0.49 0.65 1</diffuse></material></visual>
+
+<visual name="block_10_corner_kiosk_northeast_shop"><pose>81.000 61.000 1.775 0 0 0.000000000</pose>
+<geometry><box><size>2.400 2.400 3.550</size></box></geometry><material><script><uri>model://vio_low_rise_city/materials/scripts</uri><uri>model://vio_low_rise_city/materials/textures</uri><name>VioLowRiseCity/FacadeBlueStone</name></script></material></visual>
+
+<collision name="block_10_corner_kiosk_northeast_shop_collision"><pose>81.000 61.000 1.775 0 0 0.000000000</pose>
+<geometry><box><size>2.400 2.400 3.550</size></box></geometry></collision>
+
+<visual name="block_10_corner_kiosk_northeast_canopy"><pose>81.000 61.000 3.680 0 0 0.000000000</pose>
+<geometry><box><size>3.250 3.250 0.260</size></box></geometry><material><ambient>0.34 0.25 0.20 1</ambient><diffuse>0.34 0.25 0.20 1</diffuse></material></visual>
+
+<visual name="block_10_corner_kiosk_northeast_sign"><pose>82.280 61.000 2.850 0 0 0.000000000</pose>
+<geometry><box><size>0.160 2.050 0.720</size></box></geometry><material><ambient>0.88 0.72 0.19 1</ambient><diffuse>0.88 0.72 0.19 1</diffuse></material></visual>
+
+<visual name="tree_10_0_canopy_ns"><pose>33.000 7.700 3.775 0 0 0.000000000</pose>
+<geometry><plane><normal>0 1 0</normal><size>3.473 7.550</size></plane></geometry><material><script><uri>model://vio_low_rise_city/materials/scripts</uri><uri>model://vio_low_rise_city/materials/textures</uri><name>VioLowRiseCity/TreeHornbeam</name></script></material><cast_shadows>true</cast_shadows></visual>
+
+<visual name="tree_10_0_canopy_ew"><pose>33.000 7.700 3.775 0 0 0.000000000</pose>
+<geometry><plane><normal>1 0 0</normal><size>3.473 7.550</size></plane></geometry><material><script><uri>model://vio_low_rise_city/materials/scripts</uri><uri>model://vio_low_rise_city/materials/textures</uri><name>VioLowRiseCity/TreeHornbeam</name></script></material><cast_shadows>true</cast_shadows></visual>
+
+<collision name="tree_10_0_trunk_collision"><pose>33.000 7.700 1.400 0 0 0.000000000</pose>
+<geometry><cylinder><radius>0.24</radius><length>2.8</length></cylinder></geometry></collision>
+
+<visual name="tree_10_1_canopy_ns"><pose>57.000 62.300 3.425 0 0 0.000000000</pose>
+<geometry><plane><normal>0 1 0</normal><size>4.247 6.850</size></plane></geometry><material><script><uri>model://vio_low_rise_city/materials/scripts</uri><uri>model://vio_low_rise_city/materials/textures</uri><name>VioLowRiseCity/TreeCherry</name></script></material><cast_shadows>true</cast_shadows></visual>
+
+<visual name="tree_10_1_canopy_ew"><pose>57.000 62.300 3.425 0 0 0.000000000</pose>
+<geometry><plane><normal>1 0 0</normal><size>4.247 6.850</size></plane></geometry><material><script><uri>model://vio_low_rise_city/materials/scripts</uri><uri>model://vio_low_rise_city/materials/textures</uri><name>VioLowRiseCity/TreeCherry</name></script></material><cast_shadows>true</cast_shadows></visual>
+
+<collision name="tree_10_1_trunk_collision"><pose>57.000 62.300 1.400 0 0 0.000000000</pose>
+<geometry><cylinder><radius>0.24</radius><length>2.8</length></cylinder></geometry></collision>
+
+<visual name="tree_10_2_canopy_ns"><pose>7.700 25.000 3.175 0 0 0.000000000</pose>
+<geometry><plane><normal>0 1 0</normal><size>3.937 6.350</size></plane></geometry><material><script><uri>model://vio_low_rise_city/materials/scripts</uri><uri>model://vio_low_rise_city/materials/textures</uri><name>VioLowRiseCity/TreeMaple</name></script></material><cast_shadows>true</cast_shadows></visual>
+
+<visual name="tree_10_2_canopy_ew"><pose>7.700 25.000 3.175 0 0 0.000000000</pose>
+<geometry><plane><normal>1 0 0</normal><size>3.937 6.350</size></plane></geometry><material><script><uri>model://vio_low_rise_city/materials/scripts</uri><uri>model://vio_low_rise_city/materials/textures</uri><name>VioLowRiseCity/TreeMaple</name></script></material><cast_shadows>true</cast_shadows></visual>
+
+<collision name="tree_10_2_trunk_collision"><pose>7.700 25.000 1.400 0 0 0.000000000</pose>
+<geometry><cylinder><radius>0.24</radius><length>2.8</length></cylinder></geometry></collision>
+
+<visual name="tree_10_3_canopy_ns"><pose>82.300 45.000 3.775 0 0 0.000000000</pose>
+<geometry><plane><normal>0 1 0</normal><size>3.473 7.550</size></plane></geometry><material><script><uri>model://vio_low_rise_city/materials/scripts</uri><uri>model://vio_low_rise_city/materials/textures</uri><name>VioLowRiseCity/TreeHornbeam</name></script></material><cast_shadows>true</cast_shadows></visual>
+
+<visual name="tree_10_3_canopy_ew"><pose>82.300 45.000 3.775 0 0 0.000000000</pose>
+<geometry><plane><normal>1 0 0</normal><size>3.473 7.550</size></plane></geometry><material><script><uri>model://vio_low_rise_city/materials/scripts</uri><uri>model://vio_low_rise_city/materials/textures</uri><name>VioLowRiseCity/TreeHornbeam</name></script></material><cast_shadows>true</cast_shadows></visual>
+
+<collision name="tree_10_3_trunk_collision"><pose>82.300 45.000 1.400 0 0 0.000000000</pose>
+<geometry><cylinder><radius>0.24</radius><length>2.8</length></cylinder></geometry></collision>
+
+  </link></model>
+</sdf>
