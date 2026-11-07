@@ -9,6 +9,10 @@ FROM reventon13713/project_f:2026-11-07@sha256:571ad4c305440b8fc002da25d68044ea9
 RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
         xvfb xauth libgl1-mesa-dri && rm -rf /var/lib/apt/lists/*
 COPY --from=simulator /opt/city-gazebo /opt/city-gazebo
+# Gazebo registers its own shader directory. OGRE 1.10 supplies the alpha-test
+# shader in its separate media directory.
+RUN ln -s /opt/city-gazebo/share/OGRE/Media/RTShaderLib/GLSL/FFPLib_AlphaTest.glsl \
+          /opt/city-gazebo/share/gazebo-11/media/rtshaderlib/FFPLib_AlphaTest.glsl
 WORKDIR /opt/project_f/simulation/city_vio
 COPY . ./
 ARG SOURCE_REVISION
